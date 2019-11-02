@@ -28,7 +28,7 @@ def zipcodes():
 def connect_zip(zipcodes):
     try:
         print('1')
-        connection = psycopg2.connect(user = "minsookim1099", password = "Soon1621mi", dbname = "beers")
+        connection = psycopg2.connect(dbname = "justforplay")
         print('2')
         cursor = connection.cursor()
         print('3')
