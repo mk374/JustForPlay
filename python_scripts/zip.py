@@ -22,7 +22,7 @@ def zipcodes():
 
             if i == 10: 
                 break
-
+    print("yar it works")
     return zipcode_latitude_longitude
 
 def connect_zip(zipcodes):
