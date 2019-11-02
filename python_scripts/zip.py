@@ -38,7 +38,7 @@ def connect_zip(zipcodes):
                 cursor.execute(postgres_insert_query)
                 connection.commit()
             except:
-                print(error)
+                print("duplicates probably")
          
             
         print ("Record inserted successfully into mobile table")
