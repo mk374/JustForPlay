@@ -22,26 +22,27 @@ def zipcodes():
 
             if i == 10: 
                 break
-    print("yar it works")
+    
     return zipcode_latitude_longitude
 
 def connect_zip(zipcodes):
     try:
-        print('1')
         connection = psycopg2.connect(dbname = "justforplay")
-        print('2')
         cursor = connection.cursor()
-        print('3')
 
     
         for key, value in zipcodes.items():
+            
             postgres_insert_query = "INSERT INTO zip VALUES ({},{},{})".format(key, value[0], value[1])
-            cursor.execute(postgres_insert_query)
-            print('4')
-            connection.commit()
-            count = cursor.rowcount
-            print (count, "Record inserted successfully into mobile table")
-        print('4')
+            try:
+                cursor.execute(postgres_insert_query)
+                connection.commit()
+            except:
+                print(error)
+         
+            
+        print ("Record inserted successfully into mobile table")
+      
     except (Exception, psycopg2.Error) as error :
         if(connection):
             print("Failed to insert record into mobile table", error)
