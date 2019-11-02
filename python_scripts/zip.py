@@ -33,13 +33,10 @@ def connect_zip(zipcodes):
         cursor = connection.cursor()
         print('3')
 
-        postgres_insert_query = """ INSERT INTO zip VALUES (%d,%f,%f)"""
     
         for key, value in zipcodes.items():
-            
-            record_to_insert = (key, value[0], value[1])
-            print(record_to_insert, type(record_to_insert[0]))
-            cursor.execute(postgres_insert_query, record_to_insert)
+            postgres_insert_query = "INSERT INTO zip VALUES ({},{},{})".format(key, value[0], value[1])
+            cursor.execute(postgres_insert_query)
             print('4')
             connection.commit()
             count = cursor.rowcount
