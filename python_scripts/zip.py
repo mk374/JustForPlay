@@ -53,7 +53,11 @@ def connect_zip(zipcodes):
             connection.close()
             print("PostgreSQL connection is closed")
 
-
-if __name__ == "__main__":
+#calling the zipcodes file and adding them to the postgresql database
+def main():
     zipcodes = zipcodes()
     connect_zip(zipcodes)
+    
+    
+if __name__ == "__main__":
+    main()
