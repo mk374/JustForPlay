@@ -20,8 +20,7 @@ def zipcodes():
             longitude = float(lat_long_data[4])
             zipcode_latitude_longitude[zipcode] = [latitude, longitude]
 
-            if i == 10: 
-                break
+       
     
     return zipcode_latitude_longitude
 
