@@ -32,10 +32,14 @@ def connect_zip(zipcodes):
 
     
         for key, value in zipcodes.items():
+            
             postgres_insert_query = "INSERT INTO zip VALUES ({},{},{})".format(key, value[0], value[1])
-            cursor.execute(postgres_insert_query)
-            connection.commit()
-            count = cursor.rowcount
+            try:
+                cursor.execute(postgres_insert_query)
+                connection.commit()
+            except:
+                print(error)
+         
             
         print ("Record inserted successfully into mobile table")
       
