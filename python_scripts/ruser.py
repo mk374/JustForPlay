@@ -21,7 +21,7 @@ def populate_ruser():
             users.append(temp)
 
         for item in users:
-                postgres_insert_query = "INSERT INTO ruser VALUES (\"{}\",\"{}\",\"{}\",\"{}\",{})".format(item[0],\
+                postgres_insert_query = "INSERT INTO ruser VALUES (\'{}\',\'{}\',\'{}\',\'{}\',{})".format(item[0],\
                     item[1], item[2], item[3], item[4])
                 cursor.execute(postgres_insert_query)
                 connection.commit()
