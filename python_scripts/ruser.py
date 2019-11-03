@@ -25,9 +25,8 @@ def populate_ruser():
                     item[1], item[2], item[3], item[4])
                 cursor.execute(postgres_insert_query)
                 connection.commit()
-                count = cursor.rowcount
 
-        print (count, "Record inserted successfully into mobile table")
+        print ("Record inserted successfully into mobile table")
 
     except (Exception, psycopg2.Error) as error :
         if(connection):
