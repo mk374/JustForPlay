@@ -28,7 +28,7 @@ def populate_ruser():
 
                 connection.commit()
                 count = cursor.rowcount
-                
+
         print (count, "Record inserted successfully into mobile table")
 
     except (Exception, psycopg2.Error) as error :
@@ -44,3 +44,5 @@ def populate_ruser():
 
 
 
+if __name__ == "__main__":
+    populate_ruser()
