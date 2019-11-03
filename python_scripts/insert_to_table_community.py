@@ -3,10 +3,9 @@ import pandas as pd
 
 def bulkInsert(records):
     try:
-        connection = psycopg2.connect(dbname="postgres_db")
+        connection = psycopg2.connect(dbname="justforplay")
         cursor = connection.cursor()
-        sql_insert_query = """ INSERT INTO Community (communityid, description) 
-                           VALUES (%s,%s) """
+        sql_insert_query = "INSERT INTO Community (communityid, description) VALUES (%s,%s)"
 
         # executemany() to insert multiple rows rows
         result = cursor.executemany(sql_insert_query, records)
@@ -22,7 +21,7 @@ def bulkInsert(records):
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
-
-df_community = pd.read_excel("../Sample Datasets.xlsx", sheet_name="Community", header=True)
-records_to_insert = [(row[0],row[1]) for index, row in df_community.iterrows()]
-bulkInsert(records_to_insert)
+def main():
+    df_community = pd.read_excel("../Sample Datasets.xlsx", sheet_name="Community", header=True)
+    records_to_insert = [(row[0],row[1]) for index, row in df_community.iterrows()]
+    bulkInsert(records_to_insert)
