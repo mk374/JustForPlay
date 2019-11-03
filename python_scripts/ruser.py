@@ -39,7 +39,8 @@ def populate_ruser():
             connection.close()
             print("PostgreSQL connection is closed")
 
-
+def main():
+    populate_ruser()
 
 if __name__ == "__main__":
     populate_ruser()
