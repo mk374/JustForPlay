@@ -13,20 +13,19 @@ def populate_ruser():
         zips = [27503, 27517, 27560, 27701, 27703, 27704, 27705, 27707, 27709, 27712, 27713]
         for i in range(1000):
             rname = random.choice(names)
+            print(1)
             ruid = rname + str(i)
             rpassword = 'password' + str(i)
             rbio = 'My name is ' + rname + ' and I like ' + random.choice[snacks] + '.'
             rzipcode = random.choice(zips)
+            print(2)
             temp = (ruid, rname, rpassword, rbio, rzipcode)
             users.append(temp)
 
         for item in users:
-                print('1')
                 postgres_insert_query = "INSERT INTO ruser VALUES ({},{},{},{},{})".format(item[0],\
                     item[1], item[2], item[3], item[4])
-                print(2)
                 cursor.execute(postgres_insert_query)
-                print(3)
                 connection.commit()
                 count = cursor.rowcount
 
