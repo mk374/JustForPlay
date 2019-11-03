@@ -15,8 +15,11 @@ def populate_ruser():
             rname = random.choice(names)
             print(1)
             ruid = rname + str(i)
+            print(2)
             rpassword = 'password' + str(i)
+            print(3)
             rbio = 'My name is ' + rname + ' and I like ' + random.choice[snacks] + '.'
+            print(4)
             rzipcode = random.choice(zips)
             print(2)
             temp = (ruid, rname, rpassword, rbio, rzipcode)
