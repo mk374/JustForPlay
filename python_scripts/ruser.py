@@ -21,11 +21,12 @@ def populate_ruser():
             users.append(temp)
 
         for item in users:
+                print('1')
                 postgres_insert_query = "INSERT INTO ruser VALUES ({},{},{},{},{})".format(item[0],\
                     item[1], item[2], item[3], item[4])
-  
+                print(2)
                 cursor.execute(postgres_insert_query)
-
+                print(3)
                 connection.commit()
                 count = cursor.rowcount
 
