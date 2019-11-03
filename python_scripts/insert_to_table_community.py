@@ -25,3 +25,6 @@ def main():
     df_community = pd.read_excel("../Sample Datasets.xlsx", sheet_name="Community", header=True)
     records_to_insert = [(row[0],row[1]) for index, row in df_community.iterrows()]
     bulkInsert(records_to_insert)
+
+if __name__ == "__main__":
+    main()
