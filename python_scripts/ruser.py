@@ -13,15 +13,10 @@ def populate_ruser():
         zips = [27503, 27517, 27560, 27701, 27703, 27704, 27705, 27707, 27709, 27712, 27713]
         for i in range(1000):
             rname = random.choice(names)
-            print(1)
             ruid = rname + str(i)
-            print(2)
             rpassword = 'password' + str(i)
-            print(3)
-            rbio = 'My name is ' + rname + ' and I like ' + random.choice[snacks] + '.'
-            print(4)
+            rbio = 'My name is ' + rname + ' and I like ' + random.choice(snacks) + '.'
             rzipcode = random.choice(zips)
-            print(2)
             temp = (ruid, rname, rpassword, rbio, rzipcode)
             users.append(temp)
 
