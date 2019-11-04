@@ -17,7 +17,10 @@ class User(db.Model):
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
 				
-    
+#     	members = orm.relationship('Members')
+# 	groups = orm.relationship('Groups')
+# 	@staticmethod
+	
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 class Community(db.Model):
 	__tablename__ = 'community'
@@ -30,6 +33,27 @@ class SubCommunity(db.Model):
 	subid = db.Column('subid', db.String(256))
 	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
 	__table_args__ = (db.PrimaryKeyConstraint(communityid, subid), {})
+	
+	
+class Groups(db.Model):
+	__tablename__ = 'groups'
+	gid = db.Column('gid', db.String(256), nullable=False)
+	group_name = db.Column('group_name', db.String(256), nullable=False)
+	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
+	subid = db.Column('subid', db.String(256), db.ForeignKey('subCommunity.subid'))
+	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False)
+	public_or_private = db.Column('public_or_private', db.String(32))
+	description = db.Column('description', db.String(1024))
+	__table_args__ = (db.PrimaryKeyConstraint(gid, communityid), \
+			  db.CheckConstraint(public_or_private in ('private', 'public')),
+			  {})
+
+class Members(db.Model):
+	__tablename__ = 'members'
+	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable=False)
+	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
+	admin = db.Column('gid', db.Boolean)
+	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
 
 
     
