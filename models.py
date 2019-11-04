@@ -17,10 +17,16 @@ class User(db.Model):
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
 				
-#     	members = orm.relationship('Members')
-# 	groups = orm.relationship('Groups')
-# 	@staticmethod
+    	members = orm.relationship('Members')
+	groups = orm.relationship('Groups')
 	
+	@staticmethod
+	def get_groups(user_id):
+		groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', \
+					    dict(uid=user_id))
+		return [group for group in groups]
+		
+			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 class Community(db.Model):
 	__tablename__ = 'community'
