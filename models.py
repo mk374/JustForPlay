@@ -15,9 +15,12 @@ class User(db.Model):
 	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
-
-# 	members = orm.relationship('Members')
-# 	groups = orm.relationship('Groups')
+	try:
+		members = orm.relationship('Members')
+		groups = orm.relationship('Groups')
+	except Exception as e:
+		raise e
+	
 	
 # 	@staticmethod
 # 	def get_groups(user_id):
