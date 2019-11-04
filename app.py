@@ -16,30 +16,23 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 
 @app.route('/login', methods=['POST'])
 def check_login():
-#     request.data this is a dictionary
-    print("what is going on")
-    
-    gid = db.Column('gid', db.String(256), nullable=False)
-	group_name = db.Column('group_name', db.String(256), nullable=False)
-	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
-	subid = db.Column('subid', db.String(256), db.ForeignKey('subCommunity.subid'))
-	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False)
-	public_or_private = db.Column('public_or_private', db.String(32))
-	description = db.Column('description', db.String(1024))
-    
-    user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
+	
+	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
 
-    groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
-        groups.zip_code, groups.public_or_private, groups.description\
-        from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
+	groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
+		groups.zip_code, groups.public_or_private, groups.description\
+		from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
 
-    list_of_groups = [group for group in groups]
 
-    if not list_of_groups:
-        return "no groups currently"
 
-    
-    return list_of_groups
+	list_of_groups = [group for group in groups]
+	
+
+	if not list_of_groups:
+		return "no groups currently"
+
+
+	return list_of_groups
 
 
 # @app.route('/drinker/<name>')
