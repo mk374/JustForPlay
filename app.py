@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_api import FlaskAPI
 import models
@@ -18,7 +18,7 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 def check_login():
 #     request.data this is a dictionary
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
-    return user
+    return jsonify(user)
 
 
 # @app.route('/drinker/<name>')
