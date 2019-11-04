@@ -57,7 +57,7 @@ class Members(db.Model):
 	__tablename__ = 'members'
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable=False)
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
-	admin = db.Column('gid', db.Boolean)
+	admin = db.Column('admin', db.Boolean)
 	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
 
 
