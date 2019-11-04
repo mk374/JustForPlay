@@ -2,10 +2,10 @@ from sqlalchemy import sql, orm
 from app import db
 
 class Zip(db.Model):
-    	__tablename__ = 'zip'
-    	zip_code = db.Column('zip_code', db.SmallInteger, primary_key =True)
-    	latitude = db.Column('latitude', db.Float(), nullable=False)
-    	longitude = db.Column('longitude', db.Float(), nullable=False)
+	__tablename__ = 'zip'
+	zip_code = db.Column('zip_code', db.SmallInteger, primary_key =True)
+	latitude = db.Column('latitude', db.Float(), nullable=False)
+	longitude = db.Column('longitude', db.Float(), nullable=False)
 	
 
 class User(db.Model):
@@ -14,20 +14,20 @@ class User(db.Model):
 	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
 	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
-	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False, ForeignKey('zip.zip_code')) 
+	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False, db.ForeignKey('zip.zip_code')) 
 
 				
     
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 class Community(db.Model):
-    	__tablename__ = 'community'
-    	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
-    	description = db.Column('description', db.String(1000), nullable=False)
+	__tablename__ = 'community'
+	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
+	description = db.Column('description', db.String(1000), nullable=False)
 	
 class SubCommunity(db.Model):
-    	__tablename__ = 'subcommunity'
-    	communityid = db.Column('communityid', db.String(256), nullable=False, ForeignKey('community.communityid'))
-    	subid = db.Column('subid', db.String(256))
+	__tablename__ = 'subcommunity'
+	communityid = db.Column('communityid', db.String(256), nullable=False, db.ForeignKey('community.communityid'))
+	subid = db.Column('subid', db.String(256))
 	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
 	__table_args__ = (PrimaryKeyConstraint(communityid, subid), {})
 
