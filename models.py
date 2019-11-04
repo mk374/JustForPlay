@@ -8,7 +8,9 @@ class User(db.Model):
     name = db.Column('name', db.String(64), primary_key=False)
     password = db.Column('password', db.String(64), primary_key=False)
     bio = db.Column('bio', db.String(1024), primary_key=False)
+    zip_code = db.Column('zip_code', db.SmallInteger, primary_key=False)
     #do zip_code later
+#     zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
     
 
     
