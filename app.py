@@ -1,9 +1,10 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_api import FlaskAPI
 import models
 import forms
 
-app = Flask(__name__)
+app = FlaskAPI(__name__)
 app.secret_key = 's3cr3t'
 app.config.from_object('config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
@@ -12,6 +13,11 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 def all_drinkers():
     drinkers = db.session.query(models.Drinker).all()
     return render_template('all-drinkers.html', drinkers=drinkers)
+
+# @app.route('/login', methods=['POST'])
+# def check_login():
+    
+
 
 @app.route('/drinker/<name>')
 def drinker(name):
