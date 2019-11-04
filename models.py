@@ -15,7 +15,8 @@ class User(db.Model):
     	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
     	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 #     	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False)
-	zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) # we have to do this when we create all of the tables 
+	zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) 
+	# we have to do this when we create all of the tables 
 #in here
     #do zip_code later
 #     zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
