@@ -16,8 +16,8 @@ def all_drinkers():
 
 @app.route('/login', methods=['POST'])
 def check_login():
-    note = str(request.data.get('text', ''))
-    return note
+    
+    return request.data
 
 
 @app.route('/drinker/<name>')
