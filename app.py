@@ -19,8 +19,8 @@ def check_login():
 #     request.data this is a dictionary
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
     #call method within models.User to get all of the groups
-    
-    return user.name, user.zip_code, user.password
+    print(user.zip_code, user.password)
+    return user.name
 
 
 # @app.route('/drinker/<name>')
