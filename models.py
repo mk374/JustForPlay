@@ -2,34 +2,19 @@ from sqlalchemy import sql, orm
 from app import db
 
 class Zip(db.Model):
-    __tablename__ = 'zip'
-    zip_code = db.Column('zip_code', db.SmallInteger, primary_key =True)
-    latitude = db.Column('latitude', db.Float())
-    longitude = db.Column('longitude', db.Float())
-    
-    
-    
-CREATE TABLE Community (
-	communityid VARCHAR(256) NOT NULL PRIMARY KEY,
-	description VARCHAR(1000) NOT NULL
-);
-
-CREATE TABLE SubCommunity (
-	communityid VARCHAR(256) NOT NULL,
-	subid VARCHAR(256) unique,
-	sub_description VARCHAR(1000) NOT NULL,
-	PRIMARY KEY (communityid, subid),
-	FOREIGN KEY (communityid) REFERENCES Community(communityid)
-);
-
+    	__tablename__ = 'zip'
+    	zip_code = db.Column('zip_code', db.SmallInteger, primary_key =True)
+    	latitude = db.Column('latitude', db.Float(), nullable=False)
+    	longitude = db.Column('longitude', db.Float(), nullable=False)
+	
 
 class User(db.Model):
-    __tablename__ = 'ruser'
-    uid = db.Column('uid', db.String(256), primary_key=True)
-    name = db.Column('name', db.String(64), primary_key=False)
-    password = db.Column('password', db.String(64), primary_key=False)
-    bio = db.Column('bio', db.String(1024), primary_key=False)
-    zip_code = db.Column('zip_code', db.SmallInteger)
+    	__tablename__ = 'ruser'
+    	uid = db.Column('uid', db.String(256), primary_key=True, nullable=False)
+    	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
+    	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
+    	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
+    	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False)
 #     zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) # we have to do this when we create all of the tables 
 #in here
     #do zip_code later
@@ -37,15 +22,18 @@ class User(db.Model):
     
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 class Community(db.Model):
-    __tablename__ = 'community'
-    communityid = db.Column('communityid', db.String(256), primary_key=True)
-    description = db.Column('description', db.String(1000))
+    	__tablename__ = 'community'
+    	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
+    	description = db.Column('description', db.String(1000), nullable=False)
     
 class SubCommunity(db.Model):
-    __tablename__ = 'subcommunity'
-    communityid = db.Column('communityid', db.String(256))
-    subid = db.Column('subid', db.String(256))
-    sub_description = db.Column('sub_description', db.String(1000))
+    	__tablename__ = 'subcommunity'
+    	communityid = db.Column('communityid', db.String(256), nullable=False, ForeignKey('community.communityid'))
+    	subid = db.Column('subid', db.String(256))
+	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
+	__table_args__ = (PrimaryKeyConstraint(communityid, subid), {})
+
+
     
     
 # class Drinker(db.Model):
