@@ -15,14 +15,10 @@ class User(db.Model):
 	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
-	try:
-		print("ok wtf")
-		members = orm.relationship('Members')
-		groups = orm.relationship('Groups')
-		print("this line works")
-	except Exception as e:
-		print("errors")
-		raise e
+
+	members = orm.relationship('Members')
+	groups = orm.relationship('Groups')
+	
 	
 	
 # 	@staticmethod
