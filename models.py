@@ -16,14 +16,16 @@ class User(db.Model):
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
-	members = orm.relationship('Members')
-	groups = orm.relationship('Groups')
+# 	members = orm.relationship('Members')
+# 	groups = orm.relationship('Groups')
 	
-	@staticmethod
-	def get_groups(user_id):
-		groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', \
-					    dict(uid=user_id))
-		return [group for group in groups]
+	
+	
+# 	@staticmethod
+# 	def get_groups(user_id):
+# 		groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', \
+# 					    dict(uid=user_id))
+# 		return [group for group in groups]
 		
 			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
@@ -57,7 +59,7 @@ class Members(db.Model):
 	__tablename__ = 'members'
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable=False)
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
-	admin = db.Column('gid', db.Boolean)
+	admin = db.Column('admin', db.Boolean)
 	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
 
 

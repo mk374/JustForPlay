@@ -17,6 +17,7 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 @app.route('/login', methods=['POST'])
 def check_login():
 #     request.data this is a dictionary
+    print("what is going on")
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
     #call method within models.User to get all of the groups
     print(user.zip_code, user.password)
