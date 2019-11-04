@@ -20,8 +20,8 @@ def check_login():
     print("what is going on")
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
     #call method within models.User to get all of the groups
-    print(user.zip_code, user.password)
-    groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
+#     print(user.zip_code, user.password)
+    groups = db.session.execute('select * from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
 #     list_of_groups = models.User.get_groups(str(user.uid))
     list_of_groups = [group for group in groups]
     print(list_of_groups)
