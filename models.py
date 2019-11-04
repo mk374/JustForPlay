@@ -14,18 +14,25 @@ class User(db.Model):
     	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
     	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
     	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
-    	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False)
-#     zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) # we have to do this when we create all of the tables 
+#     	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False)
+	zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) # we have to do this when we create all of the tables 
 #in here
     #do zip_code later
 #     zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
+# 	groups = orm.relationship("groups")
+# 	members = orm.relationship("members")
+# 	@staticmethod
+# 	def get_groups(uid):
+# 		try:
+# 			db.session.execute('
+				
     
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 class Community(db.Model):
     	__tablename__ = 'community'
     	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
     	description = db.Column('description', db.String(1000), nullable=False)
-    
+	
 class SubCommunity(db.Model):
     	__tablename__ = 'subcommunity'
     	communityid = db.Column('communityid', db.String(256), nullable=False, ForeignKey('community.communityid'))
