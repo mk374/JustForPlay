@@ -17,7 +17,7 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 @app.route('/login', methods=['POST'])
 def check_login():
 #     request.data this is a dictionary
-    user = db.session.query(models.Drinker).filter(models.User.uid == request.data.get('uid')).one()
+    user = db.session.query(models.User).filter(models.User.uid == request.data.get('uid')).one()
     
     return user, jsonify(user)
 
