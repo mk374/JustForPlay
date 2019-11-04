@@ -17,9 +17,17 @@ class User(db.Model):
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
 	def get_groups(user_id):
-		groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', \
-					    dict(uid=user_id))
-		return [group for group in groups]
+		groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
+				groups.zip_code, groups.public_or_private, groups.description\
+				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
+		print(groups)
+		return groups
+	
+	#make it jsonifiable
+# 	def serialize(groups):
+# 		dictionary = {
+# 			"gid": groups
+# 		}
 		
 			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
