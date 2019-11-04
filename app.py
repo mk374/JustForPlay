@@ -18,7 +18,7 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 def check_login():
 #     request.data this is a dictionary
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
-    print(user)
+    #call method within models.User to get all of the groups
     return user.name
 
 
