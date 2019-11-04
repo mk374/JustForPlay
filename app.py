@@ -16,7 +16,7 @@ def all_drinkers():
 
 @app.route('/login', methods=['POST'])
 def check_login():
-    
+#     request.data this is a dictionary
     return request.data
 
 
