@@ -14,7 +14,7 @@ class User(db.Model):
 	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
 	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
-	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False, db.ForeignKey('zip.zip_code')) 
+	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
 				
     
@@ -26,7 +26,7 @@ class Community(db.Model):
 	
 class SubCommunity(db.Model):
 	__tablename__ = 'subcommunity'
-	communityid = db.Column('communityid', db.String(256), nullable=False, db.ForeignKey('community.communityid'))
+	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
 	subid = db.Column('subid', db.String(256))
 	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
 	__table_args__ = (PrimaryKeyConstraint(communityid, subid), {})
