@@ -16,8 +16,7 @@ class User(db.Model):
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
-				
-    	members = orm.relationship('Members')
+	members = orm.relationship('Members')
 	groups = orm.relationship('Groups')
 	
 	@staticmethod
