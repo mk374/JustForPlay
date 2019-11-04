@@ -29,7 +29,7 @@ class SubCommunity(db.Model):
 	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
 	subid = db.Column('subid', db.String(256))
 	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
-	__table_args__ = (PrimaryKeyConstraint(communityid, subid), {})
+	__table_args__ = (db.PrimaryKeyConstraint(communityid, subid), {})
 
 
     
