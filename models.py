@@ -10,11 +10,11 @@ class Zip(db.Model):
 
 class User(db.Model):
 	__tablename__ = 'ruser'
-# 	uid = db.Column('uid', db.String(256), primary_key=True, nullable=False)
-# 	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
-# 	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
-# 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
-# 	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False, ForeignKey('zip.zip_code')) 
+	uid = db.Column('uid', db.String(256), primary_key=True, nullable=False)
+	name = db.Column('name', db.String(64), primary_key=False, nullable=False)
+	password = db.Column('password', db.String(64), primary_key=False, nullable=False)
+	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
+	zip_code = db.Column('zip_code', db.SmallInteger, nullable=False, ForeignKey('zip.zip_code')) 
 
 				
     
