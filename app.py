@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_api import FlaskAPI
 import models
@@ -14,9 +14,10 @@ def all_drinkers():
     drinkers = db.session.query(models.Drinker).all()
     return render_template('all-drinkers.html', drinkers=drinkers)
 
-# @app.route('/login', methods=['POST'])
-# def check_login():
-    
+@app.route('/login', methods=['POST'])
+def check_login():
+    note = str(request.data.get('text', ''))
+    return note
 
 
 @app.route('/drinker/<name>')
