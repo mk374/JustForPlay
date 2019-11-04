@@ -9,15 +9,17 @@ app.secret_key = 's3cr3t'
 app.config.from_object('config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
 
-@app.route('/')
-def all_drinkers():
-    drinkers = db.session.query(models.Drinker).all()
-    return render_template('all-drinkers.html', drinkers=drinkers)
+# @app.route('/')
+# def all_drinkers():
+#     drinkers = db.session.query(models.Drinker).all()
+#     return render_template('all-drinkers.html', drinkers=drinkers)
 
 @app.route('/login', methods=['POST'])
 def check_login():
 #     request.data this is a dictionary
-    return request.data
+    user = db.session.query(models.Drinker).filter(models.Drinker.uid == request.data.get('uid')).one()
+    
+    return user, jsonify(user)
 
 
 # @app.route('/drinker/<name>')
