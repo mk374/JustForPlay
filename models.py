@@ -19,6 +19,7 @@ class User(db.Model):
 		members = orm.relationship('Members')
 		groups = orm.relationship('Groups')
 	except Exception as e:
+		print("errors")
 		raise e
 	
 	
