@@ -24,6 +24,7 @@ def check_login():
     groups = db.session.execute('select from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
 #     list_of_groups = models.User.get_groups(str(user.uid))
     list_of_groups = [group for group in groups]
+    print(list_of_groups)
     if not list_of_groups:
         return "no groups currently"
 
