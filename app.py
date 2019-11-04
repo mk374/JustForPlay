@@ -14,10 +14,10 @@ def all_drinkers():
     drinkers = db.session.query(models.Drinker).all()
     return render_template('all-drinkers.html', drinkers=drinkers)
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['POST'])
 def check_login():
     note = str(request.data.get('text', ''))
-    return request.method
+    return note
 
 
 @app.route('/drinker/<name>')
