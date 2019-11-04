@@ -7,6 +7,20 @@ class Zip(db.Model):
     latitude = db.Column('latitude', db.Float())
     longitude = db.Column('longitude', db.Float())
     
+    
+    
+CREATE TABLE Community (
+	communityid VARCHAR(256) NOT NULL PRIMARY KEY,
+	description VARCHAR(1000) NOT NULL
+);
+
+CREATE TABLE SubCommunity (
+	communityid VARCHAR(256) NOT NULL,
+	subid VARCHAR(256) unique,
+	sub_description VARCHAR(1000) NOT NULL,
+	PRIMARY KEY (communityid, subid),
+	FOREIGN KEY (communityid) REFERENCES Community(communityid)
+);
 
 
 class User(db.Model):
@@ -22,7 +36,17 @@ class User(db.Model):
 #     zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
     
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
-
+class Community(db.Model):
+    __tablename__ = 'community'
+    communityid = db.Column('communityid', db.String(256), primary_key=True)
+    description = db.Column('description', db.String(1000))
+    
+class SubCommunity(db.Model):
+    __tablename__ = 'subcommunity'
+    communityid = db.Column('communityid', db.String(256))
+    subid = db.Column('subid', db.String(256))
+    sub_description = db.Column('sub_description', db.String(1000))
+    
     
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
