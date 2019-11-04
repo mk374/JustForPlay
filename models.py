@@ -1,6 +1,13 @@
 from sqlalchemy import sql, orm
 from app import db
 
+class Zip(db.Model):
+    __tablename__ = 'zip'
+    zip_code = db.Column('zip_code', db.SmallInteger, primary_key =True)
+    latitude = db.Column('latitude', db.Float())
+    longitude = db.Column('longitude', db.Float())
+    
+
 
 class User(db.Model):
     __tablename__ = 'ruser'
@@ -8,10 +15,13 @@ class User(db.Model):
     name = db.Column('name', db.String(64), primary_key=False)
     password = db.Column('password', db.String(64), primary_key=False)
     bio = db.Column('bio', db.String(1024), primary_key=False)
-    zip_code = db.Column('zip_code', db.SmallInteger, primary_key=False)
+    zip_code = db.Column('zip_code', db.SmallInteger)
+#     zip_code = db.Column('zip_code', db.SmallInteger, ForeignKey('zip.zip_code')) # we have to do this when we create all of the tables 
+#in here
     #do zip_code later
 #     zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
     
+    #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 
     
 # class Drinker(db.Model):
