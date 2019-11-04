@@ -19,9 +19,7 @@ def check_login():
 	
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
 
-	groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
-		groups.zip_code, groups.public_or_private, groups.description\
-		from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user.uid))
+	groups = models.User.get_groups(user.uid)
 
 
 
