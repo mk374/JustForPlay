@@ -20,6 +20,7 @@ def check_login():
     user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
     #call method within models.User to get all of the groups
     print(user.zip_code, user.password)
+    
     return user.name
 
 
