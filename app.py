@@ -18,8 +18,8 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 @app.route('/login', methods=['POST'])
 def check_login():
 	
-	user = db.session.query(models.User).filter(and_(models.User.uid == str(request.data.get('uid')), \
-						    models.User.password == str(request.data.get('password')))).one()
+	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid')))\
+					.filter(models.User.password == str(request.data.get('password'))).one()
 	print(user)
 	print(user.uid)
 	if not user:
