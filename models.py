@@ -82,6 +82,15 @@ class Members(db.Model):
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
 	admin = db.Column('admin', db.Boolean)
 	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
+	
+	
+	def serialize_self(member):
+		dictionary = {
+			'uid': member.uid,
+			'gid': member.gid,
+			'admin': member.admin
+		}
+		return dictionary
 
 class Events(db.Model):
 	__tablename__ = 'events'
@@ -96,6 +105,19 @@ class Events(db.Model):
 	__table_args__ = (db.PrimaryKeyConstraint(gid, eventid), \
 			  db.CheckConstraint(public_or_private in ('private', 'public')),
 			  {})
+	
+	def serialize_self(event):
+		dictionary = {
+			'gid': event.gid,
+			'eventid': event.uid,
+			'event_name': event.event_name,
+			'host': event.host,
+			'location': event.location,
+			'e_date': event.e_date,
+			'e_time': event.e_time,
+			'public_or_private': event.public_or_private
+		}
+		return dictionary
    
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
