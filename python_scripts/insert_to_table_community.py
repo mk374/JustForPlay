@@ -23,6 +23,7 @@ def connect_communities(comm):
         
         for key, value in comm.items():
             postgres_insert_query = "INSERT INTO Community (communityid, description) VALUES (\'{}\',\'{}\') ".format(str(key), str(value))
+
             cursor.execute(postgres_insert_query)
             connection.commit()
             count = cursor.rowcount
