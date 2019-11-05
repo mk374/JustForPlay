@@ -106,18 +106,18 @@ class Events(db.Model):
 			  db.CheckConstraint(public_or_private in ('private', 'public')),
 			  {})
 	
-	def serialize_self(event):
-		dictionary = {
-			'gid': event.gid,
-			'eventid': event.eventid,
-			'event_name': event.event_name,
-			'host': event.host,
-			'location': event.location,
-			'e_date': event.e_date,
-			'e_time': event.e_time,
-			'public_or_private': event.public_or_private
-		}
-		return dictionary
+# 	def serialize_self(event):
+# 		dictionary = {
+# 			'gid': event.gid,
+# 			'eventid': event.eventid,
+# 			'event_name': event.event_name,
+# 			'host': event.host,
+# 			'location': event.location,
+# 			'e_date': event.e_date,
+# 			'e_time': event.e_time,
+# 			'public_or_private': event.public_or_private
+# 		}
+# 		return dictionary
    
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
