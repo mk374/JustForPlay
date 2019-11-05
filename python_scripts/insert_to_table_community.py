@@ -8,7 +8,7 @@ def get_communities():
     
     for i, row in df_communities.iterrows():
         community_id = str(row[0])
-        description = str(row[1])
+        description = str(row[1]).replace("'", "/'")
 
         communities[community_id] = description
 
