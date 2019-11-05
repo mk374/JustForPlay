@@ -27,8 +27,8 @@ class User(db.Model):
 		return list_dict_groups
 	
 	#make it jsonifiable
-	def serialize(gid, group_name, communityid, subid, zip_code, public_or_private, description):
-		print(gid, group_name)
+	def serialize(_gid, _group_name, _communityid, _subid, _zip_code, _public_or_private, _description):
+		return _gid
 # 		dictionary = {
 # 			'gid': group.gid,
 # 			'group_name': group.group_name,
@@ -37,9 +37,9 @@ class User(db.Model):
 # 			'public_or_private': group.public_or_private,
 # 			'description': group.description
 # 		}
-		dictionary = {'gid': gid}
-		print(dictionary)
-		return dictionary
+# 		dictionary = {'gid': gid}
+# 		print(dictionary)
+# 		return dictionary
 		
 			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
