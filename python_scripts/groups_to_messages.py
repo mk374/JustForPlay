@@ -139,10 +139,10 @@ def populate_all_tables():
             num = random.choice(range(len(members_dict[gid])))
             for i in range(num+1):
                 mid = random.choice(members_dict[gid])
-                attending.append([eid,mid])
+                attending.append((eid,mid))
         attending = list(set(attending)) #get rid of duplicates
 
-        for item in events:
+        for item in attending:
             postgres_insert_query = "INSERT INTO Attending VALUES (\'{}\',\'{}\')".format(item[0],\
                 item[1])
             cursor.execute(postgres_insert_query)
