@@ -175,22 +175,22 @@ def populate_all_tables():
 
         print ("Record inserted successfully into Attending table for answered requests")
         
-        unanswered_requests = []
-        #generate some unanswered requests
-        for i in range(100):
-            uid = random.choice(users)[0]
-            gid = random.choice(groups)[0]
-            if (uid not in members_dict[gid]) and ((uid,gid,gid+uid, False) not in requests):
-                convoid = gid + uid
-                unanswered_requests.append((uid,gid,convoid))
+        # unanswered_requests = []
+        # #generate some unanswered requests
+        # for i in range(100):
+        #     uid = random.choice(users)[0]
+        #     gid = random.choice(groups)[0]
+        #     if (uid not in members_dict[gid]) and ((uid,gid,gid+uid, False) not in requests):
+        #         convoid = gid + uid
+        #         unanswered_requests.append((uid,gid,convoid))
 
-        for item in unanswered_requests:
-            postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\')".format(item[0],\
-                item[1], item[2])
-            cursor.execute(postgres_insert_query)
-            connection.commit()
+        # for item in unanswered_requests:
+        #     postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\')".format(item[0],\
+        #         item[1], item[2])
+        #     cursor.execute(postgres_insert_query)
+        #     connection.commit()
 
-        print ("Record inserted successfully into Attending table for unanswered requests")
+        # print ("Record inserted successfully into Attending table for unanswered requests")
 
     except (Exception, psycopg2.Error) as error :
         if(connection):
