@@ -16,6 +16,16 @@ class User(db.Model):
 	bio = db.Column('bio', db.String(1024), primary_key=False, nullable=False)
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
+	
+	def serialize_self():
+		dictionary = {
+			'uid': uid,
+			'name': name,
+			'password': password,
+			'bio': bio,
+			'zip_code': zip_code
+		}
+		return dictionary
 	def get_groups(user_id):
 		groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
 				groups.zip_code, groups.public_or_private, groups.description\
@@ -36,20 +46,7 @@ class User(db.Model):
 					     g.public_or_private, g.description) for g in groups]
 		return list_dict_groups
 	
-	#make it jsonifiable
-# 	def serialize(_gid, _group_name, _communityid, _subid, _zip_code, _public_or_private, _description):
-# 		return _gid
-# 		dictionary = {
-# 			'gid': group.gid,
-# 			'group_name': group.group_name,
-# 			'communityid': group.communityid,
-# 			'subid': group.zip_code,
-# 			'public_or_private': group.public_or_private,
-# 			'description': group.description
-# 		}
-# 		dictionary = {'gid': gid}
-# 		print(dictionary)
-# 		return dictionary
+
 		
 			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
