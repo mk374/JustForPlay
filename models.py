@@ -21,7 +21,7 @@ class User(db.Model):
 				groups.zip_code, groups.public_or_private, groups.description\
 				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
 		print(groups)
-		list_dict_groups = [serialize(group) for group in groups]
+		list_dict_groups = [group.gid for group in groups]
 		print(list_dict_groups)
 		return list_dict_groups
 	
