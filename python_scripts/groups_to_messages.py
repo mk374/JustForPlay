@@ -150,6 +150,47 @@ def populate_all_tables():
 
         print ("Record inserted successfully into Attending table")
 
+        ### Requests ###
+        requests = []
+        # accepted ones means that the user joined the group
+        for g in members_dict.keys():
+            gid = g[0]
+            for u in members_dict[gid]:
+                uid = u[0]
+                convoid = gid + uid
+                requests.append((uid,gid,convoid, True))
+        # generate some false requests
+        for i in range(100):
+            uid = random.choice(users)[0]
+            gid = random.choice(groups)[0]
+            if uid not in members_dict[gid]:
+                convoid = gid + uid
+                requests.append((uid,gid,convoid, False))
+        
+        for item in requests:
+            postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\', {})".format(item[0],\
+                item[1], item[2], item[3])
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+
+        print ("Record inserted successfully into Attending table for answered requests")
+        
+        unanswered_requests = []
+        #generate some unanswered requests
+        for i in range(100):
+            uid = random.choice(users)[0]
+            gid = random.choice(groups)[0]
+            if (uid not in members_dict[gid]) and ((uid,gid,gid+uid, False) not in requests):
+                convoid = gid + uid
+                unanswered_requests.append((uid,gid,convoid))
+
+        for item in unanswered_requests:
+            postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\')".format(item[0],\
+                item[1], item[2])
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+
+        print ("Record inserted successfully into Attending table for unanswered requests")
 
     except (Exception, psycopg2.Error) as error :
         if(connection):
