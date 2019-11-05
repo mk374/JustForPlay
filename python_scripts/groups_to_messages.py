@@ -156,16 +156,15 @@ def populate_all_tables():
         for g in members_dict.keys():
             gid = g[0]
             for u in members_dict[gid]:
-                uid = u[0]
-                convoid = gid + uid
-                requests.append((uid,gid,convoid, True))
+                convoid = gid + u
+                requests.append((u,gid,convoid, True))
         # generate some false requests
-        ''''for i in range(100):
+        for i in range(100):
             uid = random.choice(users)[0]
             gid = random.choice(groups)[0]
             if uid not in members_dict[gid]:
                 convoid = gid + uid
-                requests.append((uid,gid,convoid, False))'''
+                requests.append((uid,gid,convoid, False))
         
         for item in requests:
             postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\', {})".format(item[0],\
