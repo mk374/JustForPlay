@@ -49,6 +49,7 @@ def return_group_all(gid):
 	try:
 
 		events = db.session.query(models.Events).filter(models.Events.gid == gid)
+		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except Exception as e:
 		print(e)
