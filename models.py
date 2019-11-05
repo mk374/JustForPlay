@@ -35,6 +35,7 @@ class User(db.Model):
 			'public_or_private': group.public_or_private,
 			'description': group.description
 		}
+		print(dictionary)
 		return dictionary
 		
 			
