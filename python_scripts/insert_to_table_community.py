@@ -1,19 +1,37 @@
 import psycopg2
 import pandas as pd
+from collections import defaultdict
 
-def bulkInsert(records):
+def get_communities():
+    df_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="Community", header=True)
+    communities = defaultdict(str)
+    
+    for i, row in df_communities.iterrows():
+        community_id = str(row[0])
+        description = str(row[1])
+
+        communities[community_id] = description
+
+    return communities
+
+
+
+def connect_communities(comm):
     try:
         connection = psycopg2.connect(dbname="justforplay")
         cursor = connection.cursor()
-        sql_insert_query = "INSERT INTO Community (communityid, description) VALUES (%s,%s)"
-
-        # executemany() to insert multiple rows rows
-        result = cursor.executemany(sql_insert_query, records)
-        connection.commit()
-        print(cursor.rowcount, "Record inserted successfully into mobile table")
+        
+        for key, value in comm.items():
+            postgres_insert_query = """ INSERT INTO Community (communityid, description) 
+                           VALUES ({},{}) """.format(key, value)
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+            count = cursor.rowcount
+            print(count, "Record inserted successfully into table")
 
     except (Exception, psycopg2.Error) as error:
-        print("Failed inserting record into mobile table {}".format(error))
+        if(connection):
+            print("Failed inserting record into mobile table {}".format(error))
 
     finally:
         # closing database connection.
@@ -21,10 +39,10 @@ def bulkInsert(records):
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
+
 def main():
-    df_community = pd.read_excel("../Sample Datasets.xlsx", sheet_name="Community", header=True)
-    records_to_insert = [(row[0],row[1]) for index, row in df_community.iterrows()]
-    bulkInsert(records_to_insert)
+    communities = get_communities()
+    connect_communities(communities)
 
 if __name__ == "__main__":
     main()
