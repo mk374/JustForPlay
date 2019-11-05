@@ -81,7 +81,7 @@ def populate_all_tables():
             u = random.choice(users)[0]
             g = random.choice(groups)[0]
             if (g in members_dict.keys() and u not in members_dict[g]) or (g not in members_dict.keys()):
-                adm = random.choice([None, True, None, False])
+                adm = random.choice([False, True, False, False])
                 members.append((u,g,adm))
                 if g in members_dict.keys():
                     members_dict[g].append(u)
