@@ -154,10 +154,9 @@ def populate_all_tables():
         requests = []
         # accepted ones means that the user joined the group
         for g in members_dict.keys():
-            gid = g[0]
             for u in members_dict[gid]:
-                convoid = gid + u
-                requests.append((u,gid,convoid, True))
+                convoid = g + u
+                requests.append((u,g,convoid, True))
         # generate some false requests
         for i in range(100):
             uid = random.choice(users)[0]
