@@ -34,7 +34,7 @@ def check_login():
 			return "no groups currently"
 		return json.dumps([user_info, dict_groups])
 	except:
-		return "Wrong Username and Password"
+		return None
 
 
 
