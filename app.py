@@ -18,7 +18,8 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 @app.route('/login', methods=['POST'])
 def check_login():
 	
-	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
+	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid')) and \
+						    models.User.password == str(request.data.get('password')).one()
 	
 	dict_groups = models.User.get_groups(user.uid)
 # 	print(dict_groups)
