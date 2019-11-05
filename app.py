@@ -17,22 +17,24 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 
 @app.route('/login', methods=['POST'])
 def check_login():
-	
-	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid')))\
-					.filter(models.User.password == str(request.data.get('password'))).one()
-	print(user)
-	print(user.uid)
-	if not user:
-		return "Wrong Password and Username"
-	dict_groups = models.User.get_groups(user.uid)
-# 	print(dict_groups)
+	try:
+		user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid')))\
+						.filter(models.User.password == str(request.data.get('password'))).one()
+		print(user)
+		print(user.uid)
+		if not user:
+			return "Wrong Password and Username"
+		dict_groups = models.User.get_groups(user.uid)
+	# 	print(dict_groups)
 
-	user_info = models.User.serialize_self(user)
-# 	print(user_info)
-	
-	if not dict_groups:
-		return "no groups currently"
-	return json.dumps([user_info, dict_groups])
+		user_info = models.User.serialize_self(user)
+	# 	print(user_info)
+
+		if not dict_groups:
+			return "no groups currently"
+		return json.dumps([user_info, dict_groups])
+	except:
+		return "Wrong Username and Password"
 
 
 
