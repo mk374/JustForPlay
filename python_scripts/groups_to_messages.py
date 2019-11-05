@@ -161,7 +161,7 @@ def populate_all_tables():
         for i in range(100):
             uid = random.choice(users)[0]
             gid = random.choice(groups)[0]
-            if uid not in members_dict[gid]:
+            if (uid not in members_dict[gid]) and ((uid,gid) not in [(a[0],a[1]) for a in requests]):
                 convoid = gid + uid
                 requests.append((uid,gid,convoid, False))
         
@@ -178,7 +178,7 @@ def populate_all_tables():
         # for i in range(100):
         #     uid = random.choice(users)[0]
         #     gid = random.choice(groups)[0]
-        #     if (uid not in members_dict[gid]) and ((uid,gid,gid+uid, False) not in requests):
+        #     if (uid not in members_dict[gid]) and ((uid,gid,gid+uid, False) not in requests) and ((uid,gid) not in [(a[0], a[1]) for a in unanswered_requests]):
         #         convoid = gid + uid
         #         unanswered_requests.append((uid,gid,convoid))
 
