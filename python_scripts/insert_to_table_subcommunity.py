@@ -2,7 +2,7 @@ import psycopg2
 import pandas as pd
 
 def get_sub_communities():
-    df_sub_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="SubCommunity", header=True)
+    df_sub_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="SubCommunity", header=[0])
     
     return df_sub_communities
 
