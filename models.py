@@ -83,9 +83,20 @@ class Members(db.Model):
 	admin = db.Column('admin', db.Boolean)
 	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
 
-
-    
-    
+class Events(db.Model):
+	__tablename__ = 'events'
+    	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
+	eventid = db.Column('eventid', db.String(256), nullable=False)
+	event_name = db.Column('event_name', db.String(512), nullable=False)
+	host = db.Column('host', db.String(256), nullable=False)
+	location = db.Column('location', db.String(256), nullable=False)
+	e_date = db.Column('e_date', db.Date, nullabe=False)
+	e_time = db.Column('e_time', db.DateTime, nullable=False)
+	public_or_private = db.Column('public_or_private', db.String(32))
+	__table_args__ = (db.PrimaryKeyConstraint(gid, eventid), \
+			  db.CheckConstraint(public_or_private in ('private', 'public')),
+			  {})
+   
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
 #     name = db.Column('name', db.String(20), primary_key=True)
