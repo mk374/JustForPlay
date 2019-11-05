@@ -99,7 +99,7 @@ class Events(db.Model):
 	event_name = db.Column('event_name', db.String(512), nullable=False)
 	host = db.Column('host', db.String(256), nullable=False)
 	location = db.Column('location', db.String(256), nullable=False)
-	e_date = db.Column('e_date', db.Date, nullabe=False)
+	e_date = db.Column('e_date', db.Date, nullable=False)
 	e_time = db.Column('e_time', db.DateTime, nullable=False)
 	public_or_private = db.Column('public_or_private', db.String(32))
 	__table_args__ = (db.PrimaryKeyConstraint(gid, eventid), \
