@@ -19,13 +19,15 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 def check_login():
 	
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
-	dict_groups = models.User.get_groups(user.uid)
 	
+	user_info = models.User.serialize_self()
+	dict_groups = models.User.get_groups(user.uid)
+	print(user_info)
 	print(dict_groups)
 	
 	if not dict_groups:
 		return "no groups currently"
-	return json.dumps(dict_groups)
+	return json.dumps([user_info, dict_groups])
 
 
 
