@@ -51,8 +51,8 @@ def return_group_all(gid):
 		events = db.session.query(models.Events).filter(models.Events.gid == gid)
 		print(events)
 # 		events_response = [models.Events.serialize_self(event) for event in events]
-	except Exception as e:
-		print(e)
+	except:
+		
 		events_response = ""
 		
 	return json.dumps([members_response, events_response])
