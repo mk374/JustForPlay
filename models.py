@@ -21,8 +21,16 @@ class User(db.Model):
 				groups.zip_code, groups.public_or_private, groups.description\
 				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
 		print(groups)
+		
 		def serialize(_gid, _group_name, _communityid, _subid, _zip_code, _public_or_private, _description):
-			return _gid
+			dictionary = {
+				'gid': _gid,
+				'group_name': _group_name,
+				'communityid': _communityid,
+				'subid': _zip_code,
+				'public_or_private': _public_or_private,
+				'description': _description
+			}
 		
 		list_dict_groups = [serialize(g.gid, g.group_name, g.communityid, g.subid, g.zip_code, \
 					     g.public_or_private, g.description) for g in groups]
