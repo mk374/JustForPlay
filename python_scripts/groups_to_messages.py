@@ -110,7 +110,7 @@ def populate_all_tables():
             #date
             year = 2019
             month = str(random.choice(range(1,13)))
-            day = str(random.choice(range(1,32)))
+            day = str(random.choice(range(1,29)))
             if len(day) == 1:
                 day = "0" + day
             if len(month) == 1:
