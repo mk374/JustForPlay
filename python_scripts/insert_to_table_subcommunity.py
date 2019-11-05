@@ -12,8 +12,7 @@ def connect_communities(subcomm):
         cursor = connection.cursor()
         
         for index, row in subcomm.itterows():
-            postgres_insert_query = """ INSERT INTO Community (communityid, subcommunityid, description) 
-                           VALUES ({},{}) """.format(str(row[0]), str(row[1]), str(row[2]))
+            postgres_insert_query = """ INSERT INTO Community (communityid, subcommunityid, description) VALUES ({},{}) """.format(str(row[0]), str(row[1]), str(row[2]))
             cursor.execute(postgres_insert_query)
             connection.commit()
             count = cursor.rowcount

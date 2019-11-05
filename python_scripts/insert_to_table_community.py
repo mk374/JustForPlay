@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 
 def get_communities():
-    df_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="Community", header=True)
+    df_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="Community", header=[0])
     communities = defaultdict(str)
     
     for i, row in df_communities.iterrows():
