@@ -50,7 +50,7 @@ def return_group_all(gid):
 		print("how you doing")
 		events = db.session.query(models.Events).filter(models.Events.gid == gid)
 		print(events)
-# 		events_response = [models.Events.serialize_self(event) for event in events]
+		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
 		
 		events_response = ""
