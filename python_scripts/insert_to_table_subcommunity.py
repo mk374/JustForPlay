@@ -1,20 +1,27 @@
 import psycopg2
 import pandas as pd
 
-def bulkInsert(records):
-    try:
-        connection = psycopg2.connect(dbname="postgres_db")
-        cursor = connection.cursor()
-        sql_insert_query = """ INSERT INTO SubCommunity (communityid, subid, sub_description) 
-                           VALUES (%s,%s, %s) """
+def get_sub_communities():
+    df_sub_communities = pd.read_excel("../Sample_Datasets.xlsx",sheet_name="SubCommunity", header=True)
+    
+    return df_sub_communities
 
-        # executemany() to insert multiple rows rows
-        result = cursor.executemany(sql_insert_query, records)
-        connection.commit()
-        print(cursor.rowcount, "Record inserted successfully into mobile table")
+def connect_communities(subcomm):
+    try:
+        connection = psycopg2.connect(dbname="justforplay")
+        cursor = connection.cursor()
+        
+        for index, row in subcomm.itterows():
+            postgres_insert_query = """ INSERT INTO Community (communityid, subcommunityid, description) 
+                           VALUES ({},{}) """.format(str(row[0]), str(row[1]), str(row[2]))
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+            count = cursor.rowcount
+            print(count, "Record inserted successfully into table")
 
     except (Exception, psycopg2.Error) as error:
-        print("Failed inserting record into mobile table {}".format(error))
+        if(connection):
+            print("Failed inserting record into mobile table {}".format(error))
 
     finally:
         # closing database connection.
@@ -23,6 +30,9 @@ def bulkInsert(records):
             connection.close()
             print("PostgreSQL connection is closed")
 
-df_community = pd.read_excel("../Sample Datasets.xlsx", sheet_name="SubCommunity", header=True)
-records_to_insert = [(row[0],row[1],row[2]) for index, row in df_community.iterrows()]
-bulkInsert(records_to_insert)
+def main():
+    sub_communities = get_sub_communities()
+    connect_communities(sub_communities)
+
+if __name__ == "__main__":
+    main()
