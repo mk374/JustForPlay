@@ -11,7 +11,7 @@ def connect_communities(subcomm):
         connection = psycopg2.connect(dbname="justforplay")
         cursor = connection.cursor()
         
-        for index, row in subcomm.itterows():
+        for index, row in subcomm.iterrows():
             postgres_insert_query = " INSERT INTO Community (communityid, subcommunityid, description) VALUES (\'{}\',\'{}\', \'{}\') ".format(str(row[0].replace("'", "\'")), str(row[1]).replace("'", "\'"), str(row[2]).replace("'", "\'"))
             cursor.execute(postgres_insert_query)
             connection.commit()
