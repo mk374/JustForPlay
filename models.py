@@ -28,6 +28,7 @@ class User(db.Model):
 	
 	#make it jsonifiable
 	def serialize(gid, group_name, communityid, subid, zip_code, public_or_private, description):
+		print(gid, group_name)
 # 		dictionary = {
 # 			'gid': group.gid,
 # 			'group_name': group.group_name,
