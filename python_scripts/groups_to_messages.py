@@ -74,6 +74,29 @@ def populate_all_tables():
 
         print ("Record inserted successfully into Groups table")
 
+        ## Members ###
+        members_dict = {}
+        members = []
+        for i in range(2000):
+            u = random.choice(users)[0]
+            g = random.choice(groups)[0]
+            if (g in members_dict.keys() and u not in members_dict[g]) or (g not in members_dict.keys()):
+                adm = random.choice([None, True, None, False])
+                members.append((u,g,adm))
+                if g in members_dict.keys():
+                    members_dict[g].append(u)
+                else:
+                    members_dict[g] = [u]
+        
+        for item in members:
+            postgres_insert_query = "INSERT INTO Members VALUES (\'{}\',\'{}\',{})".format(item[0],\
+                    item[1], item[2])
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+                
+        print ("Record inserted successfully into Members table")
+
+
     except (Exception, psycopg2.Error) as error :
         if(connection):
             print("Failed to insert record into mobile table", error)
