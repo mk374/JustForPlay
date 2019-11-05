@@ -19,18 +19,14 @@ db = SQLAlchemy(app, session_options={'autocommit': False})
 def check_login():
 	
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
-
 	dict_groups = models.User.get_groups(user.uid)
-	print(dict_groups)
-
-
 	
-
+	print(dict_groups)
+	
 	if not dict_groups:
 		return "no groups currently"
-
-
 	return json.dumps(dict_groups)
+
 
 
 # @app.route('/drinker/<name>')
