@@ -21,11 +21,10 @@ def check_login():
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
 	
 	dict_groups = models.User.get_groups(user.uid)
-	print(dict_groups)
+# 	print(dict_groups)
 
 	user_info = models.User.serialize_self(user)
-
-	print(user_info)
+# 	print(user_info)
 	
 	if not dict_groups:
 		return "no groups currently"
