@@ -23,7 +23,7 @@ def check_login():
 	dict_groups = models.User.get_groups(user.uid)
 	print(dict_groups)
 
-	user_info = models.User.serialize_self()
+	user_info = models.User.serialize_self(user)
 
 	print(user_info)
 	
