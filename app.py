@@ -47,12 +47,12 @@ def return_group_all(gid):
 		members_response = ""
 		
 	try:
-
+		print("how you doing")
 		events = db.session.query(models.Events).filter(models.Events.gid == gid)
 		print(events)
-		events_response = [models.Events.serialize_self(event) for event in events]
-	except Exception as e:
-		print(e)
+# 		events_response = [models.Events.serialize_self(event) for event in events]
+	except:
+		
 		events_response = ""
 		
 	return json.dumps([members_response, events_response])
