@@ -27,14 +27,15 @@ class User(db.Model):
 	
 	#make it jsonifiable
 	def serialize(group):
-		dictionary = {
-			'gid': group.gid,
-			'group_name': group.group_name,
-			'communityid': group.communityid,
-			'subid': group.zip_code,
-			'public_or_private': group.public_or_private,
-			'description': group.description
-		}
+# 		dictionary = {
+# 			'gid': group.gid,
+# 			'group_name': group.group_name,
+# 			'communityid': group.communityid,
+# 			'subid': group.zip_code,
+# 			'public_or_private': group.public_or_private,
+# 			'description': group.description
+# 		}
+		dictionary = {'gid': group.gid}
 		print(dictionary)
 		return dictionary
 		
