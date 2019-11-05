@@ -94,7 +94,7 @@ class Members(db.Model):
 
 class Events(db.Model):
 	__tablename__ = 'events'
-    	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
+	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
 	eventid = db.Column('eventid', db.String(256), nullable=False)
 	event_name = db.Column('event_name', db.String(512), nullable=False)
 	host = db.Column('host', db.String(256), nullable=False)
