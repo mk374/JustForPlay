@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_api import FlaskAPI
 import models
 import forms
+import json
 
 app = FlaskAPI(__name__)
 app.secret_key = 's3cr3t'
@@ -19,18 +20,17 @@ def check_login():
 	
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid'))).one()
 
-	groups = models.User.get_groups(user.uid)
+	dict_groups = models.User.get_groups(user.uid)
 
 
 
-	list_of_groups = [group for group in groups]
 	
 
-	if not list_of_groups:
+	if not dict_groups:
 		return "no groups currently"
 
 
-	return list_of_groups
+	return json.dumps(dict_groups)
 
 
 # @app.route('/drinker/<name>')
