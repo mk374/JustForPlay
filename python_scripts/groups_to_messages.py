@@ -86,7 +86,7 @@ def populate_all_tables():
             print("PostgreSQL connection is closed")
 
 def main():
-    populate_ruser()
+    populate_all_tables()
 
 if __name__ == "__main__":
-    populate_ruser()
+    populate_all_tables()
