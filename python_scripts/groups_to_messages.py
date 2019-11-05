@@ -62,7 +62,7 @@ def populate_all_tables():
             guid = str(i) + gname
             pub_or_priv = random.choice(['public', 'private'])
             gzipcode = random.choice(zips)
-            description = "We like to", comm_id
+            description = "We like to" + comm_id
             temp = (guid, gname, comm_id, sub_id, gzipcode, pub_or_priv, description)
             groups.append(temp)
 
