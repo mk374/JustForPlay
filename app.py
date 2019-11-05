@@ -20,7 +20,8 @@ def check_login():
 	
 	user = db.session.query(models.User).filter(models.User.uid == str(request.data.get('uid')) and \
 						    models.User.password == str(request.data.get('password'))).one()
-	
+	if not user:
+		return "Wrong Password and Username"
 	dict_groups = models.User.get_groups(user.uid)
 # 	print(dict_groups)
 
