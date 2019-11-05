@@ -42,14 +42,20 @@ def return_group_all(gid):
 	#returns everything related to a specific group
 	try:
 		members = db.session.query(models.Members).filter(models.Members.gid == gid)
-		members_response = [serialize(member) for member in members]
+		members_response = [models.Members.serialize_self(member) for member in members]
 	except:
 		members_response = ""
 		
 	try:
+
 		events = db.session.query(models.Events).filter(models.Events.gid == gid)
-	except:
+		print(events)
+		events_response = [models.Events.serialize_self(event) for event in events]
+	except Exception as e:
+		print(e)
 		events_response = ""
+		
+	return json.dumps([members_response, events_response])
 	
 
 # @app.route('/drinker/<name>')

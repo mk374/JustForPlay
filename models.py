@@ -82,10 +82,43 @@ class Members(db.Model):
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
 	admin = db.Column('admin', db.Boolean)
 	__table_args__ = (db.PrimaryKeyConstraint(uid, gid), {})
+	
+	
+	def serialize_self(member):
+		dictionary = {
+			'uid': member.uid,
+			'gid': member.gid,
+			'admin': member.admin
+		}
+		return dictionary
 
-
-    
-    
+class Events(db.Model):
+	__tablename__ = 'events'
+	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
+	eventid = db.Column('eventid', db.String(256), nullable=False)
+	event_name = db.Column('event_name', db.String(512), nullable=False)
+	host = db.Column('host', db.String(256), nullable=False)
+	location = db.Column('location', db.String(256), nullable=False)
+	e_date = db.Column('e_date', db.Date, nullable=False)
+	e_time = db.Column('e_time', db.DateTime, nullable=False)
+	public_or_private = db.Column('public_or_private', db.String(32))
+	__table_args__ = (db.PrimaryKeyConstraint(gid, eventid), \
+			  db.CheckConstraint(public_or_private in ('private', 'public')),
+			  {})
+	
+	def serialize_self(event):
+		dictionary = {
+			'gid': event.gid,
+			'eventid': event.eventid,
+			'event_name': event.event_name,
+			'host': event.host,
+			'location': event.location,
+			'e_date': event.e_date,
+			'e_time': event.e_time,
+			'public_or_private': event.public_or_private
+		}
+		return dictionary
+   
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
 #     name = db.Column('name', db.String(20), primary_key=True)
