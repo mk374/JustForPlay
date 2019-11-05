@@ -1,6 +1,11 @@
 import psycopg2
 import random
 
+"""
+This script populates the database with randomly-generated data for the tables Groups, Members, Events, Attending, and Requests.
+Before running this script, populate the Zip, Community, SubCommunity tables with the other scripts.
+"""
+
 def populate_all_tables():
     try:
         connection = psycopg2.connect(dbname = "justforplay")
