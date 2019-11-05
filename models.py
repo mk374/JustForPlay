@@ -109,7 +109,7 @@ class Events(db.Model):
 	def serialize_self(event):
 		dictionary = {
 			'gid': event.gid,
-			'eventid': event.uid,
+			'eventid': event.eventid,
 			'event_name': event.event_name,
 			'host': event.host,
 			'location': event.location,
