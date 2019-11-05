@@ -62,7 +62,7 @@ def populate_all_tables():
             guid = str(i) + gname
             pub_or_priv = random.choice(['public', 'private'])
             gzipcode = random.choice(zips)
-            description = "We like to " + comm_id
+            description = "We like " + comm_id
             temp = (guid, gname, comm_id, sub_id, gzipcode, pub_or_priv, description)
             groups.append(temp)
 
@@ -95,6 +95,41 @@ def populate_all_tables():
             connection.commit()
                 
         print ("Record inserted successfully into Members table")
+
+        ### Events ###
+        events = []
+        for i in range(100):
+            g = random.choice(groups)
+            gid = g[0]
+            cid = g[2]
+            pub_or_priv = random.choice(['public', 'private'])
+            eid = str(i)
+            ename = str(cid) + " party!"
+            h = random.choice(members_dict[gid])
+            location = random.choice(["coffee shop", "underneath the bed", "in WU", "house of " + h, "basketball courts", "gym", "Eno River", "Jordan Lake"])
+            #date
+            year = 2019
+            month = str(random.choice(range(1,13)))
+            day = str(random.choice(range(1,32)))
+            if len(day) == 1:
+                day = "0" + day
+            if len(month) == 1:
+                month = "0" + month
+            edt = str(year) + "-" + month + "-" + day
+            #time
+            hr = str(random.choice(range(1, 25)))
+            if len(hr) == 1:
+                hr = "0" + hr
+            etm = hr + ":00:00"
+            events.append((gid,eid,ename,h,location,edt, etm, pub_or_priv))
+    
+        for item in events:
+            postgres_insert_query = "INSERT INTO Events VALUES (\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\')".format(item[0],\
+                item[1], item[2], item[3], item[4], item[5], item[6], item[7])
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+
+        print ("Record inserted successfully into Events table")
 
 
     except (Exception, psycopg2.Error) as error :
