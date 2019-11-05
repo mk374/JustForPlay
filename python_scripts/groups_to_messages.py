@@ -131,6 +131,25 @@ def populate_all_tables():
 
         print ("Record inserted successfully into Events table")
 
+        ### Attending ###
+        attending = []
+        for e in events:
+            eid = e[1]
+            gid = e[0]
+            num = random.choice(range(len(members_dict[gid])))
+            for i in range(num+1):
+                mid = random.choice(members_dict[gid])
+                attending.append([eid,mid])
+        attending = list(set(attending)) #get rid of duplicates
+
+        for item in events:
+            postgres_insert_query = "INSERT INTO Attending VALUES (\'{}\',\'{}\')".format(item[0],\
+                item[1])
+            cursor.execute(postgres_insert_query)
+            connection.commit()
+
+        print ("Record inserted successfully into Attending table")
+
 
     except (Exception, psycopg2.Error) as error :
         if(connection):
