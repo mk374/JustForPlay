@@ -55,8 +55,8 @@ def connect_zip(zipcodes):
 
 #calling the zipcodes file and adding them to the postgresql database
 def main():
-    zipcodes = zipcodes()
-    connect_zip(zipcodes)
+    zpcodes = zipcodes()
+    connect_zip(zpcodes)
     
     
 if __name__ == "__main__":
