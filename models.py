@@ -20,14 +20,20 @@ class User(db.Model):
 		groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
 				groups.zip_code, groups.public_or_private, groups.description\
 				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
-		print([group.gid for group in groups])
-		return groups
+		list_dict_groups = [serialize(group) for group in groups]
+		return list_dict_groups
 	
 	#make it jsonifiable
-# 	def serialize(groups):
-# 		dictionary = {
-# 			"gid": groups
-# 		}
+	def serialize(group):
+		dictionary = {
+			'gid': group.gid,
+			'group_name': group.group_name,
+			'communityid': group.communityid,
+			'subid': group.zip_code,
+			'public_or_private': group.public_or_private,
+			'description': group.description
+		}
+		return dictionary
 		
 			
     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
