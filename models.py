@@ -17,13 +17,13 @@ class User(db.Model):
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False,) 
 
 	
-	def serialize_self():
+	def serialize_self(user):
 		dictionary = {
-			'uid': uid,
-			'name': name,
-			'password': password,
-			'bio': bio,
-			'zip_code': zip_code
+			'uid': user.uid,
+			'name': user.name,
+			'password': user.password,
+			'bio': user.bio,
+			'zip_code': user.zip_code
 		}
 		return dictionary
 	def get_groups(user_id):
