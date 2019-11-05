@@ -31,6 +31,7 @@ class User(db.Model):
 				'public_or_private': _public_or_private,
 				'description': _description
 			}
+			return dictionary
 		
 		list_dict_groups = [serialize(g.gid, g.group_name, g.communityid, g.subid, g.zip_code, \
 					     g.public_or_private, g.description) for g in groups]
