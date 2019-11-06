@@ -21,4 +21,4 @@ where communityid = 'Nightlife' and
 and groups.public_or_private = 'public';
 
 --example for selecting communities (when the user searches for music)
-select * from community where communityid = 'Music';
+select * from community where communityid = 'Foodies';
