@@ -1,0 +1,18 @@
+Andy
+- worked on connecting front and back ends
+- created the login page and website foundations
+Min
+- worked on connecting front and back ends
+- created python scripts to generate random data
+Tommy
+- compiled all information
+- tested database and sql queries
+Ben
+- created python scripts to generate random data
+- updated insert statements
+Sammy
+- created python scripts to generate random data
+- wrote README for how to run the database
+Abby
+- compiled all information
+- tested database and sql queries
