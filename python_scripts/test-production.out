@@ -1,0 +1,68 @@
+
+--example, selecting all the groups that Marge7 is a member of; 1 represents an email that will change
+--depending on the user logged in
+select Groups.gid, group_name, description from groups, members where 'Marge7' = Members.uid and Members.gid = Groups.gid;
+     gid     | group_name |   description   
+-------------+------------+-----------------
+ 38Foodies38 | Foodies38  | We like Foodies
+(1 row)
+
+
+--example, selecting all the messages from the group ordered by time
+select txt from messages where '16Animals16' = gid order by m_date, m_time asc;
+ txt 
+-----
+(0 rows)
+
+
+--example selecting all events for a given group
+select * from events where '65Nightlife65' = gid;
+      gid      | eventid |    event_name    |   host    |      location      |   e_date   |  e_time  | public_or_private 
+---------------+---------+------------------+-----------+--------------------+------------+----------+-------------------
+ 65Nightlife65 | 12      | Nightlife party! | Monica46  | gym                | 2019-11-07 | 23:00:00 | private
+ 65Nightlife65 | 15      | Nightlife party! | Phoebe180 | gym                | 2019-03-01 | 20:00:00 | private
+ 65Nightlife65 | 16      | Nightlife party! | Bart451   | house of Bart451   | 2019-10-17 | 24:00:00 | private
+ 65Nightlife65 | 82      | Nightlife party! | Joey381   | underneath the bed | 2019-12-18 | 20:00:00 | private
+(4 rows)
+
+
+--selecting all members in a given group
+select * from members where '69Crafts69' = gid;
+     uid     |    gid     | admin 
+-------------+------------+-------
+ Maggie418   | 69Crafts69 | t
+ Sammy586    | 69Crafts69 | t
+ Lisa168     | 69Crafts69 | f
+ Bart257     | 69Crafts69 | f
+ Sammy503    | 69Crafts69 | f
+ Phoebe506   | 69Crafts69 | f
+ Minsoo328   | 69Crafts69 | t
+ Joey285     | 69Crafts69 | f
+ Chandler398 | 69Crafts69 | t
+ Minsoo862   | 69Crafts69 | f
+ Monica514   | 69Crafts69 | f
+(11 rows)
+
+
+--example query for displaying groups within a given distance
+select gid, group_name, Zip.zip_code, description
+from groups, (select latitude, longitude from Zip where 27708 = zip_code) as C, Zip
+where communityid = 'Nightlife' and
+ (2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2
++ cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 0.01
+and groups.public_or_private = 'public';
+      gid      | group_name  | zip_code |    description    
+---------------+-------------+----------+-------------------
+ 10Nightlife10 | Nightlife10 |    27708 | We like Nightlife
+ 18Nightlife18 | Nightlife18 |    27708 | We like Nightlife
+ 90Nightlife90 | Nightlife90 |    27708 | We like Nightlife
+(3 rows)
+
+
+--example for selecting communities (when the user searches for movies and theater)
+select * from community where communityid = 'Movies and Theatre';
+    communityid     |          description           
+--------------------+--------------------------------
+ Movies and Theatre | Grab a date for opening night!
+(1 row)
+
