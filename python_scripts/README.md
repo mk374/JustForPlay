@@ -2,7 +2,7 @@
 
 To populate the justforplay database, issue the following command-line prompts
 once in your VM and in the python_scripts folder of the JustForPlay repository:
-    * dropdb justforplay
+    * dropdb justforplay 
     * createdb justforplay
     * psql justforplay -af ../justforplay.sql
     * python zip.py (note: this command takes a few minutes to run)
