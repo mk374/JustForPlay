@@ -3,7 +3,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Login from './Login';
 import Register from './Register';
-import AppContext from '../AppContext';
 
 class Start extends Component {
   constructor(props){

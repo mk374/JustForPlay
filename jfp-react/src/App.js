@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import React from 'react';
 
 import './App.css';
 import Start from './Start/Start'
-import AppProvider from './AppProvider';
 import HomePage from './Home/HomePage';
 
 const START_PAGE = 0;
@@ -11,29 +9,23 @@ const USER_HOME_PAGE = 1;
 
 
 class App extends React.Component {
+
   constructor(props){
     super(props);
     this.state={
       page: START_PAGE,
       groups: []
-      // loginPage:[],
-      // uploadScreen:[]
     }
   }
-  // componentWillMount(){
-  //   var loginPage =[];
-  //   loginPage.push(<Start key={this} parentContext={this}/>);
-  //   this.setState({
-  //       loginPage: loginPage
-  //   })
-  // }
 
   changeScreenState = () => {
     // keep it between 1 and 0
-    var p = USER_HOME_PAGE
+    var currState = this.state.page;
     this.setState({
-      page: p
+      page: currState === START_PAGE ? USER_HOME_PAGE : START_PAGE
     })
+
+    console.log("STATE HATH BEEN CHANGETH:" + this.state.page);
   }
 
   updateGroups = groups => {
@@ -70,11 +62,9 @@ class App extends React.Component {
     }
     return (
       
-      // <AppProvider values={{groups, updateGroups}}>
         <div className="App">
           {childpage}
         </div>
-      // </AppProvider>
       );
   }
 }
