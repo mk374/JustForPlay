@@ -1,8 +1,10 @@
 import React from 'react';
 
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Start from './Start/Start'
 import HomePage from './Home/HomePage';
+
 
 const START_PAGE = 0;
 const USER_HOME_PAGE = 1;
@@ -14,7 +16,8 @@ class App extends React.Component {
     super(props);
     this.state={
       page: START_PAGE,
-      groups: []
+      groups: [],
+      user: []
     }
   }
 
@@ -24,30 +27,31 @@ class App extends React.Component {
     this.setState({
       page: currState === START_PAGE ? USER_HOME_PAGE : START_PAGE
     })
-
-    console.log("STATE HATH BEEN CHANGETH:" + this.state.page);
+    console.log("CURRENT STATE:" + this.state.page);
   }
 
-  updateGroups = groups => {
+  updateGroups = (groups) => {
     this.setState({
       groups : groups
     })
-    console.log("GROUPS AFTER UPDATES:");
     console.log(this.state.groups);
   }
 
+  updateUser = (user) => {
+    this.setState({
+      user : user
+    })
+    console.log(this.state.user);
+  }
+
   render() {
-    // pass the updateGroups function
-    // var {updateGroups} = this
-    // pass the actual groups
-    // var groups = this.groups
     
     var childpage;
 
     switch(this.state.page) {
           case START_PAGE:
             childpage = (
-              <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups}></Start>
+              <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups} updateUser={this.updateUser}></Start>
             )
             break;
           case USER_HOME_PAGE:

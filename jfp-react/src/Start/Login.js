@@ -42,12 +42,8 @@ class Login extends React.Component {
                 // array at index 1 is array of group dictionaries
                 let userGroups = result[1];
                 
-                console.log(userGroups);
-                console.log(userInfo);
-                
-                // self.setState({userInfo : userInfo, groups: userGroups})
-
                 // update groups in main App page
+                self.props.updateUser(userInfo);
                 self.props.updateGroups(userGroups);
                 self.props.onLogin();
             }
