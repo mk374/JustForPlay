@@ -1,4 +1,4 @@
-import React, {Component, useContext} from 'react';
+import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -19,27 +19,21 @@ class Login extends React.Component {
         super(props);
         this.state={
             username:'',
-            password:''
+            password:'',
         }
     }
 
-     handleClick = (e) =>{
+     handleClick = async(e) =>{
         e.preventDefault();
         // to change in the future for custom routing
-        var apiBaseUrl = "http://35.239.108.248:5000/";
+        var apiBaseUrl = "http://35.202.227.79:5000/";
         var self = this;
         let userinfo={
             uid : this.state.username,
             password : this.state.password
         }
-        // post it to the backend
+        // post it to the backends
         axios.post(apiBaseUrl+'login', userinfo).then(function (response) {
-            
-            // status & data check
-            // console.log(response.status);
-            // console.log(response.data);
-
-
             if(response.status === 200){
                 // let's parse through the returned data
                 let result = JSON.parse(response.request.response);
@@ -47,13 +41,11 @@ class Login extends React.Component {
                 let userInfo = result[0];
                 // array at index 1 is array of group dictionaries
                 let userGroups = result[1];
-                console.log(userGroups);
-                self.setState({userInfo : userInfo, groups: userGroups})
-
+                
                 // update groups in main App page
-                // self.props.updateGroups(userGroups);
-
-                // self.props.onLogin();
+                self.props.updateUser(userInfo);
+                self.props.updateGroups(userGroups);
+                self.props.onLogin();
             }
             else if(response.status === 204){
                 console.log("Username password do not match");
@@ -78,13 +70,13 @@ class Login extends React.Component {
                             <TextField
                             hintText="Enter your Username"
                             floatingLabelText="Username"
-                            onChange = {(event, newValue) => this.setState({username:newValue})}/>
+                            onChange = {(e, newValue) => this.setState({username:newValue})}/>
                             <br/>
                             <TextField
                             type="password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
-                            onChange = {(event, newValue) => this.setState({password:newValue})}/>
+                            onChange = {(e, newValue) => this.setState({password:newValue})}/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick}/>
                         </div>

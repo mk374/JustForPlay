@@ -1,61 +1,57 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import React from 'react';
 
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Start from './Start/Start'
-import AppProvider from './AppProvider';
 import HomePage from './Home/HomePage';
+
 
 const START_PAGE = 0;
 const USER_HOME_PAGE = 1;
 
 
 class App extends React.Component {
+
   constructor(props){
     super(props);
     this.state={
       page: START_PAGE,
-      groups: []
-      // loginPage:[],
-      // uploadScreen:[]
+      groups: [],
+      user: []
     }
   }
-  // componentWillMount(){
-  //   var loginPage =[];
-  //   loginPage.push(<Start key={this} parentContext={this}/>);
-  //   this.setState({
-  //       loginPage: loginPage
-  //   })
-  // }
 
   changeScreenState = () => {
     // keep it between 1 and 0
-    var p = USER_HOME_PAGE
+    var currState = this.state.page;
     this.setState({
-      page: p
+      page: currState === START_PAGE ? USER_HOME_PAGE : START_PAGE
     })
+    console.log("CURRENT STATE:" + this.state.page);
   }
 
-  updateGroups = groups => {
+  updateGroups = (groups) => {
     this.setState({
       groups : groups
     })
-    console.log("GROUPS AFTER UPDATES:");
     console.log(this.state.groups);
   }
 
+  updateUser = (user) => {
+    this.setState({
+      user : user
+    })
+    console.log(this.state.user);
+  }
+
   render() {
-    // pass the updateGroups function
-    // var {updateGroups} = this
-    // pass the actual groups
-    // var groups = this.groups
     
     var childpage;
 
     switch(this.state.page) {
           case START_PAGE:
             childpage = (
-              <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups}></Start>
+              <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups} updateUser={this.updateUser}></Start>
             )
             break;
           case USER_HOME_PAGE:
@@ -70,11 +66,9 @@ class App extends React.Component {
     }
     return (
       
-      // <AppProvider values={{groups, updateGroups}}>
         <div className="App">
           {childpage}
         </div>
-      // </AppProvider>
       );
   }
 }
