@@ -91,7 +91,18 @@ class Members(db.Model):
 			'admin': member.admin
 		}
 		return dictionary
-
+	
+	
+	def insert(fuid, fgid, fadmin=None):
+		try:
+			print("inserting")
+			db.session.execute("INSERT INTO Members VALUES (:uid, :gid, :admin)", {uid=fuid, gid=fgid, admin=fadmin})
+			print("1")
+			db.session.commit()
+			print("sucessful")
+		except Exception as e:
+			db.session.rollback()
+			raise e
 class Events(db.Model):
 	__tablename__ = 'events'
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
