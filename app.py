@@ -67,6 +67,7 @@ def insert_new_member():
 		db.session.add(new_member)
 		db.session.commit()
 		print ("successful")
+		return "Successful"
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
