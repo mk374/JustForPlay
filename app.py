@@ -82,12 +82,24 @@ def insert_new_event():
 
 	print("why isn't anything working")
 	fgid = request.data.get('gid')
+	print(1)
 	feventid = request.date.get('eventid')
+	print(2)
 	fevent_name = request.data.get('event_name')
+	print(3)
+	
 	fhost = request.data.get('host')
+	print(4)
+
 	flocation = request.data.get('location')
+	print(5)
+
 	fe_date = request.date.get('e_date')
+	print(6)
+
 	fe_time = request.data.get('e_time')
+	print(7)
+
 	fpublic_or_private = request.data.get('public_or_private')
 	print("check1")
 	date_time_str = fe_date + " " + fe_time
