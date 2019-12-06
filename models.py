@@ -140,8 +140,8 @@ class Events(db.Model):
 				'e_time': e_time,
 				'public_or_private': public_or_private
 			}
-			db.session.execute('INSERT INTO Events VALUES (:gid, :eventid, :event_name, :host, :location, :e_date, :e_time, :public_or_private),\
-				dictionary)
+			db.session.execute('INSERT INTO Events VALUES (:gid, :eventid, :event_name, :host, :location, :e_date, :e_time, :public_or_private)', \
+					   dictionary)
 			db.session.commit()
 			print("sucessful")
 		except Exception as e:
