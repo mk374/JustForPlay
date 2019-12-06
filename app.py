@@ -68,7 +68,7 @@ def insert_new_member():
 	print(fuid, fgid)
 	try:
 		print('begin')
-		db.Members.insert(fuid, gfid, fadmin)
+		models.Members.insert(fuid, gfid, fadmin)
 		return "Successful", 202
 	except:
 		return "NO MEMBER OR NO GROUP", 204
