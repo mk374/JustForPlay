@@ -97,17 +97,17 @@ def insert_new_event():
 	fe_date = request.date.get('e_date')
 	fe_time = request.data.get('e_time')
 	fpublic_or_private = request.data.get('public_or_private')
-	
+	print("check1")
 	date_time_str = fe_date + " " + fe_time
 # 	date_time_str = '2018-06-29 08:15:27.243860'
 	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
-
+	print("check2")
 # 	print('Date:', date_time_obj.date())
 	fe_date = data_time_obj.date()
 	fe_time = data_time_obj.time()
 # 	print('Time:', date_time_obj.time())
 # 	print('Date-time:', date_time_obj)
-	
+	print("check3")
 	try:
 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
