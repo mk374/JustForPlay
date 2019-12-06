@@ -113,8 +113,9 @@ class Events(db.Model):
 			'event_name': event.event_name,
 			'host': event.host,
 			'location': event.location,
-# 			'e_date': event.e_date,
-# 			'e_time': event.e_time,
+			'e_date': 
+			'e_date': event.e_date,
+			'e_time': event.e_time,
 			'public_or_private': event.public_or_private
 		}
 		return dictionary
