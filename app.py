@@ -64,15 +64,18 @@ def insert_new_member():
 	fgid = request.data.get('gid')
 	print(fuid, fgid)
 	try:
+		print('1')
 		new_member = models.Member(uid = fuid, gid = fgid)
+		print('2')
 		db.session.add(new_member)
+		print('3')
 		db.session.commit()
 		print ("successful")
 		return "Successful"
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
-
+	return "godfad", 204
 
 # @app.route('/drinker/<name>')
 # def drinker(name):
