@@ -62,16 +62,14 @@ def insert_new_member():
 	#say that he gives me uid and gid and if he is an admin or not? ok dope
 	fuid = request.data.get('uid')
 	fgid = request.data.get('gid')
+	fadmin = request.data.get('admin')
+	if not fadmin:
+		fadmin = None
 	print(fuid, fgid)
 	try:
-		print('1')
-		new_member = models.Member(uid = fuid, gid = fgid)
-		print('2')
-		db.session.add(new_member)
-		print('3')
-		db.session.commit()
-		print ("successful")
-		return "Successful"
+		print('begin')
+		db.Members.insert(fuid, gfid, fadmin)
+		return "Successful", 202
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
