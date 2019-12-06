@@ -4,6 +4,8 @@ from flask_api import FlaskAPI
 import models
 import forms
 import json
+import datetime
+
 
 app = FlaskAPI(__name__)
 app.secret_key = 's3cr3t'
@@ -37,7 +39,7 @@ def check_login():
 		return "", 204
 
 
-@app.route('/groups/<gid>', methods=['GET', 'POST'])
+@app.route('/get-groups', methods=['POST'])
 def return_group_meta(gid):
 	#returns everything related to a specific group
 	try:
@@ -57,7 +59,7 @@ def return_group_meta(gid):
 		
 	return json.dumps([members_response, events_response])
 	
-@app.route('/groups/add_member', methods=['POST'])
+@app.route('/add-member', methods=['POST'])
 def insert_new_member():
 	#say that he gives me uid and gid and if he is an admin or not? ok dope
 	fuid = request.data.get('uid')
@@ -74,6 +76,48 @@ def insert_new_member():
 		return "NO MEMBER OR NO GROUP", 204
 	
 	return "godfad", 204
+
+@app.route('/add-events', methods=['POST'])
+def insert_new_event():
+# 	dictionary = {
+# 			'gid': event.gid,
+# 			'eventid': event.eventid,
+# 			'event_name': event.event_name,
+# 			'host': event.host,
+# 			'location': event.location,
+# 			'e_date': event.e_date,
+# 			'e_time': event.e_time,
+# 			'public_or_private': event.public_or_private
+# 		}
+	fgid = request.data.get('gid')
+	feventid = request.date.get('eventid')
+	fevent_name = request.data.get('event_name')
+	fhost = request.data.get('host')
+	flocation = request.data.get('location')
+	fe_date = request.date.get('e_date')
+	fe_time = request.data.get('e_time')
+	fpublic_or_private = request.data.get('public_or_private')
+	
+	date_time_str = fe_date
+# 	date_time_str = '2018-06-29 08:15:27.243860'
+	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
+
+# 	print('Date:', date_time_obj.date())
+	fe_date = data_time_obj.date()
+	fe_time = data_time_obj.time()
+# 	print('Time:', date_time_obj.time())
+# 	print('Date-time:', date_time_obj)
+	
+	try:
+		print('begin')
+		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
+		return "Successful", 202
+	except:
+		return "NO MEMBER OR NO GROUP", 204
+	
+	return "godfad", 204
+
+	
 
 # @app.route('/drinker/<name>')
 # def drinker(name):
