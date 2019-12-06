@@ -96,7 +96,7 @@ class Members(db.Model):
 	def insert(fuid, fgid, fadmin=None):
 		try:
 			print("inserting")
-			db.session.execute("INSERT INTO Members VALUES (:uid, :gid, :admin)", {uid=fuid, gid=fgid, admin=fadmin})
+			db.session.execute("INSERT INTO Members VALUES (:uid, :gid, :admin)", {uid:fuid, gid:fgid, admin:fadmin})
 			print("1")
 			db.session.commit()
 			print("sucessful")
