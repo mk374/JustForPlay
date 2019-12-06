@@ -38,7 +38,7 @@ def check_login():
 
 
 @app.route('/groups/<gid>', methods=['GET', 'POST'])
-def return_group_all(gid):
+def return_group_meta(gid):
 	#returns everything related to a specific group
 	try:
 		members = db.session.query(models.Members).filter(models.Members.gid == gid)
@@ -57,6 +57,20 @@ def return_group_all(gid):
 		
 	return json.dumps([members_response, events_response])
 	
+@app.route('/groups/add_member', methods=['POST'])
+def insert_new_member():
+	#say that he gives me uid and gid and if he is an admin or not? ok dope
+	fuid = request.data.get('uid')
+	fgid = request.data.get('gid')
+	try:
+		new_member = models.Member(uid = fuid, gid = fgid)
+		db.session.add(new_member)
+		db.session.commit()
+		print ("successful")
+	except:
+		return "NO MEMBER OR NO GROUP", 204
+	
+
 
 # @app.route('/drinker/<name>')
 # def drinker(name):
