@@ -62,6 +62,7 @@ def insert_new_member():
 	#say that he gives me uid and gid and if he is an admin or not? ok dope
 	fuid = request.data.get('uid')
 	fgid = request.data.get('gid')
+	print(fuid, fgid)
 	try:
 		new_member = models.Member(uid = fuid, gid = fgid)
 		db.session.add(new_member)
