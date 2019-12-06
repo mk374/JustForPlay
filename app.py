@@ -64,7 +64,7 @@ def insert_new_member():
 	fgid = request.data.get('gid')
 	fadmin = request.data.get('admin')
 	if not fadmin:
-		fadmin = None
+		fadmin = False
 	print(fuid, fgid)
 	try:
 		print('begin')
