@@ -79,16 +79,8 @@ def insert_new_member():
 
 @app.route('/add-events', methods=['POST'])
 def insert_new_event():
-# 	dictionary = {
-# 			'gid': event.gid,
-# 			'eventid': event.eventid,
-# 			'event_name': event.event_name,
-# 			'host': event.host,
-# 			'location': event.location,
-# 			'e_date': event.e_date,
-# 			'e_time': event.e_time,
-# 			'public_or_private': event.public_or_private
-# 		}
+
+	print("why isn't anything working)
 	fgid = request.data.get('gid')
 	feventid = request.date.get('eventid')
 	fevent_name = request.data.get('event_name')
