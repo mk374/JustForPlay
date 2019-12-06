@@ -95,9 +95,7 @@ class Members(db.Model):
 	
 	def insert(fuid, fgid, fadmin=None):
 		try:
-			print("inserting")
 			db.session.execute('INSERT INTO Members VALUES (:uid, :gid, :admin)', dict(uid=fuid, gid=fgid, admin=fadmin))
-			print("1")
 			db.session.commit()
 			print("sucessful")
 		except Exception as e:
@@ -129,6 +127,26 @@ class Events(db.Model):
 			'public_or_private': event.public_or_private
 		}
 		return dictionary
+	
+	def insert(gid, eventid, event_name, host, location, e_date, e_time, public_or_private):
+		try:
+			dictionary = {
+				'gid': gid,
+				'eventid': eventid,
+				'event_name': event_name,
+				'host': host,
+				'location': location,
+				'e_date': e_date,
+				'e_time': e_time,
+				'public_or_private': public_or_private
+			}
+			db.session.execute('INSERT INTO Events VALUES (:gid, :eventid, :event_name, :host, :location, :e_date, :e_time, :public_or_private),\
+				dictionary)
+			db.session.commit()
+			print("sucessful")
+		except Exception as e:
+			db.session.rollback()
+			raise e
    
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
