@@ -94,7 +94,7 @@ def insert_new_event():
 	flocation = request.data.get('location')
 	print(5)
 
-	fe_date = request.date.get('e_date')
+	fe_date = request.data.get('e_date')
 	print(6)
 
 	fe_time = request.data.get('e_time')
