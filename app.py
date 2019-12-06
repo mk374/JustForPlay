@@ -98,7 +98,7 @@ def insert_new_event():
 	fe_time = request.data.get('e_time')
 	fpublic_or_private = request.data.get('public_or_private')
 	
-	date_time_str = fe_date
+	date_time_str = fe_date + " " + fe_time
 # 	date_time_str = '2018-06-29 08:15:27.243860'
 	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
 
