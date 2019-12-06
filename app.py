@@ -80,7 +80,7 @@ def insert_new_member():
 @app.route('/add-events', methods=['POST'])
 def insert_new_event():
 
-	print("why isn't anything working)
+	print("why isn't anything working")
 	fgid = request.data.get('gid')
 	feventid = request.date.get('eventid')
 	fevent_name = request.data.get('event_name')
