@@ -43,6 +43,7 @@ def check_login():
 
 @app.route('/get-groups', methods=['OPTIONS', 'POST'])
 def return_group_meta():
+	response.headers.add('Access-Control-Allow-Origin', '*')
 	#returns everything related to a specific group
 	try:
 		members = db.session.query(models.Members).filter(models.Members.gid == request.data.get('gid'))
