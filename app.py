@@ -41,7 +41,7 @@ def check_login():
 		return "", 204
 
 
-@app.route('/get-groups', methods=['POST'])
+@app.route('/get-groups', methods=['OPTIONS', 'POST'])
 def return_group_meta():
 	#returns everything related to a specific group
 	try:
