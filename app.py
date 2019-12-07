@@ -8,6 +8,7 @@ import datetime
 
 
 app = FlaskAPI(__name__)
+CORS(app)
 app.secret_key = 's3cr3t'
 app.config.from_object('config')
 db = SQLAlchemy(app, session_options={'autocommit': False})
