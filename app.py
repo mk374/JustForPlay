@@ -41,18 +41,18 @@ def check_login():
 
 
 @app.route('/get-groups', methods=['POST'])
-def return_group_meta(gid):
+def return_group_meta():
 	#returns everything related to a specific group
 	try:
-		members = db.session.query(models.Members).filter(models.Members.gid == gid)
+		members = db.session.query(models.Members).filter(models.Members.gid == request.data.get('gid'))
 		members_response = [models.Members.serialize_self(member) for member in members]
 	except:
 		members_response = ""
 		
 	try:
 # 		print("how you doing")
-		events = db.session.query(models.Events).filter(models.Events.gid == gid)
-# 		print(events)
+		events = db.session.query(models.Events).filter(models.Events.gid == request.data.get('gid'))
+		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
 		
