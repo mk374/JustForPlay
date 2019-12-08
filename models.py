@@ -72,7 +72,7 @@ class Groups(db.Model):
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False)
 	public_or_private = db.Column('public_or_private', db.String(32))
 	description = db.Column('description', db.String(1024))
-	__table_args__ = (db.PrimaryKeyConstraint(gid, communityid), \
+	__table_args__ = (db.PrimaryKeyConstraint(gid), \
 			  db.CheckConstraint(public_or_private in ('private', 'public')),
 			  {})
 
