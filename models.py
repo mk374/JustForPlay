@@ -50,26 +50,25 @@ class User(db.Model):
 
 		
 			
-    #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
-class Community(db.Model):
-	__tablename__ = 'community'
-	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
-	description = db.Column('description', db.String(1000), nullable=False)
+#     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
+# class Community(db.Model):
+# 	__tablename__ = 'community'
+# 	communityid = db.Column('communityid', db.String(256), primary_key=True, nullable=False)
+# 	description = db.Column('description', db.String(1000), nullable=False)
 	
-class SubCommunity(db.Model):
-	__tablename__ = 'subcommunity'
-	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
-	subid = db.Column('subid', db.String(256))
-	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
-	__table_args__ = (db.PrimaryKeyConstraint(communityid, subid), {})
+# class SubCommunity(db.Model):
+# 	__tablename__ = 'subcommunity'
+# 	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
+# 	subid = db.Column('subid', db.String(256))
+# 	sub_description = db.Column('sub_description', db.String(1000), nullable=False)
+# 	__table_args__ = (db.PrimaryKeyConstraint(communityid, subid), {})
 	
 	
 class Groups(db.Model):
 	__tablename__ = 'groups'
 	gid = db.Column('gid', db.String(256), nullable=False)
 	group_name = db.Column('group_name', db.String(256), nullable=False)
-	communityid = db.Column('communityid', db.String(256), db.ForeignKey('community.communityid'), nullable=False)
-	subid = db.Column('subid', db.String(256), db.ForeignKey('subCommunity.subid'))
+	community = db.Column('communityid', db.String(256))
 	zip_code = db.Column('zip_code', db.SmallInteger, db.ForeignKey('zip.zip_code'), nullable=False)
 	public_or_private = db.Column('public_or_private', db.String(32))
 	description = db.Column('description', db.String(1024))
