@@ -30,7 +30,7 @@ def populate_all_tables():
 
         for index, item in groups.iterrows():
                 postgres_insert_query = "INSERT INTO Groups VALUES (\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\')".format(item[0],\
-                    item[1], item[2], item[3], item[4], item[5], item[6])
+                    item[1], item[2], item[3], item[4], item[5])
                 cursor.execute(postgres_insert_query)
                 connection.commit()
 
@@ -69,16 +69,16 @@ def populate_all_tables():
 
         print ("Record inserted successfully into Attending table")
 
-        ### Requests ###
-        requests = pd.read_excel(file_path, sheet_name="Requests")
+#         ### Requests ###
+#         requests = pd.read_excel(file_path, sheet_name="Requests")
         
-        for index, item in requests.iterrows():
-            postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\', {})".format(item[0],\
-                item[1], item[2], item[3])
-            cursor.execute(postgres_insert_query)
-            connection.commit()
+#         for index, item in requests.iterrows():
+#             postgres_insert_query = "INSERT INTO Requests VALUES (\'{}\',\'{}\',\'{}\', {})".format(item[0],\
+#                 item[1], item[2], item[3])
+#             cursor.execute(postgres_insert_query)
+#             connection.commit()
 
-        print ("Record inserted successfully into Attending table for answered requests")
+#         print ("Record inserted successfully into Attending table for answered requests")
         
         # unanswered_requests = []
         # #generate some unanswered requests
