@@ -127,6 +127,7 @@ def insert_new_event():
 @app.route('/add-group', methods=['POST'])
 def insert_new_group():
 	fuid = request.data.get('uid')
+	fadmin = request.data.get('admin')
 	
 	gid = ''.join(choice(ascii_uppercase) for i in range(5))
 	group_name = request.data.get('group_name')
@@ -138,6 +139,8 @@ def insert_new_group():
 	
 	try:
 		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
+		models.Members.insert(fuid, gid, fadmin)
+		
 		return "Successful Insertion into Group Table", 202
 	except:
 		return "WRONG INPUT", 204
