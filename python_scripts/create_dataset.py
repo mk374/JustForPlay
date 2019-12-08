@@ -52,16 +52,15 @@ community_dict = {'Music': ['Playing together'],
 group_names = list(community_dict.keys())
 grps = []
 for i in range(100):
-    comm_id = random.choice(group_names)
-    sub_id = random.choice(community_dict[comm_id])
+    comm = random.choice(group_names)
     gname = comm_id + str(i)
     guid = str(i) + gname
     pub_or_priv = random.choice(['public', 'private'])
     gzipcode = random.choice(zips)
     description = "We like " + comm_id
-    temp = (guid, gname, comm_id, sub_id, gzipcode, pub_or_priv, description)
+    temp = (guid, gname, comm, gzipcode, pub_or_priv, description)
     grps.append(temp)
-groups = pd.DataFrame(data=grps, columns=["guid", "gname","comm_id", "sub_id", "gzipcode", "pub_or_priv", "description"])
+groups = pd.DataFrame(data=grps, columns=["guid", "gname","comm", "gzipcode", "pub_or_priv", "description"])
 
 # Members
 members_dict = {}
@@ -118,21 +117,21 @@ for e in evnts:
 attend = list(set(attend)) #get rid of duplicates
 attending = pd.DataFrame(data=attend, columns=["eventid", "uid"])
 
-# Requests
-req = []
-# accepted ones means that the user joined the group
-for g in members_dict.keys():
-    for u in members_dict[gid]:
-        convoid = g + u
-        req.append((u,g,convoid, True))
-# generate some false requests
-for i in range(100):
-    uid = random.choice(usrs)[0]
-    gid = random.choice(grps)[0]
-    if (uid not in members_dict[gid]) and ((uid,gid) not in [(a[0],a[1]) for a in req]):
-        convoid = gid + uid
-        req.append((uid,gid,convoid, False))
-requests = pd.DataFrame(data=req, columns= ["uid", "gid", "conversationid", "accepted"])
+# # Requests
+# req = []
+# # accepted ones means that the user joined the group
+# for g in members_dict.keys():
+#     for u in members_dict[gid]:
+#         convoid = g + u
+#         req.append((u,g,convoid, True))
+# # generate some false requests
+# for i in range(100):
+#     uid = random.choice(usrs)[0]
+#     gid = random.choice(grps)[0]
+#     if (uid not in members_dict[gid]) and ((uid,gid) not in [(a[0],a[1]) for a in req]):
+#         convoid = gid + uid
+#         req.append((uid,gid,convoid, False))
+# requests = pd.DataFrame(data=req, columns= ["uid", "gid", "conversationid", "accepted"])
 
 ###########################
 ## Writing to Excel File ##
@@ -143,5 +142,4 @@ with pd.ExcelWriter("Static_Sample_Data.xlsx") as writer:
     members.to_excel(writer, sheet_name="Members", header=True, index=False)
     events.to_excel(writer, sheet_name="Events", header=True, index=False)
     attending.to_excel(writer, sheet_name="Attending", header=True, index=False)
-    requests.to_excel(writer, sheet_name="Requests", header=True, index=False)
     writer.save()
