@@ -1,14 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Start from './Start/Start'
 import HomePage from './Home/HomePage';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
 
+import {withStyles} from '@material-ui/styles';
 
 const START_PAGE = 0;
 const USER_HOME_PAGE = 1;
 
+const styles = theme => ({
+  card: {
+    minWidth: 300,
+    maxWidth: 500
+  }
+});
 
 class App extends React.Component {
 
@@ -17,7 +28,7 @@ class App extends React.Component {
     this.state={
       page: START_PAGE,
       groups: [],
-      user: []
+      user: {}
     }
   }
 
@@ -27,36 +38,49 @@ class App extends React.Component {
     this.setState({
       page: currState === START_PAGE ? USER_HOME_PAGE : START_PAGE
     })
-    console.log("CURRENT STATE:" + this.state.page);
   }
 
   updateGroups = (groups) => {
     this.setState({
       groups : groups
     })
-    console.log(this.state.groups);
   }
 
   updateUser = (user) => {
     this.setState({
       user : user
     })
-    console.log(this.state.user);
   }
 
   render() {
     
     var childpage;
+    const { classes } = this.props;
 
     switch(this.state.page) {
           case START_PAGE:
             childpage = (
-              <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups} updateUser={this.updateUser}></Start>
+              <Grid
+                  container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ minHeight: '100vh' }}
+              >
+                <Grid item xs={3}>
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups} updateUser={this.updateUser}></Start>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
             )
             break;
           case USER_HOME_PAGE:
             childpage = (
-              <HomePage onLogout={this.changeScreenState} groups={this.state.groups}></HomePage>
+              <HomePage user={this.state.user} onLogout={this.changeScreenState} groups={this.state.groups}></HomePage>
             )
             break;
           default:
@@ -72,4 +96,9 @@ class App extends React.Component {
       );
   }
 }
-export default App;
+
+HomePage.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);
