@@ -75,7 +75,7 @@ def insert_new_member():
 	try:
 		print('begin')
 		models.Members.insert(fuid, fgid, fadmin)
-		return "Successful", 202
+		return "Successful", 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -119,7 +119,7 @@ def insert_new_event():
 	try:
 # 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
-		return "Successful", 202
+		return "Successful", 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -141,7 +141,7 @@ def insert_new_group():
 		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
 		models.Members.insert(fuid, gid, fadmin)
 		
-		return "Successful Insertion into Group Table", 202
+		return "Successful Insertion into Group Table", 200
 	except:
 		return "WRONG INPUT", 204
 	
