@@ -6,7 +6,8 @@ import models
 import forms
 import json
 import datetime
-
+from random import choice
+from string import ascii_uppercase
 
 app = FlaskAPI(__name__)
 CORS(app)
@@ -83,47 +84,63 @@ def insert_new_member():
 @app.route('/add-event', methods=['POST'])
 def insert_new_event():
 
-	print("why isn't anything working")
+# 	print("why isn't anything working")
 	fgid = request.data.get('gid')
-	print(1)
+# 	print(1) /
 	feventid = request.data.get('eventid')
-	print(2)
+# 	print(2)
 	fevent_name = request.data.get('event_name')
-	print(3)
+# 	print(3)
 	
 	fhost = request.data.get('host')
-	print(4)
+# 	print(4)
 
 	flocation = request.data.get('location')
-	print(5)
+# 	print(5)
 
 	fe_date = request.data.get('e_date')
-	print(6)
+# 	print(6)
 
 	fe_time = request.data.get('e_time')
-	print(7)
+# 	print(7)
 
 	fpublic_or_private = request.data.get('public_or_private')
-	print("check1")
+# 	print("check1")
 	date_time_str = fe_date + " " + fe_time
 # 	date_time_str = '2018-06-29 08:15:27.243860'
 	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
-	print("check2")
+# 	print("check2")
 # 	print('Date:', date_time_obj.date())
 	fe_date = date_time_obj.date()
 	fe_time = date_time_obj.time()
 # 	print('Time:', date_time_obj.time())
 # 	print('Date-time:', date_time_obj)
-	print("check3")
+# 	print("check3")
 	try:
-		print('begin')
+# 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
 		return "Successful", 202
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
 	return "godfad", 204
-
+@app.route('/add-group', methods=['POST'])
+def insert_new_group():
+	fuid = request.data.get('uid')
+	
+	gid = ''.join(choice(ascii_uppercase) for i in range(5))
+	group_name = request.data.get('group_name')
+	community = request.data.get('community')
+	zip_code = request.data.get('zip_code')
+	public_or_private = request.data.get('public_or_private')
+	description = request.data.get('description')
+	
+	
+	try:
+		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
+		return "Successful Insertion into Group Table", 202
+	except:
+		return "WRONG INPUT", 204
 	
 
 # @app.route('/drinker/<name>')
