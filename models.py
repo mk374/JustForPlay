@@ -124,7 +124,7 @@ class Events(db.Model):
 			'host': event.host,
 			'location': event.location,
 			'e_date': event.e_date.strftime("%Y-%m-%d"),
-			'e_time': event.e_time.strftime("%H:%M:%S"),
+			'e_time': event.e_time.strftime("%H:%M"),
 			'public_or_private': event.public_or_private
 		}
 		return dictionary
