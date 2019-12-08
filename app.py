@@ -87,7 +87,7 @@ def insert_new_event():
 # 	print("why isn't anything working")
 	fgid = request.data.get('gid')
 # 	print(1) /
-	feventid = request.data.get('eventid')
+	feventid = ''.join(choice(ascii_uppercase) for i in range(5))
 # 	print(2)
 	fevent_name = request.data.get('event_name')
 # 	print(3)
