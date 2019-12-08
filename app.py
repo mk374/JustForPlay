@@ -80,7 +80,7 @@ def insert_new_member():
 	
 	return "godfad", 204
 
-@app.route('/add-events', methods=['POST'])
+@app.route('/add-event', methods=['POST'])
 def insert_new_event():
 
 	print("why isn't anything working")
@@ -107,7 +107,7 @@ def insert_new_event():
 	print("check1")
 	date_time_str = fe_date + " " + fe_time
 # 	date_time_str = '2018-06-29 08:15:27.243860'
-	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
+	date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
 	print("check2")
 # 	print('Date:', date_time_obj.date())
 	fe_date = date_time_obj.date()
