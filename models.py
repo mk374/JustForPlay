@@ -28,22 +28,22 @@ class User(db.Model):
 		}
 		return dictionary
 	def get_groups(user_id):
-		groups = db.session.execute('select groups.gid, groups.group_name, groups.communityid, groups.subid, \
+		groups = db.session.execute('select groups.gid, groups.group_name, groups.community, \
 				groups.zip_code, groups.public_or_private, groups.description\
 				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
 		
-		def serialize(_gid, _group_name, _communityid, _subid, _zip_code, _public_or_private, _description):
+		def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
 			dictionary = {
 				'gid': _gid,
 				'group_name': _group_name,
-				'communityid': _communityid,
-				'subid': _zip_code,
+				'community': _community,
+				'zip_code': _zip_code,
 				'public_or_private': _public_or_private,
 				'description': _description
 			}
 			return dictionary
 		
-		list_dict_groups = [serialize(g.gid, g.group_name, g.communityid, g.subid, g.zip_code, \
+		list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
 					     g.public_or_private, g.description) for g in groups]
 		return list_dict_groups
 	
