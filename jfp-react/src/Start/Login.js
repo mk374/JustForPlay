@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import  MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -48,11 +48,9 @@ class Login extends React.Component {
                 self.props.onLogin();
             }
             else if(response.status === 204){
-                console.log("Username password do not match");
                 alert("Username password do not match");
             }
             else{
-                console.log("Username does not exists");
                 alert("Username does not exist");
             }
         })
@@ -63,28 +61,30 @@ class Login extends React.Component {
     // rendering of the login page
     render() {
         return (
-                <div>
-                    <MuiThemeProvider>
-                        <div>
+            <div>
+                <MuiThemeProvider>
+                    <div>
                         <AppBar title="Login"/>
                             <TextField
+                            variant="outlined"
                             hintText="Enter your Username"
                             floatingLabelText="Username"
                             onChange = {(e, newValue) => this.setState({username:newValue})}/>
                             <br/>
                             <TextField
+                            variant="outlined"
                             type="password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
                             onChange = {(e, newValue) => this.setState({password:newValue})}/>
                             <br/>
                             <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick}/>
-                        </div>
-                    </MuiThemeProvider>
-                </div>
-             );
-        }
+                    </div>
+                </MuiThemeProvider>
+            </div>
+        );
     }
+}
 
 // export
 export default Login;

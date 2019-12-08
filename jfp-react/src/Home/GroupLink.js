@@ -1,17 +1,45 @@
 import React from 'react';
-import { BrowserRouter as Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import WebFont from 'webfontloader'
 
-
+WebFont.load({
+    google: {
+      families: ['Titillium Web:300,400,700', 'sans-serif']
+    }
+});
 
 class GroupLink extends React.Component{
-    handleClick = () => {
-        this.props.onHeaderClick();
+    constructor(props){
+        super(props);
+        this.state={
+          id: this.props.group.gid,
+          name: this.props.group.group_name,
+          community_id: this.props.group.communityid,
+          description: this.props.group.description,
+          public_private: this.props.group.public_or_private,
+        }
+      }
+    handleClick = (e) => {
+        this.props.onClick(e, this.state.id, this.state.name, this.state.community_id, this.state.description, this.state.public_private);
     }
+
     render(){
         return(
             <div>
-                <Button variant="link" onClick={this.handleClick}>{this.props.name}</Button>
+                <style type="text/css">
+                    {`
+                    .btn-link {
+                        color: black;
+                        font-size: 50px;
+                        font-weight: 200;
+
+                    }
+                    .btn-link:hover{
+                        color: #a9a9a9;
+                    }
+                    `}
+                </style>
+                <Button size="lg" variant="link" onClick={this.handleClick}>{this.state.name}</Button>
             </div>
         )
     }
