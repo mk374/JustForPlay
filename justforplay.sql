@@ -13,24 +13,23 @@ CREATE TABLE ruser (
    zip_code INTEGER NOT NULL REFERENCES Zip(zip_code)
 );
 
-CREATE TABLE Community (
-	communityid VARCHAR(256) NOT NULL PRIMARY KEY,
-	description VARCHAR(1000) NOT NULL
-);
+-- CREATE TABLE Community (
+-- 	communityid VARCHAR(256) NOT NULL PRIMARY KEY,
+-- 	description VARCHAR(1000) NOT NULL
+-- );
 
-CREATE TABLE SubCommunity (
-	communityid VARCHAR(256) NOT NULL,
-	subid VARCHAR(256) unique,
-	sub_description VARCHAR(1000) NOT NULL,
-	PRIMARY KEY (communityid, subid),
-	FOREIGN KEY (communityid) REFERENCES Community(communityid)
-);
+-- CREATE TABLE SubCommunity (
+-- 	communityid VARCHAR(256) NOT NULL,
+-- 	subid VARCHAR(256) unique,
+-- 	sub_description VARCHAR(1000) NOT NULL,
+-- 	PRIMARY KEY (communityid, subid),
+-- 	FOREIGN KEY (communityid) REFERENCES Community(communityid)
+-- );
 
 CREATE TABLE GROUPS (
    gid VARCHAR(256) NOT NULL UNIQUE,
    group_name VARCHAR(256) NOT NULL,
-   communityid VARCHAR(256) NOT NULL REFERENCES Community(communityid),
-   subid VARCHAR(256) REFERENCES subCommunity(subid),
+   community VARCHAR(256) NOT NULL,
    zip_code INTEGER NOT NULL REFERENCES Zip(zip_code),
    public_or_private VARCHAR(32) NOT NULL, CHECK (public_or_private in ('private', 'public')),
    description VARCHAR(1024) NOT NULL,
@@ -66,21 +65,3 @@ CREATE TABLE Attending (
 	FOREIGN KEY (uid) REFERENCES ruser(uid)
 );
 
-CREATE TABLE Requests (
-	uid VARCHAR(256) NOT NULL,
-	gid VARCHAR(256) NOT NULL,
-	conversationid VARCHAR(256) NOT NULL,
-  accepted BOOLEAN,
-  Primary key(gid,uid),
-	FOREIGN KEY (gid) REFERENCES Groups(gid),
-	FOREIGN KEY (uid) REFERENCES ruser(uid)
-);
-
-CREATE TABLE Messages (
-	conversationid VARCHAR(256) NOT NULL PRIMARY KEY,
-	gid VARCHAR(256) NOT NULL REFERENCES Groups(gid),
-	sender VARCHAR(256) NOT NULL REFERENCES ruser(uid),
-	txt VARCHAR(4096),
-  m_date date NOT NULL,
-	m_time time NOT NULL
-);
