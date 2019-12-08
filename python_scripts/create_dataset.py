@@ -53,11 +53,11 @@ group_names = list(community_dict.keys())
 grps = []
 for i in range(100):
     comm = random.choice(group_names)
-    gname = comm_id + str(i)
+    gname = comm + str(i)
     guid = str(i) + gname
     pub_or_priv = random.choice(['public', 'private'])
     gzipcode = random.choice(zips)
-    description = "We like " + comm_id
+    description = "We like " + comm
     temp = (guid, gname, comm, gzipcode, pub_or_priv, description)
     grps.append(temp)
 groups = pd.DataFrame(data=grps, columns=["guid", "gname","comm", "gzipcode", "pub_or_priv", "description"])
