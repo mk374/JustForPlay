@@ -1,9 +1,5 @@
 --populating sample zip_code
 
-insert into zip values(27708, 36.029, -78.924);
-insert into zip values(27705, 36.016, -78.959);
-insert into zip values(27707, 35.964, -78.936);
-
 -- populating sample users; number uids represent emails for now
 insert into ruser values('0', 'Animated Andy', 'password123', 'I talk a lot, and really fast', 27708);
 insert into ruser values('1', 'Ballistic Ben', 'password124', 'I am libertarian!', 27708);
