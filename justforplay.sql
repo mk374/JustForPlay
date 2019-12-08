@@ -33,7 +33,7 @@ CREATE TABLE GROUPS (
    zip_code INTEGER NOT NULL REFERENCES Zip(zip_code),
    public_or_private VARCHAR(32) NOT NULL, CHECK (public_or_private in ('private', 'public')),
    description VARCHAR(1024) NOT NULL,
-   PRIMARY KEY (gid, communityid)
+   PRIMARY KEY (gid)
 );
 
 CREATE TABLE MEMBERS (
