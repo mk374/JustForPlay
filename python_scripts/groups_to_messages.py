@@ -29,7 +29,7 @@ def populate_all_tables():
         groups = pd.read_excel(file_path, sheet_name="Groups")
 
         for index, item in groups.iterrows():
-                postgres_insert_query = "INSERT INTO Groups VALUES (\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\')".format(item[0],\
+                postgres_insert_query = "INSERT INTO Groups VALUES (\'{}\',\'{}\',\'{}\',\'{}\',\'{}\',\'{}\')".format(item[0],\
                     item[1], item[2], item[3], item[4], item[5])
                 cursor.execute(postgres_insert_query)
                 connection.commit()
