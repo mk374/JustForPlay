@@ -75,6 +75,24 @@ class Groups(db.Model):
 	__table_args__ = (db.PrimaryKeyConstraint(gid), \
 			  db.CheckConstraint(public_or_private in ('private', 'public')),
 			  {})
+	
+	def insert(fgid, fgroup_name, fcommunity, fzip_code, fpublic_or_private, fdescription):
+		try:
+			dictionary = {
+				'gid': fgid,
+				'group_name': fgroup_name,
+				'community': fcommunity,
+				'zip_code': fzip_code,
+				'public_or_private': fpublic_or_private,
+				'description': fdescription
+			}
+			db.session.execute('INSERT INTO Groups Values(:gid, :group_name, :community, :zip_code, :public_or_private, :description)', \
+					   dictionary)
+			db.session.commit()
+			
+		except Exception as e:
+			db.session.rollback()
+			raise e
 
 class Members(db.Model):
 	__tablename__ = 'members'
