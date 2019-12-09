@@ -234,6 +234,18 @@ class Attending(db.Model):
 			db.session.rollback()
 			raise e
 
+	def query(uid):
+		try:
+			dictionary = {
+				'uid': uid
+			}
+
+			YEET = db.session.execute('SELECT FROM Attending WHERE uid = :uid', dictionary)
+			print(YEET)
+			return YEET
+		except Exception as e:
+			db.session.rollback()
+			raise e
 		
 
 

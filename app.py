@@ -210,7 +210,7 @@ def del_member_attending():
 	except:
 		return "WRONG DELETION", 204
 
-	updated_events = db.session.query(models.Attending).filter(models.Attending.uid == fuid)
+	updated_events = models.Attending.query(fuid)
 	print("I HFAFSDFESfieshfpaeohgr gaeiu")
 	UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
 
