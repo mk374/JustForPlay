@@ -228,6 +228,8 @@ class Attending(db.Model):
 			db.session.rollback()
 			raise e
 
+		
+
 
 
    

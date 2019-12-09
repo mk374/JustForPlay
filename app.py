@@ -52,23 +52,27 @@ def return_group_meta():
 		members = db.session.query(models.Members).filter(models.Members.gid == fgid)
 		members_response = [models.Members.serialize_self(member) for member in members]
 	except:
-		members_response = ""
+		members_response = []
 		
 	try:
 # 		print("how you doing")
-		events = db.session.query(models.Events).filter(models.Events.gid == fgid)
+		events = db.session.query(models.Events).filter(models.Events.gid == fgid and models.Events.e_date < datetime.date.today())
 		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
-		
-		events_response = ""
+		events_response = []
 
-	# try:
+	attended_events = []
+	try:
+		for event in events_response:
+			if (db.session.query(models.Attending).\
+				filter(models.Attending.uid == fuid and models.Attending.eventid == event['eventid']).count() >= 1):
+				attended_events.append(event['eventid'])
 
 	# except:
 	# 	member_in_events = ""
 		
-	return json.dumps([members_response, events_response])
+	return json.dumps([members_response, events_response, attended_events])
 	
 @app.route('/add-member', methods=['POST'])
 def insert_new_member():
