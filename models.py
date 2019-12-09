@@ -238,7 +238,7 @@ class Attending(db.Model):
 
 
 			print("welp at least that worked")
-			UE = [event.uid for event in events]
+			UE = [event.eventid for event in events]
 			print(UE)
 			return UE
 		except Exception as e:
