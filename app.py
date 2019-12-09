@@ -68,6 +68,8 @@ def return_group_meta():
 			if (db.session.query(models.Attending).\
 				filter(models.Attending.uid == fuid and models.Attending.eventid == event['eventid']).count() >= 1):
 				attended_events.append(event['eventid'])
+	except:
+		attended_events = []
 
 	# except:
 	# 	member_in_events = ""
