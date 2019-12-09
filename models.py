@@ -48,7 +48,6 @@ class User(db.Model):
 			
 			list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
 							g.public_or_private, g.description) for g in groups]
-			print(list_dict_groups)
 			return list_dict_groups
 		except Exception as e:
 			print(e)

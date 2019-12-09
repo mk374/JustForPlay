@@ -35,8 +35,7 @@ def check_login():
 		user_info = models.User.serialize_self(user)
 	# 	print(user_info)
 
-		if not dict_groups:
-			return "no groups currently"
+	
 		return json.dumps([user_info, dict_groups])
 	except:
 		return "", 204
