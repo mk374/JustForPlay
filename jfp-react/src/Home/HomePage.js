@@ -8,6 +8,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Drawer from '@material-ui/core/Drawer';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import SyncIcon from '@material-ui/icons/Sync';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import Button from '@material-ui/core/Button';
@@ -129,6 +130,7 @@ class HomePage extends React.Component{
             group_events: [],
             group_attending_events: [],
             anchorEl: null,
+            userInGroup: false,
         }
     }
 
@@ -274,7 +276,9 @@ class HomePage extends React.Component{
     
     handleLeave = (e) => {
         e.preventDefault();
-  
+        
+        var self = this;
+
         var apiBaseUrl = "http://35.202.227.79:5000/";
         let userinfo = {
             gid: this.state.group_id,
@@ -289,7 +293,10 @@ class HomePage extends React.Component{
   
         axios.post(apiBaseUrl + "del-member", userinfo, config).then(function (response) {
           if (response.status === 200) {
-              // reset the form
+            let result = JSON.parse(response.request.response);
+            self.setState({
+                myGroups: result
+            })
             }
         })
         .catch(function (error) {
@@ -299,6 +306,8 @@ class HomePage extends React.Component{
     
     handleJoin = (e) => {
             e.preventDefault();
+
+            var self = this;
   
             var apiBaseUrl = "http://35.202.227.79:5000/";
             let userinfo = {
@@ -316,7 +325,10 @@ class HomePage extends React.Component{
             axios.post(apiBaseUrl + "add-member", userinfo, config).then(function (response) {
             if (response.status === 200) {
                 let result = JSON.parse(response.request.response);
-                // reset the form
+                self.setState({
+                    myGroups: result
+                })
+                console.log(self.state.myGroups);
             }
             }).catch(function (error) {
             console.log(error);
@@ -469,7 +481,9 @@ class HomePage extends React.Component{
                         &nbsp; JustForPlay!
                     </Typography>
                     <div className={classes.spacer} />
-                    <Button onClick={this.backToMyGroups} style={{marginRight:15}} className={classes.logout} color="inherit">My Groups</Button>
+                    <Button onClick={this.backToMyGroups} style={{marginRight:15}} className={classes.logout} color="inherit">
+                        <SyncIcon/> &nbsp; My Groups
+                    </Button>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                         <SearchIcon />
