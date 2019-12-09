@@ -236,14 +236,9 @@ class Attending(db.Model):
 
 			events = db.session.execute('SELECT FROM Attending WHERE uid = :uid', dictionary)
 
-			def serialize(attendance):
-				dictionary = {
-					'uid': attendance.uid,
-					'eventid': attendance.eventid
-				}
-				return dictionary['uid']
-			
-			UE = [serialize(event) for event in events]
+
+			print("welp at least that worked")
+			UE = [event.uid for event in events]
 			print(UE)
 			return UE
 		except Exception as e:
