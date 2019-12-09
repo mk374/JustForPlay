@@ -131,7 +131,7 @@ class Groups(db.Model):
 			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 """
 
 			
-			groups = db.session.execute(query, dictionary)
+			groups = db.session.execute(query, dic)
 			# print(len(groups))
 			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description)\
 				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community or dic['iden'] in group.description]
