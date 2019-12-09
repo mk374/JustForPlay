@@ -88,7 +88,6 @@ class Login extends React.Component {
                             <TextField
                             label="Username"
                             variant="outlined"
-                            hintText="Enter your Username"
                             onChange = {(e) => this.setState({username:e.target.value})}/>
                         </div>
                         <div>
@@ -96,7 +95,6 @@ class Login extends React.Component {
                             label="Password"
                             variant="outlined"
                             type="password"
-                            hintText="Enter your Password"
                             onChange = {(e, newValue) => this.setState({password: e.target.value})}/>
                         </div>
                             <Button className={classes.colors} label="Submit" primary={true} style={style} type="submit"> Login </Button>
