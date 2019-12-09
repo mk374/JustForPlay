@@ -158,11 +158,8 @@ class Members(db.Model):
 			'uid': uid,
 			'gid': gid
 		}
-		print(uid, gid)
 		try:
-			print('is this working?')
-			db.session.excute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
-			print("how about here")
+			db.session.execute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
 			db.sesion.commit()
 		except Exception as e:
 			print(e)
