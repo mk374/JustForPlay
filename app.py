@@ -87,11 +87,10 @@ def insert_new_member():
 	try:
 		print('begin')
 		models.Members.insert(fuid, fgid, fadmin)
-		new_members = models.Members.query(fuid, fgid)
-
+		new_groups = models.User.get_groups(fuid)
 		#all the groups that the member is part of
 
-		return new_members, 200
+		return new_groups, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
