@@ -28,26 +28,31 @@ class User(db.Model):
 		}
 		return dictionary
 	def get_groups(user_id):
-		query = """select groups.gid, groups.group_name, groups.community, 
-				groups.zip_code, groups.public_or_private, groups.description
-				from groups, members where groups.gid = members.gid and members.uid = :uid"""
-		
-		groups = db.session.execute(query, dict(uid=user_id))
-		
-		def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
-			dictionary = {
-				'gid': _gid,
-				'group_name': _group_name,
-				'community': _community,
-				'zip_code': _zip_code,
-				'public_or_private': _public_or_private,
-				'description': _description
-			}
-			return dictionary
-		
-		list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
-					     g.public_or_private, g.description) for g in groups]
-		return list_dict_groups
+		try:
+			query = """select groups.gid, groups.group_name, groups.community, 
+					groups.zip_code, groups.public_or_private, groups.description
+					from groups, members where groups.gid = members.gid and members.uid = :uid"""
+			
+			groups = db.session.execute(query, dict(uid=user_id))
+			
+			def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
+				dictionary = {
+					'gid': _gid,
+					'group_name': _group_name,
+					'community': _community,
+					'zip_code': _zip_code,
+					'public_or_private': _public_or_private,
+					'description': _description
+				}
+				return dictionary
+			
+			list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
+							g.public_or_private, g.description) for g in groups]
+			return list_dict_groups
+		except Exception as e:
+			print(e)
+			db.session.rollback()
+			raise e
 	
 	def insert(uid, name, password, bio, zip_code):
 		try:
