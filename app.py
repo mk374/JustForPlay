@@ -137,8 +137,12 @@ def insert_new_event():
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
 		models.Attending.insert(feventid, fuid)
 		updated_specific_member_events = models.Attending.query(fuid)
-		updated_events_all = models.Events.query(fgid)
-		return updated_events_all, updated_specific_member_events, 200
+		
+		events = db.session.query(models.Events).filter(models.Events.gid == fgid).filter(models.Events.e_date > datetime.date.today())
+		print(events)
+		events_response = [models.Events.serialize_self(event) for event in events]
+
+		return events_response, updated_specific_member_events, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
