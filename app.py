@@ -56,7 +56,7 @@ def return_group_meta():
 		
 	try:
 # 		print("how you doing")
-		events = db.session.query(models.Events).filter(models.Events.gid == fgid and models.Events.e_date < datetime.date.today())
+		events = db.session.query(models.Events).filter(models.Events.gid == fgid).filter(models.Events.e_date > datetime.date.today())
 		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
@@ -66,7 +66,7 @@ def return_group_meta():
 	try:
 		for event in events_response:
 			if (db.session.query(models.Attending).\
-				filter(models.Attending.uid == fuid and models.Attending.eventid == event['eventid']).count() >= 1):
+				filter(models.Attending.uid == fuid).filer(models.Attending.eventid == event['eventid']).count() >= 1):
 				attended_events.append(event['eventid'])
 	except:
 		attended_events = []
@@ -195,7 +195,7 @@ def add_member_atending():
 		models.Attending.insert(feventid, fuid)
 		updated_events = db.session.query(models.Attending).filter(models.Attending.uid == fuid)
 		UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
-		return UE,200
+		return json.dumps([UE]),200
 	except:
 		return "WRONG INSERTION", 204
 
@@ -209,7 +209,7 @@ def del_member_attending():
 		models.Attending.delete(feventid, fuid)
 		updated_events = db.session.query(models.Attending).filter(models.Attending.uid == fuid)
 		UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
-		return UE, 200
+		return json.dumps([UE]), 200
 	except:
 		return "WRONG DELETION", 204
 
