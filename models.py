@@ -28,25 +28,48 @@ class User(db.Model):
 		}
 		return dictionary
 	def get_groups(user_id):
-		groups = db.session.execute('select groups.gid, groups.group_name, groups.community, \
-				groups.zip_code, groups.public_or_private, groups.description\
-				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
-		
-		def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
-			dictionary = {
-				'gid': _gid,
-				'group_name': _group_name,
-				'community': _community,
-				'zip_code': _zip_code,
-				'public_or_private': _public_or_private,
-				'description': _description
-			}
-			return dictionary
-		
-		list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
-					     g.public_or_private, g.description) for g in groups]
-		return list_dict_groups
+		try:
+			query = """select groups.gid, groups.group_name, groups.community, 
+					groups.zip_code, groups.public_or_private, groups.description
+					from groups, members where groups.gid = members.gid and members.uid = :uid"""
+			
+			groups = db.session.execute(query, dict(uid=user_id))
+			
+			def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
+				dictionary = {
+					'gid': _gid,
+					'group_name': _group_name,
+					'community': _community,
+					'zip_code': _zip_code,
+					'public_or_private': _public_or_private,
+					'description': _description
+				}
+				return dictionary
+			
+			list_dict_groups = [serialize(g.gid, g.group_name, g.community, g.zip_code, \
+							g.public_or_private, g.description) for g in groups]
+			return list_dict_groups
+		except Exception as e:
+			print(e)
+			db.session.rollback()
+			raise e
 	
+	def insert(uid, name, password, bio, zip_code):
+		try:
+			dictionary = {
+				'uid': uid,
+				'name': name,
+				'password': password,
+				'bio': bio,
+				'zip_code': zip_code
+			}
+
+			db.session.execute('INSERT INTO ruser VALUES (:uid, :name, :password, :bio, :zip_code)', dictionary)
+			db.session.commit()
+
+		except Exception as e:
+			db.session.rollback()
+			raise e
 
 		
 			
@@ -94,6 +117,30 @@ class Groups(db.Model):
 			db.session.rollback()
 			raise e
 
+
+
+	def query(identifier, zip_code):
+		try: 
+			dic = {
+				'zip_code': zip_code,
+				'iden': identifier
+			}
+			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, 
+			(select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  
+			(2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + 
+			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 """
+
+			
+			groups = db.session.execute(query, dic)
+			# print(len(groups))
+			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description)\
+				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community or dic['iden'] in group.description]
+		except Exception as e:
+			print(e)
+			db.session.rollback()
+			raise e
+			
+
 class Members(db.Model):
 	__tablename__ = 'members'
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable=False)
@@ -119,6 +166,20 @@ class Members(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+
+	def delete(uid, gid):
+		dictionary = {
+			'uid': uid,
+			'gid': gid
+		}
+		try:
+			db.session.execute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
+			db.session.commit()
+		except Exception as e:
+			print(e)
+			db.session.rollback()
+			raise e
+
 class Events(db.Model):
 	__tablename__ = 'events'
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)
@@ -165,6 +226,60 @@ class Events(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+
+class Attending(db.Model):
+	__tablename__ = 'attending'
+	eventid = db.Column('eventid', db.String(256), db.ForeignKey('events.eventid'), nullable=False)
+	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable = False)
+	__table_args__ = (db.PrimaryKeyConstraint(eventid, uid), {})
+	
+
+	def insert(eventid, uid):
+		try:
+			dictionary = {
+				'eventid': eventid,
+				'uid': uid
+			}
+
+			db.session.execute('INSERT INTO Attending VALUES (:eventid, :uid)', dictionary)
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
+	def delete(eventid, uid):
+		try:
+			dictionary = {
+				'eventid': eventid,
+				'uid': uid
+			}
+			db.session.execute('DELETE FROM Attending WHERE eventid = :eventid and uid = :uid', dictionary)
+
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
+	def query(uid):
+		try:
+			dictionary = {
+				'uid': uid
+			}
+
+			events = db.session.execute('SELECT * FROM Attending WHERE uid = :uid', dictionary)
+
+
+			print("welp at least that worked")
+			UE = [event.eventid for event in events]
+			print(UE)
+			return UE
+		except Exception as e:
+			db.session.rollback()
+			raise e
+		
+
+
+
    
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'

@@ -35,8 +35,7 @@ def check_login():
 		user_info = models.User.serialize_self(user)
 	# 	print(user_info)
 
-		if not dict_groups:
-			return "no groups currently"
+	
 		return json.dumps([user_info, dict_groups])
 	except:
 		return "", 204
@@ -46,22 +45,35 @@ def check_login():
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def return_group_meta():
 	#returns everything related to a specific group
+	fuid = request.data.get('uid')
+	fgid = request.data.get('gid')
 	try:
-		members = db.session.query(models.Members).filter(models.Members.gid == request.data.get('gid'))
+		members = db.session.query(models.Members).filter(models.Members.gid == fgid)
 		members_response = [models.Members.serialize_self(member) for member in members]
 	except:
-		members_response = ""
+		members_response = []
 		
 	try:
 # 		print("how you doing")
-		events = db.session.query(models.Events).filter(models.Events.gid == request.data.get('gid'))
+		events = db.session.query(models.Events).filter(models.Events.gid == fgid).filter(models.Events.e_date > datetime.date.today())
 		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
+		events_response = []
+
+	attended_events = []
+	try:
+		for event in events_response:
+			if (db.session.query(models.Attending).\
+				filter(models.Attending.uid == fuid).filter(models.Attending.eventid == event['eventid']).count() >= 1):
+				attended_events.append(event['eventid'])
+	except:
+		attended_events = []
+
+	# except:
+	# 	member_in_events = ""
 		
-		events_response = ""
-		
-	return json.dumps([members_response, events_response])
+	return json.dumps([members_response, events_response, attended_events])
 	
 @app.route('/add-member', methods=['POST'])
 def insert_new_member():
@@ -75,7 +87,7 @@ def insert_new_member():
 	try:
 		print('begin')
 		models.Members.insert(fuid, fgid, fadmin)
-		return "Successful", 202
+		return "Successful", 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -83,11 +95,11 @@ def insert_new_member():
 
 @app.route('/add-event', methods=['POST'])
 def insert_new_event():
-
+	fuid = request.data.get('uid')
 # 	print("why isn't anything working")
 	fgid = request.data.get('gid')
 # 	print(1) /
-	feventid = request.data.get('eventid')
+	feventid = ''.join(choice(ascii_uppercase) for i in range(5))
 # 	print(2)
 	fevent_name = request.data.get('event_name')
 # 	print(3)
@@ -119,7 +131,8 @@ def insert_new_event():
 	try:
 # 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
-		return "Successful", 202
+		updated_events = models.Attending.query(fuid)
+		return updated_events, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -127,6 +140,7 @@ def insert_new_event():
 @app.route('/add-group', methods=['POST'])
 def insert_new_group():
 	fuid = request.data.get('uid')
+	fadmin = request.data.get('admin')
 	
 	gid = ''.join(choice(ascii_uppercase) for i in range(5))
 	group_name = request.data.get('group_name')
@@ -138,39 +152,80 @@ def insert_new_group():
 	
 	try:
 		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
-		return "Successful Insertion into Group Table", 202
+		models.Members.insert(fuid, gid, fadmin)
+		
+		return "Successful Insertion into Group Table", 200
 	except:
 		return "WRONG INPUT", 204
 	
 
-# @app.route('/drinker/<name>')
-# def drinker(name):
-#     drinker = db.session.query(models.Drinker)\
-#         .filter(models.Drinker.name == name).one()
-#     return render_template('drinker.html', drinker=drinker)
+@app.route('/add-user', methods=['POST'])
+def insert_new_user():
+	fuid = request.data.get('uid')
+	fname = request.data.get('name')
+	fpassword = request.data.get('password')
+	fbio = request.data.get('bio')
+	fzip_code = request.data.get('zip_code')
 
-# @app.route('/edit-drinker/<name>', methods=['GET', 'POST'])
-# def edit_drinker(name):
-#     drinker = db.session.query(models.Drinker)\
-#         .filter(models.Drinker.name == name).one()
-#     beers = db.session.query(models.Beer).all()
-#     bars = db.session.query(models.Bar).all()
-#     form = forms.DrinkerEditFormFactory.form(drinker, beers, bars)
-#     if form.validate_on_submit():
-#         try:
-#             form.errors.pop('database', None)
-#             models.Drinker.edit(name, form.name.data, form.address.data,
-#                                 form.get_beers_liked(), form.get_bars_frequented())
-#             return redirect(url_for('drinker', name=form.name.data))
-#         except BaseException as e:
-#             form.errors['database'] = str(e)
-#             return render_template('edit-drinker.html', drinker=drinker, form=form)
-#     else:
-#         return render_template('edit-drinker.html', drinker=drinker, form=form)
+	try:
+		models.User.insert(fuid, fname, fpassword, fbio, fzip_code)
+		return "Successful Insertion into User Table", 200
+	except:
+		return "WRONG INPUT", 204
 
-# @app.template_filter('pluralize')
-# def pluralize(number, singular='', plural='s'):
-#     return singular if number in (0, 1) else plural
+
+@app.route('/del-member', methods=['POST'])
+def delete_member():
+	fuid = request.data.get('uid')
+	fgid = request.data.get('gid')
+	print(fuid, fgid)
+
+	try:
+		models.Members.delete(fuid,fgid)
+		return "Successful Deletion from Members Table", 200
+	except:
+		return "WRONG DELETION", 204
+
+@app.route('/add-attending', methods=['POST'])
+def add_member_atending():
+	fuid = request.data.get('uid')
+	feventid = request.data.get('eventid')
+
+	try:
+		models.Attending.insert(feventid, fuid)
+	except:
+		return "WRONG INSERTION", 204
+
+	updated_events = models.Attending.query(fuid)
+	
+	return updated_events, 200
+
+
+@app.route('/del-attending', methods=['POST'])
+def del_member_attending():
+	fuid = request.data.get('uid')
+	feventid = request.data.get('eventid')
+
+	try:
+		models.Attending.delete(feventid, fuid)
+	except:
+		return "WRONG DELETION", 204
+
+	updated_events = models.Attending.query(fuid)
+	
+	return updated_events, 200
+
+@app.route('/search', methods=['POST'])
+def search_groups():
+	identifier = request.data.get('identifier')
+	zip_code = request.data.get('zip_code')
+	try:
+		everything = models.Groups.query(identifier, zip_code)
+		return everything, 200
+	except:
+		return "FAKE NEWS", 204
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
