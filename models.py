@@ -138,11 +138,11 @@ class Groups(db.Model):
 				'zip_code': zip_code,
 				'iden': '%' + identifier + '%'
 			}
-			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, 
+			query = """select gid, group_name, community, groups.zip_code, public_or_private, description from groups, 
 			(select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  
 			(2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + 
 			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10
-			and (group_name like :iden or community like :iden) limit 10
+			and (group_name like :iden or community like :iden) and groups.zip_code = Zip.zip_code limit 10
 			"""
 
 			
