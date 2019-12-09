@@ -70,7 +70,16 @@ class User(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+	def query(uid):
+		try:
+			dictionary = {
+				'uid': uid
+			}
 
+			query = "SELECT * FROM ruser WHERE uid = :uid"
+			users = db.session.execute(query, dictionary)
+
+			return [(user.uid, user.name, user.password, user.bio, user.zip_code) for user in users]
 		
 			
 #     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
@@ -140,6 +149,22 @@ class Groups(db.Model):
 			db.session.rollback()
 			raise e
 			
+	def second_query(gid):
+		try:
+			dic = {
+				'gid': gid
+			}
+
+			query = "SELECT * FROM GROUPS WHERE gid = :gid"
+
+			groups = db.session.execute(query, dic)
+			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description)\
+				for group in groups]
+
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
 
 class Members(db.Model):
 	__tablename__ = 'members'
@@ -177,6 +202,21 @@ class Members(db.Model):
 			db.session.commit()
 		except Exception as e:
 			print(e)
+			db.session.rollback()
+			raise e
+
+	def query(uid, gid):
+		try:
+			dictionary = {
+				'uid': uid,
+				'gid': gid
+			}
+			query = "SELECT * FROM Members WHERE uid = :uid and gid = :gid"
+			members = db.session.execute(query, dic)
+
+			return [(member.uid, member.gid, member.admin) for member in members]
+
+		except Exception as e:
 			db.session.rollback()
 			raise e
 
@@ -226,6 +266,25 @@ class Events(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+
+	def query(gid, eventid):
+		try:
+			dictionary = {
+				'gid':gid,
+				'eventid': eventid
+			}
+			all_events = db.session.execute('SELECT * FROM Events WHERE gid = :gid and event = :eventid', dictionary)
+			db.session.commit()
+
+			all_events = [(event.gid, event.event_name, event.host, event.location, event.e_date, event.e_time, event.public_or_private)\
+				for event in all_events]
+			
+			return all_events
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
+
 
 class Attending(db.Model):
 	__tablename__ = 'attending'

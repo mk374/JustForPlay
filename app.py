@@ -87,7 +87,8 @@ def insert_new_member():
 	try:
 		print('begin')
 		models.Members.insert(fuid, fgid, fadmin)
-		return "Successful", 200
+		new_members = models.Members.query(fuid, fgid)
+		return new_members, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -131,8 +132,10 @@ def insert_new_event():
 	try:
 # 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
-		updated_events = models.Attending.query(fuid)
-		return updated_events, 200
+		models.Attending.insert(feventid, fuid)
+		updated_specific_member_events = models.Attending.query(fuid)
+		updated_events_all = models.Events.query(fgid, feventid)
+		return updated_events_all, updated_specific_member_events, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	
@@ -154,7 +157,9 @@ def insert_new_group():
 		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
 		models.Members.insert(fuid, gid, fadmin)
 		
-		return "Successful Insertion into Group Table", 200
+		new_groups = models.Groups.second_query(gid)
+		new_members = models.Members.query(fuid, gid)
+		return new_groups, new_members, 200
 	except:
 		return "WRONG INPUT", 204
 	
@@ -169,6 +174,8 @@ def insert_new_user():
 
 	try:
 		models.User.insert(fuid, fname, fpassword, fbio, fzip_code)
+		# new_users = models.User.query(fuid)
+
 		return "Successful Insertion into User Table", 200
 	except:
 		return "WRONG INPUT", 204
@@ -182,7 +189,8 @@ def delete_member():
 
 	try:
 		models.Members.delete(fuid,fgid)
-		return "Successful Deletion from Members Table", 200
+		new_members = models.Members.query(fuid, fgid)
+		return new_members, 200
 	except:
 		return "WRONG DELETION", 204
 
