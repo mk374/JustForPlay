@@ -218,9 +218,9 @@ def del_member_attending():
 @app.route('/search', methods=['POST'])
 def search_groups():
 	identifier = request.data.get('identifier')
-
+	zip_code = request.data.get('zip_code')
 	try:
-		everything = models.Groups.query(identifier)
+		everything = models.Groups.query(identifier, zip_code)
 		return everything, 200
 	except:
 		return "FAKE NEWS", 204

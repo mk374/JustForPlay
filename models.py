@@ -112,13 +112,18 @@ class Groups(db.Model):
 
 
 
-	def query(identifier):
+	def query(identifier, zip_code):
 		try: 
 			dictionary = {
-				'identifier': "%" + identifier + "%"
+				'identifier': "%" + identifier + "%",
+				'zip_code': zip_code
 			}
+			query = """select gid, group_name, Zip.zip_code, description 
+			from groups, (select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip 
+			where  (2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 
+			+ cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 """
 
-			groups = db.session.execute('SELECT * FROM Groups WHERE group_name LIKE :identifier or community LIKE :identifier or description LIKE :identifier', \
+			groups = db.session.execute(query, \
 				dictionary)
 
 			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description) for group in groups]
