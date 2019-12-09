@@ -90,7 +90,7 @@ def insert_new_member():
 		new_members = models.Members.query(fuid, fgid)
 
 		#all the groups that the member is part of
-		
+
 		return new_members, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
@@ -137,7 +137,7 @@ def insert_new_event():
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
 		models.Attending.insert(feventid, fuid)
 		updated_specific_member_events = models.Attending.query(fuid)
-		updated_events_all = models.Events.query(fgid, feventid)
+		updated_events_all = models.Events.query(fgid)
 		return updated_events_all, updated_specific_member_events, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204

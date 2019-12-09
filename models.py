@@ -270,13 +270,12 @@ class Events(db.Model):
 			db.session.rollback()
 			raise e
 
-	def query(gid, eventid):
+	def query(gid):
 		try:
 			dictionary = {
-				'gid':gid,
-				'eventid': eventid
+				'gid':gid
 			}
-			all_events = db.session.execute('SELECT * FROM Events WHERE gid = :gid and event = :eventid', dictionary)
+			all_events = db.session.execute('SELECT * FROM Events WHERE gid = :gid', dictionary)
 			db.session.commit()
 
 			all_events = [(event.gid, event.event_name, event.host, event.location, event.e_date, event.e_time, event.public_or_private)\
