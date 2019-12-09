@@ -193,11 +193,12 @@ def add_member_atending():
 
 	try:
 		models.Attending.insert(feventid, fuid)
-		updated_events = db.session.query(models.Attending).filter(models.Attending.uid == fuid)
-		UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
-		return json.dumps([UE]),200
 	except:
 		return "WRONG INSERTION", 204
+
+	updated_events = models.Attending.query(fuid)
+	
+	return updated_events, 200
 
 
 @app.route('/del-attending', methods=['POST'])
@@ -211,10 +212,8 @@ def del_member_attending():
 		return "WRONG DELETION", 204
 
 	updated_events = models.Attending.query(fuid)
-	print("I HFAFSDFESfieshfpaeohgr gaeiu")
-	UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
-
-	return UE, 200
+	
+	return updated_events, 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

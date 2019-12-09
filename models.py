@@ -234,7 +234,7 @@ class Attending(db.Model):
 				'uid': uid
 			}
 
-			events = db.session.execute('SELECT FROM Attending WHERE uid = :uid', dictionary)
+			events = db.session.execute('SELECT * FROM Attending WHERE uid = :uid', dictionary)
 
 
 			print("welp at least that worked")
