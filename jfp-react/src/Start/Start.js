@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 import Login from './Login';
 import Register from './Register';
+
+import { withStyles } from '@material-ui/styles';
+
+const styles = theme => ({
+  colors: {
+      backgroundColor: "#84c1ff"
+  },
+  fields: {
+      marginBottom: 10
+  }
+});
 
 class Start extends Component {
   constructor(props){
@@ -50,16 +60,16 @@ class Start extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+    
     return (
-      <div className="loginscreen">
+      <div>
         {this.state.loginscreen}
         <div>
           {this.state.loginmessage}
-          <MuiThemeProvider>
             <div>
-               <RaisedButton label={this.state.buttonLabel} primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+               <Button className={classes.colors} primary={true} style={style} onClick={(event) => this.handleClick(event)}>{this.state.buttonLabel}</Button>
            </div>
-          </MuiThemeProvider>
         </div>
       </div>
     );
@@ -68,4 +78,4 @@ class Start extends Component {
 const style = {
   margin: 15,
 };
-export default Start;
+export default withStyles(styles)(Start);

@@ -2,9 +2,14 @@ import React from 'react';
 import GroupLink from './GroupLink';
 import CreateEvent from './CreateEvent';
 import CreateGroup from './CreateGroup';
-
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Drawer from '@material-ui/core/Drawer';
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,6 +18,7 @@ import { withStyles } from '@material-ui/styles';
 import {fade} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'; 
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Popover from '@material-ui/core/Popover'
@@ -78,12 +84,29 @@ const styles = theme => ({
     appBar: {
         position: 'relative',
         zIndex: 1400,
+        backgroundColor: "#84c1ff"
     },
     paper: {
         padding: 10,
         margin: 10,
         maxWidth: 700
     },
+    eventName:{
+        marginLeft: 10,
+        paddingTop: 6
+    },
+    joinEventButton:{
+        backgroundColor: "#90ee90",
+    },
+    leaveEventButton:{
+        backgroundColor: "#ff6961",
+    },
+    fabs: {
+        backgroundColor: "#4998e6"
+    },
+    inline: {
+        display: "inline-block"
+    }
   });
 
 class HomePage extends React.Component{
@@ -91,48 +114,50 @@ class HomePage extends React.Component{
         super(props);       
         this.state={
             user : this.props.user,
-            whoClicked: "",
+            group_id: "",
             groups: this.props.groups,
             isOpen: false,
             group_name: "No Page Selected",
-            group_community_id: "-1",
+            group_community: "-1",
             group_description: "Empty Description", // these haven't been resolved
             group_public_private: "N/A",
             group_members: [],
             group_events: [],
+            group_attending_events: [],
             anchorEl: null,
         }
     }
 
     popPage = async(e, group_id, g_name, g_ci, g_description, g_pop) =>{
         e.preventDefault();
-        // to change in the future for custom routing
-
+            // to change in the future for custom routing
             var apiBaseUrl = "http://35.202.227.79:5000/";
             var self = this;
             let userinfo={
+                uid: this.state.user.uid,
                 gid: group_id,
             };
 
             var config = {
-            headers: {'Access-Control-Allow-Origin': '*'},
-            withCredentials: false
+                headers: {'Access-Control-Allow-Origin': '*'},
+                withCredentials: false
             };
 
             // post it to the backends
             axios.post(apiBaseUrl+'get-group', userinfo, config).then(function (response) {
                 if(response.status === 200){
                     let result = JSON.parse(response.request.response);
-                    console.log(result);
                     // set the the current states as such
                     self.setState({
                         group_members: result[0],
                         group_events: result[1],
+                        group_attending_events: result[2],
                         group_name: g_name,
-                        group_community_id: g_ci,
+                        group_community: g_ci,
                         group_description: g_description,
                         group_public_private: g_pop,
                     });
+                    console.log(self.state);
                 }
             })
             .catch(function (error) {
@@ -142,11 +167,11 @@ class HomePage extends React.Component{
         if(this.state.isOpen === false){
             this.toggleDrawer();
             this.setState({
-                whoClicked: group_id
+                group_id: group_id
             });
-        }else if(group_id !== this.state.whoClicked){
+        }else if(group_id !== this.state.group_id){
             this.setState({
-                whoClicked: group_id
+                group_id: group_id
             });
         }else{
             this.toggleDrawer();
@@ -160,6 +185,134 @@ class HomePage extends React.Component{
             isOpen: !this.state.isOpen
         });  
     };
+
+    attendEvent = (e) => {
+        e.preventDefault();
+        var apiBaseUrl = "http://35.202.227.79:5000/";
+            var self = this;
+            let userinfo={
+                uid: this.state.user.uid,
+                eventid: e.currentTarget.value,
+            };
+
+            var config = {
+                headers: {'Access-Control-Allow-Origin': '*'},
+                withCredentials: false
+            };
+
+            // post it to the backends
+            axios.post(apiBaseUrl+'add-attending', userinfo, config).then(function (response) {
+                if(response.status === 200){
+                    let result = JSON.parse(response.request.response);
+                    self.setState({
+                        group_attending_events: result
+                    })
+                    console.log(result);
+                    console.log("Joined Event");
+                    /* add snackbar to according things */
+                }else{
+                    /* throw error */
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    unattendEvent = (e) => {
+        e.preventDefault();
+        var apiBaseUrl = "http://35.202.227.79:5000/";
+            var self = this;
+            let userinfo={
+                uid: this.state.user.uid,
+                eventid: e.currentTarget.value,
+            };
+
+            var config = {
+                headers: {'Access-Control-Allow-Origin': '*'},
+                withCredentials: false
+            };
+
+            // post it to the backends
+            axios.post(apiBaseUrl+'del-attending', userinfo, config).then(function (response) {
+                if(response.status === 200){
+                    let result = JSON.parse(response.request.response);
+                    console.log(result);
+                    self.setState({
+                        group_attending_events: result
+                    })
+                    console.log("Left Event");
+                    /* add snackbar to according things */
+                }else{
+                    /* throw error */
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    
+    handleLeave = (e) => {
+        e.preventDefault();
+  
+        var apiBaseUrl = "http://35.202.227.79:5000/";
+        let userinfo = {
+            gid: this.state.group_id,
+            uid: this.state.user.uid,
+        };
+  
+        console.log(userinfo);
+  
+        var config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            withCredentials: false
+        };
+  
+        axios.post(apiBaseUrl + "del-member", userinfo, config).then(function (response) {
+          if (response.status === 200) {
+              // reset the form
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    
+    handleJoin = (e) => {
+            e.preventDefault();
+  
+            var apiBaseUrl = "http://35.202.227.79:5000/";
+            let userinfo = {
+                gid: this.state.group_id,
+                uid: this.state.user.uid,
+            };
+        
+            console.log(userinfo);
+        
+            var config = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                withCredentials: false
+            };
+        
+            axios.post(apiBaseUrl + "add-member", userinfo, config).then(function (response) {
+            if (response.status === 200) {
+                let result = JSON.parse(response.request.response);
+                // reset the form
+                this.setState({
+                    userInGroup: !this.state.userInGroup
+            })
+        }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+  
+  
 
     updateParent = () => {
         // updating groups is gonna be a monster
@@ -184,14 +337,72 @@ class HomePage extends React.Component{
 
         var groupMembers = this.state.group_members;
         var groupMembersArr = [];
+        var userInGroup = false;
         groupMembers.forEach(member => {
+            userInGroup = member.uid === this.state.user.uid ? true : userInGroup;
             groupMembersArr.push(<li>{member.uid}</li>);
         });
 
         var groupEvents = this.state.group_events;
         var groupEventsArr = [];
+        var groupAttendEventsArr = [];
+        // split between my events and all group events
         groupEvents.forEach(event => {
-            groupEventsArr.push(<li id={event.eventid}>{event.event_name}</li>);
+            if(this.state.group_attending_events.includes(event.eventid)){
+                groupAttendEventsArr.push(
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Button value={event.eventid} className={classes.leaveEventButton} onClick={this.unattendEvent}>
+                                <RemoveIcon/> Leave
+                            </Button>
+                            <div className={classes.eventName}>
+                                <Typography>{event.event_name}</Typography>
+                            </div>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <div>
+                                <ul>
+                                    <li>Host: {event.host}</li>
+                                    <li>Location: {event.location}</li>
+                                    <li>Date: {event.e_date}</li>
+                                    <li>Time: {event.e_time}</li>
+                                </ul>
+                            </div>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                );
+            }else{
+                groupEventsArr.push(
+                    <ExpansionPanel>
+                        <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Button value={event.eventid} className={classes.joinEventButton} onClick={this.attendEvent}>
+                                <AddIcon/> RSVP
+                            </Button>
+                            <div className={classes.eventName}>
+                                <Typography>{event.event_name}</Typography>
+                            </div>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <div>
+                                <ul>
+                                    <li>Host: {event.host}</li>
+                                    <li>Location: {event.location}</li>
+                                    <li>Date: {event.e_date}</li>
+                                    <li>Time: {event.e_time}</li>
+                                </ul>
+                            </div>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                );
+            }
         });
 
         return(
@@ -223,7 +434,7 @@ class HomePage extends React.Component{
                     {groupLinksArr}
                 </div>
                 <div className={classes.divbyAndy}>
-                    <Fab color="primary" aria-label="add" onClick={(e) => this.setState({anchorEl: e.currentTarget})}>
+                    <Fab className={classes.fabs} color="primary" aria-label="add" onClick={(e) => this.setState({anchorEl: e.currentTarget})}>
                             <AddIcon />
                     </Fab>
                     <Popover
@@ -252,25 +463,34 @@ class HomePage extends React.Component{
                     >
                         <div align="left" style={{paddingTop: '80px', paddingLeft: '25px', paddingRight: '25px'}}>
                             <Paper className={classes.paper}>
-                                <h1>{this.state.group_name}</h1>
-                                <p>[DESCRIPTION] {this.state.group_description}</p>
+                                <div className={classes.inline}><h1>{this.state.group_name}</h1></div>
+                                <div className={classes.inline}>
+                                    <Button onClick={userInGroup ? this.handleLeave : this.handleJoin} className={userInGroup ? classes.leaveEventButton : classes.joinEventButton}>
+                                        {userInGroup ? <PersonAddDisabledIcon/> : <PersonAddIcon/>} &nbsp; {userInGroup ? "Leave" : "Join"}
+                                    </Button>
+                                </div>
+                                <p>{this.state.group_description}</p>
                             </Paper>
 
                             <Paper className={classes.paper}>
                                 <h3>Create Event</h3>
-                                <CreateEvent username={this.state.user.name} gid={this.state.whoClicked} gpp={this.state.group_public_private}></CreateEvent>
+                                <CreateEvent uid={this.state.user.uid} username={this.state.user.name} gid={this.state.group_id} gpp={this.state.group_public_private}></CreateEvent>
                             </Paper>
                             
                             <Paper className={classes.paper}>
                                 <h3>Members</h3>
                                     <ul>{groupMembersArr}</ul>
                             </Paper>
-                                    
-                            <Paper className={classes.paper}>
-                                <h3>Events</h3>
-                                    <ul>{groupEventsArr}</ul>
-                            </Paper>
 
+                            <Paper className={classes.paper}>
+                                <h3>My Events</h3>
+                                {groupAttendEventsArr}
+                            </Paper>
+     
+                            <Paper className={classes.paper}>
+                                <h3>Other Events</h3>
+                                {groupEventsArr}
+                            </Paper>
                         </div>
                 </Drawer>
             

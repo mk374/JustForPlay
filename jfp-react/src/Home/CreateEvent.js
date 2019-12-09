@@ -18,6 +18,13 @@ const styles = theme => ({
     },
     textField: {
         paddingRight: 5,
+    },
+    textFields: {
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    button: {
+        backgroundColor: "#4998e6"
     }
   });
 
@@ -25,6 +32,7 @@ class CreateEvent extends React.Component {
     constructor(props){
         super(props);
         this.state={
+            uid: this.props.uid,
             username : this.props.username,
             gid: this.props.gid,
             gpp: this.props.gpp, // public private
@@ -38,21 +46,24 @@ class CreateEvent extends React.Component {
     createEvent = (e) =>{
         e.preventDefault();
 
+        // url login
         var apiBaseUrl = "http://35.202.227.79:5000/";
         var self = this;
 
         // format date for  backend
         let date = this.state.event_date_time.split("T")[0];
         let time = this.state.event_date_time.split("T")[1];
+        
         /* POPULATE */
         let userinfo = {
+            uid: this.state.uid,
             gid: this.state.gid,
             host: this.state.username,
-            name: this.state.event_name,
+            event_name: this.state.event_name,
             location: this.state.event_location,
-            date: date,
-            time: time,
-            pubpriv: this.state.gpp
+            e_date: date,
+            e_time: time,
+            public_or_private: this.state.gpp
         };
 
         console.log(userinfo);
@@ -67,6 +78,7 @@ class CreateEvent extends React.Component {
         axios.post(apiBaseUrl + 'add-event', userinfo, config).then(function (response) {
                 if (response.status === 200) {
                     let result = JSON.parse(response.request.response);
+                    console.log(result);
                     // reset the form
                     self.setState({
                         event_name: "",
@@ -102,13 +114,12 @@ class CreateEvent extends React.Component {
     }
     
     render(){
-        var currentDate = JSON.stringify(new Date()).slice(1, 17);
         const { classes } = this.props;
         console.log("Event Created For [" + this.props.username + "] with gid [" + this.state.gid + "], a [" + this.state.gpp + "] group")
 
         return(
             <form onSubmit={this.createEvent}>
-                <div  className={classes.paper}>
+                <div className={classes.textFields}>
                     <TextField 
                         className={classes.textField}
                         label="Name"
@@ -122,7 +133,7 @@ class CreateEvent extends React.Component {
                         onChange = {(e) => this.setState({event_location: e.target.value})}
                     />
                 </div>
-                <div  className={classes.paper}>
+                <div className={classes.textFields}>
                     <TextField
                         className={classes.textField}
                         id="datetime-local"
@@ -134,7 +145,7 @@ class CreateEvent extends React.Component {
                         InputLabelProps={{shrink: true}}
                     />
                 </div>
-                <div className={classes.paper}>
+                <div className={classes.textFields}>
                     <Button
                         variant="contained"
                         color="primary"
