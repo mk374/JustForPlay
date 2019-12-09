@@ -121,7 +121,7 @@ class Groups(db.Model):
 
 			
 			groups = db.session.execute(query, dictionary)
-			print(len(groups))
+			# print(len(groups))
 			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description) for group in groups]
 		except Exception as e:
 			print(e)
