@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/styles';
 
 import axios from 'axios';
@@ -17,7 +18,14 @@ const styles = theme => ({
         maxWidth: 700
     },
     textField: {
-        paddingRight: 5,
+        paddingRight: 5
+    },
+    spaneth: {
+        paddingRight: 140
+    },
+    title: {
+        paddingTop: 20,
+        paddingLeft: 20
     }
   });
 
@@ -30,6 +38,7 @@ class CreateGroup extends React.Component {
             g_community: "",
             g_zip: "",
             g_description: "",
+            g_pop: "private",
         }
     }
 
@@ -42,10 +51,12 @@ class CreateGroup extends React.Component {
         /* POPULATE */
         let userinfo = {
             uid: this.state.uid,
-            g_name: this.state.g_name,
-            g_community: this.state.g_community,
-            g_zip: this.state.g_zip,
-            g_description: this.state.g_description,
+            admin: true,
+            group_name: this.state.g_name,
+            community: this.state.g_community,
+            zip_code: this.state.g_zip,
+            public_or_private: this.state.g_pop,
+            description: this.state.g_description,
         };
 
         console.log(userinfo);
@@ -59,7 +70,6 @@ class CreateGroup extends React.Component {
         // post it to the backends
         axios.post(apiBaseUrl + 'add-group', userinfo, config).then(function (response) {
                 if (response.status === 200) {
-                    let result = JSON.parse(response.request.response);
                     // reset the form
                     self.setState({
                         g_name: "",
@@ -68,8 +78,7 @@ class CreateGroup extends React.Component {
                         g_description: "",
                     })
 
-                    // reset the parent page
-                    
+                    // reset the parent page: add snackbar
                     
                 }
             })
@@ -83,12 +92,14 @@ class CreateGroup extends React.Component {
 
         return(
         <div>
-            <h2>Create Group</h2>
+            <div className={classes.title}>
+                <h2>Create Group</h2>
+            </div>
             <form onSubmit={this.createGroup}>
                 <div  className={classes.paper}>
                     <TextField 
                         className={classes.textField}
-                        label="Name"
+                        label="Group Name"
                         variant="outlined"
                         onChange = {(e) => this.setState({g_name: e.target.value})}
                     />
@@ -121,6 +132,12 @@ class CreateGroup extends React.Component {
                     
                 </div>
                 <div className={classes.paper}>
+                    <span className={classes.spaneth}>
+                        <Checkbox
+                            onChange={(e) => this.setState({g_pop: this.state.g_pop === e.target.value ? "public" : e.target.value})}
+                            value = "private" />
+                        <label>Private</label>
+                    </span>
                     <Button
                         variant="contained"
                         color="primary"

@@ -7,9 +7,11 @@ import Start from './Start/Start'
 import HomePage from './Home/HomePage';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 
 import {withStyles} from '@material-ui/styles';
+import { Typography } from '@material-ui/core';
 
 const START_PAGE = 0;
 const USER_HOME_PAGE = 1;

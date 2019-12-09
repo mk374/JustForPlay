@@ -14,13 +14,13 @@ class GroupLink extends React.Component{
         this.state={
           id: this.props.group.gid,
           name: this.props.group.group_name,
-          community_id: this.props.group.communityid,
+          community: this.props.group.community,
           description: this.props.group.description,
           public_private: this.props.group.public_or_private,
         }
       }
     handleClick = (e) => {
-        this.props.onClick(e, this.state.id, this.state.name, this.state.community_id, this.state.description, this.state.public_private);
+        this.props.onClick(e, this.state.id, this.state.name, this.state.community, this.state.description, this.state.public_private);
     }
 
     render(){

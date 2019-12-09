@@ -1,10 +1,26 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+
 import axios from 'axios';
 import Login from './Login';
+
+import { withStyles } from '@material-ui/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+
+const styles = theme => ({
+    colors: {
+        backgroundColor: "#84c1ff"
+    },
+    fields: {
+        paddingBottom: 30
+    },
+    bar: {
+        backgroundColor: "#84c1ff",
+    }
+  });
 
 class Register extends React.Component {
     // initialize register page with proper values
@@ -44,34 +60,45 @@ class Register extends React.Component {
          console.log(error);
        });
     }
-
+position="static"
     render() {
+        const {classes} = this.props;
         return (
             <div>
-                <MuiThemeProvider>
+                <form>
                 <div>
-                    <AppBar title="Register"/>
-                    <TextField
-                        hintText="Enter your Name"
-                        floatingLabelText="Name"
-                        onChange = {(event, newValue) => this.setState({name:newValue})}/>
+                    <AppBar className={classes.bar} position="static">
+                        <Toolbar>Register</Toolbar>
+                    </AppBar>
+                    <br/> 
+                    <div className={classes.fields}>
+                        <TextField
+                            label="Name"
+                            variant="outlined"
+                            hintText="Enter your Username"
+                            onChange = {(e) => this.setState({name: e.target.value})}/>
                     <br/>
-                    <TextField
-                        hintText="Provide a Username"
-                        floatingLabelText="Username"
-                        onChange = {(event, newValue) => this.setState({username:newValue})}
-                        />
-                    <br/>
-                    <TextField
-                        type = "password"
-                        hintText="Provide your Password"
-                        floatingLabelText="Password"
-                        onChange = {(event, newValue) => this.setState({password:newValue})}
-                        />
-                    <br/>
-                    <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+                    </div>
+                    <div className={classes.fields}>
+                        <TextField
+                            label="Username"
+                            variant="outlined"
+                            hintText="Provide a Username"
+                            onChange = {(e) => this.setState({username: e.target.value})}
+                            />
+                    </div>
+                    <div className={classes.fields}>
+                        <TextField
+                            type = "password"
+                            label="Password"
+                            variant="outlined"
+                            hintText="Provide your Password"
+                            onChange = {(e) => this.setState({password: e.target.value})}
+                            />
+                    </div>
+                    <Button className={classes.colors} primary={true} style={style} onClick={(event) => this.handleClick(event)}>Submit</Button>
                 </div>
-                </MuiThemeProvider>
+                </form>
             </div>
         );
     }
@@ -79,4 +106,4 @@ class Register extends React.Component {
 const style = {
   margin: 15,
 };
-export default Register;
+export default withStyles(styles)(Register);

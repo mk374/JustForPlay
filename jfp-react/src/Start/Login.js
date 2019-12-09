@@ -1,14 +1,29 @@
 import React from 'react';
-import  MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+
+
 
 import axios from 'axios';
 import AppContext from '../AppContext.js';
 
 // basic styling
 const style = {margin: 15};
+
+const styles = theme => ({
+    colors: {
+        backgroundColor: "#84c1ff"
+    },
+    fields: {
+        paddingBottom: 30
+    },
+    bar: {
+        backgroundColor: "#84c1ff"
+    }
+});
 
 // login in component
 class Login extends React.Component {
@@ -60,31 +75,37 @@ class Login extends React.Component {
     }
     // rendering of the login page
     render() {
+        const { classes } = this.props;
         return (
             <div>
-                <MuiThemeProvider>
+                <form onSubmit={this.handleClick}>
                     <div>
-                        <AppBar title="Login"/>
+                        <AppBar className={classes.bar} position="static">
+                            <Toolbar>Login</Toolbar>
+                        </AppBar>  
+                        <br/>
+                        <div className={classes.fields}>
                             <TextField
+                            label="Username"
                             variant="outlined"
                             hintText="Enter your Username"
-                            floatingLabelText="Username"
-                            onChange = {(e, newValue) => this.setState({username:newValue})}/>
-                            <br/>
+                            onChange = {(e) => this.setState({username:e.target.value})}/>
+                        </div>
+                        <div>
                             <TextField
+                            label="Password"
                             variant="outlined"
                             type="password"
                             hintText="Enter your Password"
-                            floatingLabelText="Password"
-                            onChange = {(e, newValue) => this.setState({password:newValue})}/>
-                            <br/>
-                            <RaisedButton label="Submit" primary={true} style={style} onClick={this.handleClick}/>
+                            onChange = {(e, newValue) => this.setState({password: e.target.value})}/>
+                        </div>
+                            <Button className={classes.colors} label="Submit" primary={true} style={style} type="submit"> Login </Button>
                     </div>
-                </MuiThemeProvider>
+                </form>
             </div>
         );
     }
 }
 
 // export
-export default Login;
+export default withStyles(styles)(Login);
