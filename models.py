@@ -201,12 +201,6 @@ class Attending(db.Model):
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable = False)
 	__table_args__ = (db.PrimaryKeyConstraint(eventid, uid), {})
 	
-	def serialize_self(attendance):
-		dictionary = {
-			'uid': attendance.uid,
-			'eventid': attendance.eventid
-		}
-		return dictionary
 
 	def insert(eventid, uid):
 		try:
@@ -240,9 +234,18 @@ class Attending(db.Model):
 				'uid': uid
 			}
 
-			YEET = db.session.execute('SELECT FROM Attending WHERE uid = :uid', dictionary)
-			print(YEET)
-			return YEET
+			events = db.session.execute('SELECT FROM Attending WHERE uid = :uid', dictionary)
+
+			def serialize(attendance):
+				dictionary = {
+					'uid': attendance.uid,
+					'eventid': attendance.eventid
+				}
+				return dictionary['uid']
+			
+			UE = [serialize(event) for event in events]
+			print(UE)
+			return UE
 		except Exception as e:
 			db.session.rollback()
 			raise e
