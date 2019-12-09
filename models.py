@@ -59,7 +59,7 @@ class User(db.Model):
 
 			db.session.execute('INSERT INTO ruser VALUES (:uid, :name, :password, :bio, :zip_code)', dictionary)
 			db.session.commit()
-			
+
 		except Exception as e:
 			db.session.rollback()
 			raise e
@@ -135,6 +135,19 @@ class Members(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+
+	def delete(uid, gid):
+		dictionary = {
+			'uid': uid,
+			'gid': gid
+		}
+		try:
+			db.session.excute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
+			db.sesion.commit()
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
 class Events(db.Model):
 	__tablename__ = 'events'
 	gid = db.Column('gid', db.String(256), db.ForeignKey('groups.gid'), nullable=False)

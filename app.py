@@ -163,7 +163,15 @@ def insert_new_user():
 
 @app.route('/del-member', methods=['POST'])
 def delete_member():
-	
+	fuid = request.data.get('uid')
+	fgid = request.data.get('gid')
+
+
+	try:
+		models.Members.delete(fuid,fgid)
+		return "Successful Deletion from Members Table", 200
+	except:
+		return "WRONG DELETION", 204
 
 
 if __name__ == '__main__':
