@@ -28,9 +28,11 @@ class User(db.Model):
 		}
 		return dictionary
 	def get_groups(user_id):
-		groups = db.session.execute('select groups.gid, groups.group_name, groups.community, \
-				groups.zip_code, groups.public_or_private, groups.description\
-				from groups, members where groups.gid = members.gid and members.uid = :uid', dict(uid=user_id))
+		query = """select groups.gid, groups.group_name, groups.community, 
+				groups.zip_code, groups.public_or_private, groups.description
+				from groups, members where groups.gid = members.gid and members.uid = :uid"""
+		
+		groups = db.session.execute(query, dict(uid=user_id))
 		
 		def serialize(_gid, _group_name, _community, _zip_code, _public_or_private, _description):
 			dictionary = {
@@ -117,7 +119,10 @@ class Groups(db.Model):
 			dictionary = {
 				'zip_code': zip_code
 			}
-			query = "select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, (select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  (2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 "
+			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, 
+			(select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  
+			(2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + 
+			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 """
 
 			
 			groups = db.session.execute(query, dictionary)
