@@ -136,12 +136,14 @@ class Groups(db.Model):
 		try: 
 			dic = {
 				'zip_code': zip_code,
-				'iden': identifier
+				'iden': '%' + identifier + '%'
 			}
 			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, 
 			(select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  
 			(2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + 
-			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 limit 10"""
+			cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10
+			and (group_name like :iden or community like :iden) limit 10
+			"""
 
 			
 			groups = db.session.execute(query, dic)
@@ -157,8 +159,10 @@ class Groups(db.Model):
 				}
 				return dictionary
 
-			return [serialize(group)
-				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community]
+			# return [serialize(group)
+			# 	for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community]
+			return [serialize(group) for group in groups]
+			
 		except Exception as e:
 			print(e)
 			db.session.rollback()
