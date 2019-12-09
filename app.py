@@ -164,7 +164,7 @@ def insert_new_group():
 		models.Groups.insert(gid, group_name, community, zip_code, public_or_private, description)
 		models.Members.insert(fuid, gid, fadmin)
 		
-		new_groups = models.User.get_groups(user.uid)
+		new_groups = models.User.get_groups(fuid)
 		return new_groups, 200
 	except:
 		return "WRONG INPUT", 204
