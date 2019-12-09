@@ -158,7 +158,7 @@ class Groups(db.Model):
 				return dictionary
 
 			return [serialize(group)
-				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community or dic['iden'] in group.description]
+				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community]
 		except Exception as e:
 			print(e)
 			db.session.rollback()
