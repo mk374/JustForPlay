@@ -80,6 +80,9 @@ class User(db.Model):
 			users = db.session.execute(query, dictionary)
 
 			return [(user.uid, user.name, user.password, user.bio, user.zip_code) for user in users]
+		except Exception as e:
+			db.session.rollback()
+			raise e
 		
 			
 #     #something about orm. https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/

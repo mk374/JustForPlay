@@ -88,6 +88,9 @@ def insert_new_member():
 		print('begin')
 		models.Members.insert(fuid, fgid, fadmin)
 		new_members = models.Members.query(fuid, fgid)
+
+		#all the groups that the member is part of
+		
 		return new_members, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
@@ -190,6 +193,8 @@ def delete_member():
 	try:
 		models.Members.delete(fuid,fgid)
 		new_members = models.Members.query(fuid, fgid)
+
+
 		return new_members, 200
 	except:
 		return "WRONG DELETION", 204
