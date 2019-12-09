@@ -146,34 +146,25 @@ def insert_new_group():
 		return "WRONG INPUT", 204
 	
 
-# @app.route('/drinker/<name>')
-# def drinker(name):
-#     drinker = db.session.query(models.Drinker)\
-#         .filter(models.Drinker.name == name).one()
-#     return render_template('drinker.html', drinker=drinker)
+@app.route('/add-user', methods=['POST'])
+def insert_new_user():
+	fuid = request.data.get('uid')
+	fname = request.data.get('name')
+	fpassword = request.data.get('password')
+	fbio = request.data.get('bio')
+	fzip_code = request.data.get('zip_code')
 
-# @app.route('/edit-drinker/<name>', methods=['GET', 'POST'])
-# def edit_drinker(name):
-#     drinker = db.session.query(models.Drinker)\
-#         .filter(models.Drinker.name == name).one()
-#     beers = db.session.query(models.Beer).all()
-#     bars = db.session.query(models.Bar).all()
-#     form = forms.DrinkerEditFormFactory.form(drinker, beers, bars)
-#     if form.validate_on_submit():
-#         try:
-#             form.errors.pop('database', None)
-#             models.Drinker.edit(name, form.name.data, form.address.data,
-#                                 form.get_beers_liked(), form.get_bars_frequented())
-#             return redirect(url_for('drinker', name=form.name.data))
-#         except BaseException as e:
-#             form.errors['database'] = str(e)
-#             return render_template('edit-drinker.html', drinker=drinker, form=form)
-#     else:
-#         return render_template('edit-drinker.html', drinker=drinker, form=form)
+	try:
+		models.User.insert(fuid, fname, fpassword, fbio, fzip_code)
+		return "Successful Insertion into User Table", 200
+	except:
+		return "WRONG INPUT", 204
 
-# @app.template_filter('pluralize')
-# def pluralize(number, singular='', plural='s'):
-#     return singular if number in (0, 1) else plural
+
+@app.route('/del-member', methods=['POST'])
+def delete_member():
+	
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

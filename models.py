@@ -47,6 +47,22 @@ class User(db.Model):
 					     g.public_or_private, g.description) for g in groups]
 		return list_dict_groups
 	
+	def insert(uid, name, password, bio, zip_code):
+		try:
+			dictionary = {
+				'uid': uid,
+				'name': name,
+				'password': password,
+				'bio': bio,
+				'zip_code': zip_code
+			}
+
+			db.session.execute('INSERT INTO ruser VALUES (:uid, :name, :password, :bio, :zip_code)', dictionary)
+			db.session.commit()
+			
+		except Exception as e:
+			db.session.rollback()
+			raise e
 
 		
 			
