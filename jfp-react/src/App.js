@@ -17,7 +17,7 @@ const USER_HOME_PAGE = 1;
 const styles = theme => ({
   card: {
     minWidth: 300,
-    maxWidth: 500
+    width: 500
   }
 });
 
@@ -53,7 +53,7 @@ class App extends React.Component {
   }
 
   render() {
-    
+
     var childpage;
     const { classes } = this.props;
 
@@ -89,7 +89,7 @@ class App extends React.Component {
             )
     }
     return (
-      
+
         <div className="App">
           {childpage}
         </div>

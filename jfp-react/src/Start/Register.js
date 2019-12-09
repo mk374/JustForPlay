@@ -19,7 +19,12 @@ const styles = theme => ({
     },
     bar: {
         backgroundColor: "#84c1ff",
-    }
+    },
+    paper: {
+        padding: 10,
+        margin: 10,
+        maxWidth: 900
+    },
   });
 
 class Register extends React.Component {
@@ -28,36 +33,53 @@ class Register extends React.Component {
         super(props);
         this.state={
             name:'',
-            username:'',
-            password:''
+            uid:'',
+            password:'',
+            bio: '',
+            zip_code: ''
+
         }
     }
 
     handleClick = e => {
-        var apiBaseUrl = "http://35.239.108.248:5000/";
+        e.preventDefault();
+        var apiBaseUrl = "http://35.202.227.79:5000/";
         //To be done:check for empty values before hitting submit
         var self = this;
         var payload={
-            "name": this.state.name,
-            "username": this.state.username,
-            "password": this.state.password
+            name: this.state.name,
+            uid: this.state.uid,
+            password: this.state.password,
+            bio: this.state.bio,
+            zip_code: this.state.zip_code
+
         }
-        axios.post(apiBaseUrl+'/register', payload).then(function (response) {
+        var config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            withCredentials: false
+        };
+        axios.post(apiBaseUrl+'add-user', payload, config).then(function (response) {
             if(response.data.code === 200){
                 var loginscreen=[];
                 loginscreen.push(<Login parentContext={this}/>);
-                var loginmessage = "Not Registered yet. Go to registration";
+                var loginmessage = "Not Registered yet? Go to registration";
                 self.props.parentContext.setState({loginscreen: loginscreen,
                     loginmessage:loginmessage,
                     buttonLabel:"Register",
                     isLogin:true
                 });
             }
+            else if(response.status === 204){
+                alert("Username taken. Please enter a different username.");
+            }
         })
        .catch(function (error) {
          console.log(error);
        });
     }
+
 position="static"
     render() {
         const {classes} = this.props;
@@ -68,27 +90,42 @@ position="static"
                     <AppBar className={classes.bar} position="static">
                         <Toolbar>Register</Toolbar>
                     </AppBar>
-                    <br/> 
-                    <div className={classes.fields}>
+                    <br/>
+                    <div className={classes.paper}>
                         <TextField
+                            className={classes.textField}
                             label="Name"
                             variant="outlined"
-                            onChange = {(e) => this.setState({name: e.target.value})}/>
-                    <br/>
-                    </div>
-                    <div className={classes.fields}>
+                            onChange = {(e) => this.setState({name: e.target.value})}
+                            />
                         <TextField
+                            className={classes.textField}
                             label="Username"
                             variant="outlined"
-                            onChange = {(e) => this.setState({username: e.target.value})}
+                            onChange = {(e) => this.setState({uid: e.target.value})}
                             />
                     </div>
-                    <div className={classes.fields}>
+                    <div className={classes.paper}>
                         <TextField
-                            type = "password"
+                            className={classes.textField}
                             label="Password"
                             variant="outlined"
+                            type = "password"
                             onChange = {(e) => this.setState({password: e.target.value})}
+                            />
+                        <TextField
+                            className={classes.textField}
+                            label="Zip code"
+                            variant="outlined"
+                            onChange = {(e) => this.setState({zip_code: e.target.value})}
+                            />
+                    </div>
+                    <div className={classes.paper}>
+                        <TextField
+                            className={classes.textField}
+                            label="Tell us about yourself!"
+                            variant="outlined"
+                            onChange = {(e) => this.setState({bio: e.target.value})}
                             />
                     </div>
                     <Button className={classes.colors} primary={true} style={style} onClick={(event) => this.handleClick(event)}>Submit</Button>
