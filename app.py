@@ -211,9 +211,10 @@ def del_member_attending():
 		return "WRONG DELETION", 204
 
 	updated_events = db.session.query(models.Attending).filter(models.Attending.uid == fuid)
+	print("I HFAFSDFESfieshfpaeohgr gaeiu")
 	UE = [models.Events.serialize_self(event)['eventid'] for event in updated_events]
 
 	return UE, 200
-	
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
