@@ -46,20 +46,27 @@ def check_login():
 @cross_origin(origin='localhost',headers=['Content-Type','Authorization'])
 def return_group_meta():
 	#returns everything related to a specific group
+	fuid = request.data.get('uid')
+	fgid = request.data.get('gid')
 	try:
-		members = db.session.query(models.Members).filter(models.Members.gid == request.data.get('gid'))
+		members = db.session.query(models.Members).filter(models.Members.gid == fgid)
 		members_response = [models.Members.serialize_self(member) for member in members]
 	except:
 		members_response = ""
 		
 	try:
 # 		print("how you doing")
-		events = db.session.query(models.Events).filter(models.Events.gid == request.data.get('gid'))
+		events = db.session.query(models.Events).filter(models.Events.gid == fgid)
 		print(events)
 		events_response = [models.Events.serialize_self(event) for event in events]
 	except:
 		
 		events_response = ""
+
+	# try:
+
+	# except:
+	# 	member_in_events = ""
 		
 	return json.dumps([members_response, events_response])
 	
@@ -173,6 +180,28 @@ def delete_member():
 	except:
 		return "WRONG DELETION", 204
 
+@app.route('/add-attending', methods=['POST'])
+def add_member_atending():
+	fuid = request.data.get('uid')
+	feventid = request.data.get('eventid')
+
+	try:
+		models.Attending.insert(feventid, fuid)
+		return "Successful Insertion into Attending Table", 200
+	except:
+		return "WRONG INSERTION", 204
+
+
+@app.route('/del-attending', methods=['POST'])
+def del_member_attending():
+	fuid = request.data.get('uid')
+	feventid = request.data.get('eventid')
+
+	try:
+		models.Attending.delete(feventid, fuid)
+		return "Sucessful Deletion from Attending Table", 200
+	except:
+		return "WRONG DELETION", 204
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

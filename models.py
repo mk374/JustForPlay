@@ -194,6 +194,42 @@ class Events(db.Model):
 		except Exception as e:
 			db.session.rollback()
 			raise e
+
+class Attending(db.Model):
+	__tablename__ = 'attending'
+	eventid = db.Column('eventid', db.String(256), db.ForeignKey('events.eventid'), nullable=False)
+	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable = False)
+	__table_args__ = (db.PrimaryKeyConstraint(eventid, uid))
+
+
+	def insert(eventid, uid):
+		try:
+			dictionary = {
+				'eventid': eventid,
+				'uid': uid
+			}
+
+			db.session.execute('INSERT INTO Attending VALUES (:eventid, :uid)', dictionary)
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
+	def delete(eventid, uid):
+		try:
+			dictionary = {
+				'eventid': eventid,
+				'uid': uid
+			}
+			db.session.execute('DELETE FROM Attending WHERE eventid = :eventid and uid = :uid', dictionary)
+
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			raise e
+
+
+
    
 # class Drinker(db.Model):
 #     __tablename__ = 'drinker'
