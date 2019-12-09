@@ -200,7 +200,13 @@ class Attending(db.Model):
 	eventid = db.Column('eventid', db.String(256), db.ForeignKey('events.eventid'), nullable=False)
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable = False)
 	__table_args__ = (db.PrimaryKeyConstraint(eventid, uid), {})
-
+	
+	def serialize_self(attendance):
+		dictionary = {
+			'uid': attendance.uid,
+			'eventid': attendance.eventid
+		}
+		return dictionary
 
 	def insert(eventid, uid):
 		try:
