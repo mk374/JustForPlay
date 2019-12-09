@@ -95,7 +95,7 @@ def insert_new_member():
 
 @app.route('/add-event', methods=['POST'])
 def insert_new_event():
-
+	fuid = request.data.get('uid')
 # 	print("why isn't anything working")
 	fgid = request.data.get('gid')
 # 	print(1) /
@@ -131,7 +131,8 @@ def insert_new_event():
 	try:
 # 		print('begin')
 		models.Events.insert(fgid, feventid, fevent_name, fhost, flocation, fe_date, fe_time, fpublic_or_private)
-		return "Successful", 200
+		updated_events = models.Attending.query(fuid)
+		return updated_events, 200
 	except:
 		return "NO MEMBER OR NO GROUP", 204
 	

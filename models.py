@@ -121,8 +121,9 @@ class Groups(db.Model):
 
 	def query(identifier, zip_code):
 		try: 
-			dictionary = {
-				'zip_code': zip_code
+			dic = {
+				'zip_code': zip_code,
+				'iden': identifier
 			}
 			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, 
 			(select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  
@@ -132,7 +133,8 @@ class Groups(db.Model):
 			
 			groups = db.session.execute(query, dictionary)
 			# print(len(groups))
-			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description) for group in groups]
+			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description)\
+				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community or dic['iden'] in group.description]
 		except Exception as e:
 			print(e)
 			db.session.rollback()
