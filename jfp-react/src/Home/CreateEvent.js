@@ -43,7 +43,6 @@ class CreateEvent extends React.Component {
     }
 
     createEvent = (e) =>{
-        console.log("made it into the create event")
         e.preventDefault();
 
         // url login
@@ -82,7 +81,7 @@ class CreateEvent extends React.Component {
                         event_location: "",
                         event_date_time: JSON.stringify(new Date()).slice(1, 17),
                     })
-                    
+
                     // array @ 0 is list of events for group, array @1 is the user's attending events
                     // refresh the drawer (parent class)
                     self.props.updateParent(result[0], result[1]);
@@ -142,7 +141,7 @@ class CreateEvent extends React.Component {
                         label="Date & Time"
                         type="datetime-local"
                         variant="outlined"
-                        defaultValue={this.state.event_date_time}
+                        value={this.state.event_date_time}
                         onChange = {(e) => this.setState({event_date_time: e.target.value})}
                         InputLabelProps={{shrink: true}}
                     />
