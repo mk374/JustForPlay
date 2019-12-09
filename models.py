@@ -160,7 +160,7 @@ class Members(db.Model):
 		}
 		try:
 			db.session.execute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
-			db.sesion.commit()
+			db.session.commit()
 		except Exception as e:
 			print(e)
 			db.session.rollback()
