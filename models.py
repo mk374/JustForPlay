@@ -146,7 +146,18 @@ class Groups(db.Model):
 			
 			groups = db.session.execute(query, dic)
 			# print(len(groups))
-			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description)\
+			def serialize(group):
+				dictionary = {
+					'gid': group.gid,
+					'group_name': group.group_name,
+					'community': group.community,
+					'zip_code': group.zip_code,
+					'public_or_private': group.public_or_private,
+					'description': group.description
+				}
+				return dictionary
+
+			return [serialize(group)
 				for group in groups if dic['iden'] in group.group_name or dic['iden'] in group.community or dic['iden'] in group.description]
 		except Exception as e:
 			print(e)

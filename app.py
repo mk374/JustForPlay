@@ -183,6 +183,7 @@ def insert_new_user():
 
 		return "Successful Insertion into User Table", 200
 	except:
+		
 		return "WRONG INPUT", 204
 
 
