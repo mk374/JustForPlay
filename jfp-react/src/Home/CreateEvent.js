@@ -40,10 +40,10 @@ class CreateEvent extends React.Component {
             event_location: "",
             event_date_time: JSON.stringify(new Date()).slice(1, 17),
         }
-        console.log(this.state.event_date_time);
     }
 
     createEvent = (e) =>{
+        console.log("made it into the create event")
         e.preventDefault();
 
         // url login
@@ -66,8 +66,6 @@ class CreateEvent extends React.Component {
             public_or_private: this.state.gpp
         };
 
-        console.log(userinfo);
-
         var config = {
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -77,16 +75,18 @@ class CreateEvent extends React.Component {
         // post it to the backends
         axios.post(apiBaseUrl + 'add-event', userinfo, config).then(function (response) {
                 if (response.status === 200) {
-                    let result = JSON.parse(response.request.response);
-                    console.log(result);
+                    let result = JSON.parse(response.request.response);                    
                     // reset the form
                     self.setState({
                         event_name: "",
                         event_location: "",
                         event_date_time: JSON.stringify(new Date()).slice(1, 17),
                     })
-
+                    
+                    // array @ 0 is list of events for group, array @1 is the user's attending events
                     // refresh the drawer (parent class)
+                    self.props.updateParent(result[0], result[1]);
+
 
                     
                 }
@@ -115,19 +115,21 @@ class CreateEvent extends React.Component {
     
     render(){
         const { classes } = this.props;
-        console.log("Event Created For [" + this.props.username + "] with gid [" + this.state.gid + "], a [" + this.state.gpp + "] group")
+        console.log("[" + this.props.username + "] is in gid [" + this.state.gid + "], a [" + this.state.gpp + "] group")
 
         return(
             <form onSubmit={this.createEvent}>
                 <div className={classes.textFields}>
                     <TextField 
                         className={classes.textField}
+                        value={this.state.event_name}
                         label="Name"
                         variant="outlined"
                         onChange = {(e) => this.setState({event_name: e.target.value})}
                     />
                     <TextField
                         className={classes.textField}
+                        value={this.state.event_location}
                         label="Location"
                         variant="outlined"
                         onChange = {(e) => this.setState({event_location: e.target.value})}

@@ -35,7 +35,6 @@ class Register extends React.Component {
 
     handleClick = e => {
         var apiBaseUrl = "http://35.239.108.248:5000/";
-        console.log("values: ",this.state.name, this.state.username,this.state.password);
         //To be done:check for empty values before hitting submit
         var self = this;
         var payload={
@@ -44,7 +43,6 @@ class Register extends React.Component {
             "password": this.state.password
         }
         axios.post(apiBaseUrl+'/register', payload).then(function (response) {
-            console.log(response);
             if(response.data.code === 200){
                 var loginscreen=[];
                 loginscreen.push(<Login parentContext={this}/>);
@@ -75,7 +73,6 @@ position="static"
                         <TextField
                             label="Name"
                             variant="outlined"
-                            hintText="Enter your Username"
                             onChange = {(e) => this.setState({name: e.target.value})}/>
                     <br/>
                     </div>
@@ -83,7 +80,6 @@ position="static"
                         <TextField
                             label="Username"
                             variant="outlined"
-                            hintText="Provide a Username"
                             onChange = {(e) => this.setState({username: e.target.value})}
                             />
                     </div>
@@ -92,7 +88,6 @@ position="static"
                             type = "password"
                             label="Password"
                             variant="outlined"
-                            hintText="Provide your Password"
                             onChange = {(e) => this.setState({password: e.target.value})}
                             />
                     </div>
