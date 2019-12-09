@@ -66,7 +66,7 @@ def return_group_meta():
 	try:
 		for event in events_response:
 			if (db.session.query(models.Attending).\
-				filter(models.Attending.uid == fuid).filer(models.Attending.eventid == event['eventid']).count() >= 1):
+				filter(models.Attending.uid == fuid).filter(models.Attending.eventid == event['eventid']).count() >= 1):
 				attended_events.append(event['eventid'])
 	except:
 		attended_events = []
