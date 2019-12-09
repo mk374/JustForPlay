@@ -115,17 +115,12 @@ class Groups(db.Model):
 	def query(identifier, zip_code):
 		try: 
 			dictionary = {
-				'identifier': "%" + identifier + "%",
 				'zip_code': zip_code
 			}
-			query = """select gid, group_name, community, Zip.zip_code, public_or_private, description 
-			from groups, (select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip 
-			where  (2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 
-			+ cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 """
+			query = "select gid, group_name, community, Zip.zip_code, public_or_private, description from groups, (select latitude, longitude from Zip where zip_code = :zip_code) as C, Zip where  (2 * 3961 * asin(sqrt((sin(radians((C.latitude - Zip.latitude) / 2))) ^ 2 + cos(radians(Zip.latitude)) * cos(radians(C.latitude)) * (sin(radians((C.longitude - Zip.longitude) / 2))) ^ 2))) < 10 "
 
 			
-			groups = db.session.execute(query, \
-				dictionary)
+			groups = db.session.execute(query, dictionary)
 			print(len(groups))
 			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description) for group in groups]
 		except Exception as e:
