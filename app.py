@@ -178,7 +178,7 @@ def insert_new_user():
 def delete_member():
 	fuid = request.data.get('uid')
 	fgid = request.data.get('gid')
-
+	print(fuid, fgid)
 
 	try:
 		models.Members.delete(fuid,fgid)
@@ -214,6 +214,18 @@ def del_member_attending():
 	updated_events = models.Attending.query(fuid)
 	
 	return updated_events, 200
+
+@app.route('/search', methods=['POST'])
+def search_groups():
+	identifier = request.data.get('identifier')
+
+	try:
+		everything = models.Groups.query(identifier)
+		return everything, 200
+	except:
+		return "FAKE NEWS", 204
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

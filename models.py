@@ -110,6 +110,23 @@ class Groups(db.Model):
 			db.session.rollback()
 			raise e
 
+
+
+	def query(identifier):
+		try: 
+			dictionary = {
+				'identifier': "%" + identifier + "%"
+			}
+
+			groups = db.session.execute('SELECT * FROM Groups WHERE group_name LIKE :identifier or community LIKE :identifier or description LIKE :identifier', \
+				dictionary)
+
+			return [(group.gid, group.group_name, group.community, group.zip_code, group.public_or_private, group.description) for group in groups]
+		except Exception as e:
+			db.session.rollback()
+			raise e
+			
+
 class Members(db.Model):
 	__tablename__ = 'members'
 	uid = db.Column('uid', db.String(256), db.ForeignKey('ruser.uid'), nullable=False)
@@ -141,6 +158,7 @@ class Members(db.Model):
 			'uid': uid,
 			'gid': gid
 		}
+		print(uid, gid)
 		try:
 			db.session.excute('DELETE FROM Members WHERE uid = :uid AND gid = :gid', dictionary)
 			db.sesion.commit()
