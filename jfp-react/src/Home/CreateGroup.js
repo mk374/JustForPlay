@@ -58,9 +58,6 @@ class CreateGroup extends React.Component {
             public_or_private: this.state.g_pop,
             description: this.state.g_description,
         };
-
-        console.log(userinfo);
-
         var config = {
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -70,6 +67,8 @@ class CreateGroup extends React.Component {
         // post it to the backends
         axios.post(apiBaseUrl + 'add-group', userinfo, config).then(function (response) {
                 if (response.status === 200) {
+                    let result = JSON.parse(response.request.response);                    
+
                     // reset the form
                     self.setState({
                         g_name: "",
@@ -77,6 +76,7 @@ class CreateGroup extends React.Component {
                         g_zip: "",
                         g_description: "",
                     })
+                    self.props.updateParent(result)
 
                     // reset the parent page: add snackbar
                     

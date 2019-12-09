@@ -25,7 +25,7 @@ import Popover from '@material-ui/core/Popover'
 
 import axios from 'axios';
 
-const drawerWidth = 800;
+const drawerWidth = 600;
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -117,6 +117,8 @@ class HomePage extends React.Component{
         this.state={
             user : this.props.user,
             group_id: "",
+            currentSearch: "",
+            myGroups: this.props.groups,
             groups: this.props.groups,
             isOpen: false,
             group_name: "No Page Selected",
@@ -131,8 +133,12 @@ class HomePage extends React.Component{
     }
 
     updateGroups = (groups) => {
+        console.log("UPDATING EVENTS:")
+        console.log(groups);
+
         this.setState({
-            groups: groups
+            groups: groups,
+            myGroups: groups
         })
     }
     updateEvents = (events, attending) => {
@@ -274,7 +280,7 @@ class HomePage extends React.Component{
             gid: this.state.group_id,
             uid: this.state.user.uid,
         };  
-        var config = {
+        let config = {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             },
@@ -299,8 +305,8 @@ class HomePage extends React.Component{
                 gid: this.state.group_id,
                 uid: this.state.user.uid,
             };
-            
-            var config = {
+
+            let config = {
                 headers: {
                     'Access-Control-Allow-Origin': '*'
                 },
@@ -311,14 +317,60 @@ class HomePage extends React.Component{
             if (response.status === 200) {
                 let result = JSON.parse(response.request.response);
                 // reset the form
-                this.setState({
-                    userInGroup: !this.state.userInGroup
-            })
-        }
-        })
-        .catch(function (error) {
+            }
+            }).catch(function (error) {
             console.log(error);
         });
+    }
+
+    search = (e) => {
+        e.preventDefault();
+
+        if(e.key === 'Enter'){        
+            var apiBaseUrl = "http://35.202.227.79:5000/";
+            var self = this;
+
+            let userinfo = {
+                identifier: e.target.value,
+                zip_code: this.state.user.zip_code,
+            };
+            
+            let config ={
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                withCredentials: false
+            };
+
+            console.log("Search with: " + userinfo.identifier + " AND " + userinfo.zip_code )
+
+            axios.post(apiBaseUrl + "search", userinfo, config).then(function (response){
+                if (response.status === 200) {
+                    let result = JSON.parse(response.request.response);
+                    self.setState({
+                        groups: result
+                    })
+                    console.log("SEARCH MADE:");
+                    console.log(self.state.groups);
+
+                }}).catch(function (error) {
+                    console.log(error);
+                });
+        }else{
+            if(e.key !== "Shift"){
+                this.setState({
+                    currentSearch: e.key === "Backspace" ? this.state.currentSearch.substring(0, this.state.currentSearch.length - 1): this.state.currentSearch + e.key
+                })
+            }
+        }
+    }
+        
+    backToMyGroups = (e) => {
+        e.preventDefault();
+        var myGroups = this.state.myGroups;
+        this.setState({
+            groups : myGroups
+        })
     }
 
     render(){
@@ -332,11 +384,11 @@ class HomePage extends React.Component{
         // generate the links
         var groupLinks = this.state.groups;
         var groupLinksArr = [];
-        var count = 0;
         groupLinks.forEach(group => {
-            groupLinksArr.push(<GroupLink key={count} group={group} onClick={this.popPage}></GroupLink>);
-            count++;
+            groupLinksArr.push(<GroupLink key={group.gid} group={group} onClick={this.popPage}></GroupLink>);
         });
+        console.log("CREATED LINKS:")
+        console.log(groupLinksArr);
 
         var groupMembers = this.state.group_members;
         var groupMembersArr = [];
@@ -417,11 +469,14 @@ class HomePage extends React.Component{
                         &nbsp; JustForPlay!
                     </Typography>
                     <div className={classes.spacer} />
+                    <Button onClick={this.backToMyGroups} style={{marginRight:15}} className={classes.logout} color="inherit">My Groups</Button>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                         <SearchIcon />
                         </div>
                         <InputBase
+                        value={this.state.currentSearch}
+                        onKeyUp={this.search}
                         placeholder="Search…"
                         classes={{
                             root: classes.inputRoot,
@@ -436,7 +491,7 @@ class HomePage extends React.Component{
                 <div align="left" className={classes.divbyAndy}> 
                     {groupLinksArr}
                 </div>
-                <div className={classes.divbyAndy}>
+                <div style={{padding: "30px 0px 10px 45px"}} align="left">
                     <Fab className={classes.fabs} color="primary" aria-label="add" onClick={(e) => this.setState({anchorEl: e.currentTarget})}>
                             <AddIcon />
                     </Fab>
@@ -454,7 +509,7 @@ class HomePage extends React.Component{
                         horizontal: 'center',
                         }}
                     >
-                        <CreateGroup uid={this.state.user.uid}>The content of the Popover.</CreateGroup>
+                        <CreateGroup updateParent={this.updateGroups} uid={this.state.user.uid}>The content of the Popover.</CreateGroup>
                     </Popover>
                 </div>
                 
@@ -464,7 +519,7 @@ class HomePage extends React.Component{
                     anchor="right"
                     open={this.state.isOpen}
                     >
-                        <div align="left" style={{paddingTop: '80px', paddingLeft: '25px', paddingRight: '25px'}}>
+                        <div align="left" style={{width: drawerWidth, paddingTop: '80px', paddingLeft: '25px', paddingRight: '25px'}}>
                             <Paper className={classes.paper}>
                                 <div style={{display: "flex"}}>
                                 <div className={classes.inline}><h1>{this.state.group_name}</h1></div>
