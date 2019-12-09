@@ -68,6 +68,7 @@ class User(db.Model):
 			db.session.commit()
 
 		except Exception as e:
+			print(e)
 			db.session.rollback()
 			raise e
 	def query(uid):
