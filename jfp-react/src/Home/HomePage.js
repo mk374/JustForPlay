@@ -105,7 +105,9 @@ const styles = theme => ({
         backgroundColor: "#4998e6"
     },
     inline: {
-        display: "inline-block"
+        display: "inline-block",
+        flexGrow: 1
+
     }
   });
 
@@ -126,6 +128,22 @@ class HomePage extends React.Component{
             group_attending_events: [],
             anchorEl: null,
         }
+    }
+
+    updateGroups = (groups) => {
+        this.setState({
+            groups: groups
+        })
+    }
+    updateEvents = (events, attending) => {
+        console.log("UPDATING EVENTS:")
+        console.log(events);
+        console.log(attending);
+
+        this.setState({
+            group_events: events,
+            group_attending_events: attending
+        })
     }
 
     popPage = async(e, group_id, g_name, g_ci, g_description, g_pop) =>{
@@ -157,6 +175,7 @@ class HomePage extends React.Component{
                         group_description: g_description,
                         group_public_private: g_pop,
                     });
+                    console.log("PAGE POPULATED W/:")
                     console.log(self.state);
                 }
             })
@@ -178,7 +197,6 @@ class HomePage extends React.Component{
         }
 
     }
-
     /* populate the drawer with data if clicked by other link then just change group*/
     toggleDrawer = () => {
         this.setState({
@@ -207,8 +225,6 @@ class HomePage extends React.Component{
                     self.setState({
                         group_attending_events: result
                     })
-                    console.log(result);
-                    console.log("Joined Event");
                     /* add snackbar to according things */
                 }else{
                     /* throw error */
@@ -237,11 +253,9 @@ class HomePage extends React.Component{
             axios.post(apiBaseUrl+'del-attending', userinfo, config).then(function (response) {
                 if(response.status === 200){
                     let result = JSON.parse(response.request.response);
-                    console.log(result);
                     self.setState({
                         group_attending_events: result
                     })
-                    console.log("Left Event");
                     /* add snackbar to according things */
                 }else{
                     /* throw error */
@@ -259,10 +273,7 @@ class HomePage extends React.Component{
         let userinfo = {
             gid: this.state.group_id,
             uid: this.state.user.uid,
-        };
-  
-        console.log(userinfo);
-  
+        };  
         var config = {
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -288,9 +299,7 @@ class HomePage extends React.Component{
                 gid: this.state.group_id,
                 uid: this.state.user.uid,
             };
-        
-            console.log(userinfo);
-        
+            
             var config = {
                 headers: {
                     'Access-Control-Allow-Origin': '*'
@@ -310,12 +319,6 @@ class HomePage extends React.Component{
         .catch(function (error) {
             console.log(error);
         });
-    }
-  
-  
-
-    updateParent = () => {
-        // updating groups is gonna be a monster
     }
 
     render(){
@@ -463,18 +466,20 @@ class HomePage extends React.Component{
                     >
                         <div align="left" style={{paddingTop: '80px', paddingLeft: '25px', paddingRight: '25px'}}>
                             <Paper className={classes.paper}>
+                                <div style={{display: "flex"}}>
                                 <div className={classes.inline}><h1>{this.state.group_name}</h1></div>
-                                <div className={classes.inline}>
+                                <div className={classes.inline} align="right">
                                     <Button onClick={userInGroup ? this.handleLeave : this.handleJoin} className={userInGroup ? classes.leaveEventButton : classes.joinEventButton}>
                                         {userInGroup ? <PersonAddDisabledIcon/> : <PersonAddIcon/>} &nbsp; {userInGroup ? "Leave" : "Join"}
                                     </Button>
+                                </div>
                                 </div>
                                 <p>{this.state.group_description}</p>
                             </Paper>
 
                             <Paper className={classes.paper}>
                                 <h3>Create Event</h3>
-                                <CreateEvent uid={this.state.user.uid} username={this.state.user.name} gid={this.state.group_id} gpp={this.state.group_public_private}></CreateEvent>
+                                <CreateEvent updateParent={this.updateEvents} uid={this.state.user.uid} username={this.state.user.name} gid={this.state.group_id} gpp={this.state.group_public_private}></CreateEvent>
                             </Paper>
                             
                             <Paper className={classes.paper}>
