@@ -1,18 +1,16 @@
 Andy
-- worked on connecting front and back ends
-- created the login page and website foundations
+- created login page and website foundations
 Min
 - worked on connecting front and back ends
-- created python scripts to generate random data
+- created functions used by app.py into models.py
 Tommy
-- compiled all information
 - tested database and sql queries
 Ben
 - created python scripts to generate random data
-- updated insert statements
+- set up justforplay.sql with backend team
 Sammy
 - created python scripts to generate random data
-- wrote README for how to run the database
+- wrote README for how to run the database and compiled final report
 Abby
-- compiled all information
+- created register page
 - tested database and sql queries
