@@ -68,7 +68,7 @@ class App extends React.Component {
                   justify="center"
                   style={{ minHeight: '100vh' }}
               >
-                <Grid item xs={3}>
+                <Grid item>
                   <Card className={classes.card}>
                     <CardContent>
                       <Start onLogin={this.changeScreenState} updateGroups={this.updateGroups} updateUser={this.updateUser}></Start>

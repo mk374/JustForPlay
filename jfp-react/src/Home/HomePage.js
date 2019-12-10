@@ -9,6 +9,7 @@ import Drawer from '@material-ui/core/Drawer';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import SyncIcon from '@material-ui/icons/Sync';
+import GroupIcon from '@material-ui/icons/Group';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import Button from '@material-ui/core/Button';
@@ -341,7 +342,8 @@ class HomePage extends React.Component{
                 myGroups: result,
                 snackbarIsOpen: true,
                 snackbarMessage: "Bon Voyage! You've successfully left a group",
-                snackbarStatus: true
+                snackbarStatus: true,
+                isOpen: false
             })
             }else{
                 self.setState({
@@ -542,7 +544,7 @@ class HomePage extends React.Component{
                     </Typography>
                     <div className={classes.spacer} />
                     <Button onClick={this.backToMyGroups} style={{marginRight:15}} className={classes.logout} color="inherit">
-                        <SyncIcon/> &nbsp; My Groups
+                        <GroupIcon/> &nbsp; My Groups
                     </Button>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
@@ -631,11 +633,16 @@ class HomePage extends React.Component{
                     anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
                     open={this.state.snackbarIsOpen}
                     onClose={(e) => this.setState({snackbarIsOpen: false})}
-                    autoHideDuration={4000}
+                    autoHideDuration={5000}
                 >
                     <SnackbarContent
                         className={this.state.snackbarStatus ? classes.success : classes.failure}
-                    message={<span id="message-id"> {this.snackbarStatus ? <CheckCircleOutlineIcon /> : <ErrorOutlineIcon/>} &nbsp; {this.state.snackbarMessage}</span>}
+                        message={<span id="message-id"> {this.snackbarStatus ? <CheckCircleOutlineIcon /> : <ErrorOutlineIcon/>} &nbsp; {this.state.snackbarMessage}</span>}
+                        action={[
+                            <Button style={{color: 'white'}} key="refresh" aria-label="close" onClick={this.backToMyGroups}>
+                              <SyncIcon className={classes.icon} /> Refresh Groups
+                            </Button>,
+                          ]}
                     />
                 </Snackbar>
             </div>

@@ -20,7 +20,7 @@ const styles = theme => ({
         color: 'white'
     },
     bar: {
-        backgroundColor: "#84c1ff",
+        backgroundColor: "#4998e6",
         alignItems: 'center'
     },
     row: {
