@@ -5,6 +5,7 @@ Min
 - created functions used by app.py into models.py
 Tommy
 - tested database and sql queries
+- Added documentation for functions
 Ben
 - created python scripts to generate random data
 - set up justforplay.sql with backend team
