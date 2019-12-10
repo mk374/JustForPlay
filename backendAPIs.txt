@@ -1,0 +1,58 @@
+App.py backend APIs
+
+Login
+This function takes in a UserID and a password. The function queries the User table 
+and then filters for a user that has a uid that matches the uid given and then filters 
+that for where the password input matches the inputted password. If there is no user that 
+matches the inputted uid and password, the function will return  “Wrong Password and Username”, 
+otherwise it will get the groups and user information from Model.User of the uid and return that 
+information. If the function does not work, it returns a 204 error.
+
+Get-group
+This function takes in a user ID and a group ID. First it will query models.Members and filter for 
+members that belong to that group. The function will then query models.Events for all events that belong 
+to that group. Next get-group will sort the events it has by whether the current user ID is attending those 
+events or not by querying and filtering models.Attending. The function will then return the users that belong 
+to the group, the events, and which of those events the User ID is attending
+
+Add-member
+Add member takes in a User ID to add to a group, the group ID of the group the user should be added to, and whether 
+or not the user is an admin or not. The function will then insert into the Members table the User ID and Group ID and 
+return that information. If the insert did not work, the function will return a 204 error.
+
+Add-event
+The function takes in the User ID who created the event, the group ID that the event belongs to, the event 
+name, the event host, the location, date, time, whether or not the function is private or public, and an event 
+ID. The function then inserts the event information into the Events table and adds the User ID of the creator and 
+the event to the Attending table. The function then queries the Events table to get the events that the current User is 
+attending and gets the upcoming events of the current group and returns both of these. If there is an error, 
+the function returns 204.
+
+Add-group
+This function takes in the current user ID, whether or not they are an admin, the group ID for the new group, the 
+zipcode of the group, whether or not the group is public or private, and a description of the group. The function will 
+then input the Group ID, group name, zip code, whether it is public or private, and the description into the Groups table 
+and the current user, the group ID, and whether the user is an admin or not into the Members table. The function will then get the groups of the current user and return that. If the inserts did not work, the funtion will return 204 and an error message.
+
+Add-user
+This function takes in a user ID, name, password, bio, and zip code and then inserts that information into the User table. 
+If it worked, it will return a success message and if it did not work the function will return an error message and 204.
+
+Del-member
+This function takes in a User ID and Group ID and removes from the Members table the tuple of that User Id and group ID. 
+The function will then query the members table for that User ID and group ID and return that. If there is an error, 
+the function will return an error message and 204.
+
+Add-attending
+This function takes in a User ID and an event ID. The function will add the User ID and Event Id to the Attending table 
+and returns an updated list of the events the user is attending. If there is an error, the function will return an error 
+message and 204.
+
+Del-attending
+This function takes in a User ID and an Event ID and deletes from the Attending table the tuple that matches that event ID 
+and user ID. The function returns the an updated list of the events for that user from the Attending table. If the deletion 
+did not work, the function returns an error message and 204.
+
+Search
+This function takes in an identifier and a zip code. The function will then query the Groups table for anything that matches 
+that identifier and the zip code and return that. If there is an error, the function will return an error message and 204.
