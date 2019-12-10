@@ -1,5 +1,6 @@
 Andy
 - created login page and website foundations
+- developed frontend framework (create event, create group, display groups, search, etc)
 Min
 - worked on connecting front and back ends
 - created functions used by app.py into models.py
