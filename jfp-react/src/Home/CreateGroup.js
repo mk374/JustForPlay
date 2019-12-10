@@ -26,6 +26,9 @@ const styles = theme => ({
     title: {
         paddingTop: 20,
         paddingLeft: 20
+    },
+    multi: {
+        width: "99%"
     }
   });
 
@@ -76,13 +79,15 @@ class CreateGroup extends React.Component {
                         g_zip: "",
                         g_description: "",
                     })
-                    self.props.updateParent(result)
 
-                    // reset the parent page: add snackbar
-                    
+                    self.props.closePopover();
+                    self.props.updateParent(result);
+                    self.props.updateSnackbar(true, "Congrats! You've succesfully created your own group");
+                }else{
+                    self.props.closePopover();
+                    self.props.updateSnackbar(false, "Uh oh! Seems like we weren't able to create a group")                   
                 }
-            })
-            .catch(function (error) {
+            }).catch(function (error) {
                 console.log(error);
         });
     }
@@ -127,6 +132,7 @@ class CreateGroup extends React.Component {
                         multiline
                         rows="3"
                         variant="outlined"
+                        className={classes.multi}
                         onChange = {(e) => this.setState({g_description: e.target.value})}
                     />
                     

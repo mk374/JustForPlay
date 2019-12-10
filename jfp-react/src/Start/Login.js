@@ -14,14 +14,20 @@ import AppContext from '../AppContext.js';
 const style = {margin: 15};
 
 const styles = theme => ({
-    colors: {
-        backgroundColor: "#84c1ff"
+    button: {
+        backgroundColor: "#84c1ff",
+        paddingRight: 30,
+        paddingLeft: 30,
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: 'white'
     },
     fields: {
         paddingBottom: 30
     },
     bar: {
-        backgroundColor: "#84c1ff"
+        backgroundColor: "#4998e6",
+        alignItems: 'center'
     }
 });
 
@@ -81,7 +87,7 @@ class Login extends React.Component {
                 <form onSubmit={this.handleClick}>
                     <div>
                         <AppBar className={classes.bar} position="static">
-                            <Toolbar>Login</Toolbar>
+                            <Toolbar><h2>JustForPlay</h2></Toolbar>
                         </AppBar>  
                         <br/>
                         <div className={classes.fields}>
@@ -97,7 +103,7 @@ class Login extends React.Component {
                             type="password"
                             onChange = {(e, newValue) => this.setState({password: e.target.value})}/>
                         </div>
-                            <Button className={classes.colors} label="Submit" primary={true} style={style} type="submit"> Login </Button>
+                            <Button className={classes.button} label="Submit" primary={true} style={style} type="submit"> Login </Button>
                     </div>
                 </form>
             </div>

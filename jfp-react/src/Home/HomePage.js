@@ -17,12 +17,18 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/styles';
 import {fade} from '@material-ui/core/styles';
+import {red, green } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'; 
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
-import Popover from '@material-ui/core/Popover'
+import Popover from '@material-ui/core/Popover';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
 
 import axios from 'axios';
 
@@ -79,7 +85,8 @@ const styles = theme => ({
         padding: '10px 20px 40px 20px'
     },
     drawer: {
-        width: drawerWidth,
+        // width: drawerWidth,
+        width: '50%',
         flexShrink: 0,
     },
     appBar: {
@@ -109,6 +116,12 @@ const styles = theme => ({
         display: "inline-block",
         flexGrow: 1
 
+    },
+    success: {
+        backgroundColor: green[600]
+    },
+    failure: {
+        backgroundColor: red[600]
     }
   });
 
@@ -122,6 +135,9 @@ class HomePage extends React.Component{
             myGroups: this.props.groups,
             groups: this.props.groups,
             isOpen: false,
+            snackbarIsOpen: false,
+            snackbarMessage: "",
+            snackbarStatus: false, // true = succes; false = failure
             group_name: "No Page Selected",
             group_community: "-1",
             group_description: "Empty Description", // these haven't been resolved
@@ -143,6 +159,11 @@ class HomePage extends React.Component{
             myGroups: groups
         })
     }
+    closePopover = () =>{
+        this.setState({
+            anchorEl: null,
+        })
+    }
     updateEvents = (events, attending) => {
         console.log("UPDATING EVENTS:")
         console.log(events);
@@ -151,6 +172,14 @@ class HomePage extends React.Component{
         this.setState({
             group_events: events,
             group_attending_events: attending
+        })
+    }
+
+    updateSnackBar = (status, message) => {
+        this.setState({
+            snackbarIsOpen: true,
+            snackbarMessage: message,
+            snackbarStatus: status
         })
     }
 
@@ -231,11 +260,18 @@ class HomePage extends React.Component{
                 if(response.status === 200){
                     let result = JSON.parse(response.request.response);
                     self.setState({
-                        group_attending_events: result
+                        group_attending_events: result,
+                        snackbarIsOpen: true,
+                        snackbarMessage: "See you there! you've successfully RSVP'd to an event",
+                        snackbarStatus: true
                     })
                     /* add snackbar to according things */
                 }else{
-                    /* throw error */
+                    self.setState({
+                        snackbarIsOpen: true,
+                        snackbarMessage: "Uh oh, something went wrong. Please try again later",
+                        snackbarStatus: false
+                    })
                 }
             })
             .catch(function (error) {
@@ -262,11 +298,18 @@ class HomePage extends React.Component{
                 if(response.status === 200){
                     let result = JSON.parse(response.request.response);
                     self.setState({
-                        group_attending_events: result
+                        group_attending_events: result,
+                        snackbarIsOpen: true,
+                        snackbarMessage: "See ya later! You've successfully left an event",
+                        snackbarStatus: true
                     })
                     /* add snackbar to according things */
                 }else{
-                    /* throw error */
+                    self.setState({
+                        snackbarIsOpen: true,
+                        snackbarMessage: "Uh oh! Something went wrong. Please try again later",
+                        snackbarStatus: false
+                    })
                 }
             })
             .catch(function (error) {
@@ -295,8 +338,17 @@ class HomePage extends React.Component{
           if (response.status === 200) {
             let result = JSON.parse(response.request.response);
             self.setState({
-                myGroups: result
+                myGroups: result,
+                snackbarIsOpen: true,
+                snackbarMessage: "Bon Voyage! You've successfully left a group",
+                snackbarStatus: true
             })
+            }else{
+                self.setState({
+                    snackbarIsOpen: true,
+                    snackbarMessage: "Uh oh! something went wrong. Please try again later",
+                    snackbarStatus: false
+                })
             }
         })
         .catch(function (error) {
@@ -326,9 +378,17 @@ class HomePage extends React.Component{
             if (response.status === 200) {
                 let result = JSON.parse(response.request.response);
                 self.setState({
-                    myGroups: result
+                    myGroups: result,
+                    snackbarIsOpen: true,
+                    snackbarMessage: "Welcome! You've successfully joined a group",
+                    snackbarStatus: true
                 })
-                console.log(self.state.myGroups);
+            }else{
+                self.setState({
+                    snackbarIsOpen: true,
+                    snackbarMessage: "Uh oh! something went wrong. Please try again later",
+                    snackbarStatus: false
+                })
             }
             }).catch(function (error) {
             console.log(error);
@@ -523,7 +583,7 @@ class HomePage extends React.Component{
                         horizontal: 'center',
                         }}
                     >
-                        <CreateGroup updateParent={this.updateGroups} uid={this.state.user.uid}>The content of the Popover.</CreateGroup>
+                        <CreateGroup closePopover={this.closePopover} updateSnackbar={this.updateSnackBar} updateParent={this.updateGroups} uid={this.state.user.uid}>The content of the Popover.</CreateGroup>
                     </Popover>
                 </div>
                 
@@ -548,7 +608,7 @@ class HomePage extends React.Component{
 
                             <Paper className={classes.paper}>
                                 <h3>Create Event</h3>
-                                <CreateEvent updateParent={this.updateEvents} uid={this.state.user.uid} username={this.state.user.name} gid={this.state.group_id} gpp={this.state.group_public_private}></CreateEvent>
+                                <CreateEvent updateSnackbar={this.updateSnackBar} updateParent={this.updateEvents} uid={this.state.user.uid} username={this.state.user.name} gid={this.state.group_id} gpp={this.state.group_public_private}></CreateEvent>
                             </Paper>
                             
                             <Paper className={classes.paper}>
@@ -567,7 +627,17 @@ class HomePage extends React.Component{
                             </Paper>
                         </div>
                 </Drawer>
-            
+                <Snackbar
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                    open={this.state.snackbarIsOpen}
+                    onClose={(e) => this.setState({snackbarIsOpen: false})}
+                    autoHideDuration={4000}
+                >
+                    <SnackbarContent
+                        className={this.state.snackbarStatus ? classes.success : classes.failure}
+                    message={<span id="message-id"> {this.snackbarStatus ? <CheckCircleOutlineIcon /> : <ErrorOutlineIcon/>} &nbsp; {this.state.snackbarMessage}</span>}
+                    />
+                </Snackbar>
             </div>
 
         );

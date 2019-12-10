@@ -6,8 +6,13 @@ import Register from './Register';
 import { withStyles } from '@material-ui/styles';
 
 const styles = theme => ({
-  colors: {
-      backgroundColor: "#84c1ff"
+  button: {
+    backgroundColor: "#84c1ff",
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    color: 'white'
   },
   fields: {
       marginBottom: 10
@@ -68,7 +73,7 @@ class Start extends Component {
         <div>
           {this.state.loginmessage}
             <div>
-               <Button className={classes.colors} primary={true} style={style} onClick={(event) => this.handleClick(event)}>{this.state.buttonLabel}</Button>
+               <Button className={classes.button} primary={true} style={style} onClick={(event) => this.handleClick(event)}>{this.state.buttonLabel}</Button>
            </div>
         </div>
       </div>

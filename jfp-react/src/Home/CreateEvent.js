@@ -84,10 +84,10 @@ class CreateEvent extends React.Component {
 
                     // array @ 0 is list of events for group, array @1 is the user's attending events
                     // refresh the drawer (parent class)
-                    self.props.updateParent(result[0], result[1]);
-
-
-                    
+                    self.props.updateParent(result[0], result[1]); 
+                    self.props.updateSnackbar(true, "Congrats! You've succesfully created an event")                   
+                }else{
+                    self.props.updateSnackbar(false, "Uh oh! Seems like we weren't able to create an event") 
                 }
             })
             .catch(function (error) {

@@ -12,19 +12,29 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 const styles = theme => ({
     colors: {
-        backgroundColor: "#84c1ff"
-    },
-    fields: {
-        paddingBottom: 30
+        backgroundColor: "#84c1ff",
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: 'white'
     },
     bar: {
         backgroundColor: "#84c1ff",
+        alignItems: 'center'
     },
-    paper: {
-        padding: 10,
-        margin: 10,
-        maxWidth: 900
+    row: {
+        paddingBottom: 20
     },
+    fieldsRight: {
+        paddingRight: 10
+    },
+    fieldsLeft: {
+        paddingLeft: 10
+    },
+    multi: {
+        width: "87.5%"
+    }
   });
 
 class Register extends React.Component {
@@ -88,33 +98,33 @@ position="static"
                 <form>
                 <div>
                     <AppBar className={classes.bar} position="static">
-                        <Toolbar>Register</Toolbar>
+                        <Toolbar><h2>Register</h2></Toolbar>
                     </AppBar>
                     <br/>
-                    <div className={classes.paper}>
+                    <div className={classes.row}>
                         <TextField
-                            className={classes.textField}
+                            className={classes.fieldsRight}
                             label="Name"
                             variant="outlined"
                             onChange = {(e) => this.setState({name: e.target.value})}
                             />
                         <TextField
-                            className={classes.textField}
+                            className={classes.fieldsLeft}
                             label="Username"
                             variant="outlined"
                             onChange = {(e) => this.setState({uid: e.target.value})}
                             />
                     </div>
-                    <div className={classes.paper}>
+                    <div className={classes.row}>
                         <TextField
-                            className={classes.textField}
+                            className={classes.fieldsRight}
                             label="Password"
                             variant="outlined"
                             type = "password"
                             onChange = {(e) => this.setState({password: e.target.value})}
                             />
                         <TextField
-                            className={classes.textField}
+                            className={classes.fieldsLeft}
                             label="Zip code"
                             variant="outlined"
                             onChange = {(e) => this.setState({zip_code: e.target.value})}
@@ -122,9 +132,11 @@ position="static"
                     </div>
                     <div className={classes.paper}>
                         <TextField
-                            className={classes.textField}
+                            className={classes.multi}
                             label="Tell us about yourself!"
                             variant="outlined"
+                            multiline
+                            rows="3"
                             onChange = {(e) => this.setState({bio: e.target.value})}
                             />
                     </div>
