@@ -13,5 +13,5 @@ Sammy
 - created python scripts to generate random data
 - wrote README for how to run the database and compiled final report
 Abby
-- created register page
+- created register page and leave groups function
 - tested database and sql queries
